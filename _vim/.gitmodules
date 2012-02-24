@@ -1,0 +1,36 @@
+[submodule ".vim/bundle/fugitive"]
+	path = .vim/bundle/fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule ".vim/bundle/nerdtree"]
+	path = .vim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule ".vim/bundle/surround"]
+	path = .vim/bundle/surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule ".vim/bundle/repeat"]
+	path = .vim/bundle/repeat
+	url = https://github.com/tpope/vim-repeat.git
+[submodule ".vim/bundle/ack"]
+	path = .vim/bundle/ack
+	url = https://github.com/mileszs/ack.vim.git
+[submodule ".vim/bundle/fuzzyfinder"]
+	path = .vim/bundle/fuzzyfinder
+	url = https://github.com/vim-scripts/FuzzyFinder.git
+	ignore = dirty
+[submodule ".vim/bundle/l9"]
+	path = .vim/bundle/l9
+	url = https://github.com/git-mirror/vim-l9.git
+	ignore = dirty
+[submodule ".vim/bundle/supertab"]
+	path = .vim/bundle/supertab
+	url = https://github.com/ervandew/supertab.git
+[submodule ".vim/bundle/gvimfullscreen_win32"]
+	path = .vim/bundle/gvimfullscreen_win32
+	url = https://github.com/derekmcloughlin/gvimfullscreen_win32.git
+[submodule ".vim/bundle/localvimrc"]
+	path = .vim/bundle/localvimrc
+	url = https://github.com/vim-scripts/localvimrc.git
+[submodule ".vim/bundle/matchit"]
+	path = .vim/bundle/matchit
+	url = https://github.com/tsaleh/vim-matchit.git
+	ignore = dirty

@@ -19,11 +19,11 @@
 [submodule "_vim/.vim/bundle/fuzzyfinder"]
 	path = _vim/.vim/bundle/fuzzyfinder
 	url = https://github.com/vim-scripts/FuzzyFinder.git
-	ignore = dirty
+    ignore = untracked
 [submodule "_vim/.vim/bundle/l9"]
 	path = _vim/.vim/bundle/l9
 	url = https://github.com/git-mirror/vim-l9.git
-	ignore = dirty
+    ignore = untracked
 [submodule "_vim/.vim/bundle/supertab"]
 	path = _vim/.vim/bundle/supertab
 	url = https://github.com/ervandew/supertab.git
@@ -36,4 +36,4 @@
 [submodule "_vim/.vim/bundle/matchit"]
 	path = _vim/.vim/bundle/matchit
 	url = https://github.com/tsaleh/vim-matchit.git
-	ignore = dirty
+    ignore = untracked

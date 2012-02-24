@@ -1,0 +1,92 @@
+# Path to your oh-my-zsh configuration.
+export ZSH=$HOME/.oh-my-zsh
+
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+export ZSH_THEME="robbyrussell"
+
+# Set to this to use case-sensitive completion
+export CASE_SENSITIVE="true"
+
+# Comment this out to disable weekly auto-update checks
+export DISABLE_AUTO_UPDATE="true"
+
+# Uncomment following line if you want to disable colors in ls
+# export DISABLE_LS_COLORS="true"
+
+# Uncomment following line if you want to disable autosetting terminal title.
+# export DISABLE_AUTO_TITLE="true"
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Example format: plugins=(rails git textmate ruby lighthouse)
+plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
+
+precmd () {
+    # taken as-is from ZSH precmd definition
+    title $ZSH_THEME_TERM_TAB_TITLE_IDLE $ZSH_THEME_TERM_TITLE_IDLE
+
+    export PS1='%{$fg_bold[green]%}%d %{$reset_color%}'
+    export PS2='%{$fg_bold[green]%}%_> %{$reset_color%}'
+    export RPS1='%{$fg_bold[blue]%}$(git_prompt_info)%{$reset_color%}'
+}
+
+# disable autocorrect feature
+unsetopt correct_all
+
+export MVN_HOME=/home/sjuge/tools/apache-maven-3.0.3
+export ANT_HOME=/home/sjuge/tools/apache-ant-1.7.0
+export SOAPUI_HOME=/home/sjuge/tools/soapui-3.6.1
+export SCALA_HOME=/home/sjuge/tools/scala-2.9.0.1
+export JAVA_HOME=/usr/lib/jvm/java-6-sun
+export INSTALL4J_HOME=/opt/install4j5
+
+export M2_HOME=$MVN_HOME
+
+export PATH="\
+$ANT_HOME/bin:\
+$MVN_HOME/bin:\
+$SOAPUI_HOME/bin:\
+$SCALA_HOME/bin:\
+$JAVA_HOME/bin:\
+$PATH"
+
+export TERM='xterm-256color'
+
+# git alias
+#alias ga='git add'
+#alias gp='git push'
+#alias gs='git status'
+#alias gd='git diff'
+#alias gm='git commit -m'
+#alias gma='git commit -am'
+#alias gb='git branch'
+#alias gc='git checkout'
+#alias gra='git remote add'
+#alias grr='git remote rm'
+#alias gpu='git pull'
+#alias gcl='git clone'
+
+alias ack='ack-grep'
+alias mci='mvn clean install'
+alias m='mvn'
+# git aliases, some override zsh plugin defaults
+alias gl='git log --decorate --oneline --graph --all -20'
+alias gls='git ls-files --exclude-standard'
+alias gh='git help'
+alias gpr='git pull --rebase'
+alias gp='git pull'
+alias gpu='git push'
+alias gf='git fetch'
+alias gs='git status -s'
+alias ga='git add -v'
+alias gr='git reset'
+alias gds='git diff --staged'
+alias gd='git diff'
+alias ggpull='git pull --rebase origin $(current_branch)'
+
+# use vim as default editor (called when typing Ctrl-x Ctrl-e
+export EDITOR=vim

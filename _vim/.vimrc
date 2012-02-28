@@ -60,11 +60,11 @@ set softtabstop=4
 " << / >> right / left shift by 4 spaces
 set shiftwidth=4
 
-" copy indent from current line on <CR> 
+" copy indent from current line on <CR>
 set autoindent
 
-" backspace in insert mode : backspace option 
-" behave like normal text editor, backspace always delete previous character 
+" backspace in insert mode : backspace option
+" behave like normal text editor, backspace always delete previous character
 set backspace=eol,start,indent
 
 " GUI font
@@ -142,11 +142,11 @@ noremap <silent><leader>t :FufTag<cr>
 " - bookmark dir
 " - tag mode
 " - buffer tag mode
-" - tagged file 
+" - tagged file
 " - jump list
-" - change list 
-" - quickfix 
-" - line 
+" - change list
+" - quickfix
+" - line
 
 " fugitive mapped to ,g*
 noremap <silent><leader>gs :Gstatus<cr>
@@ -161,7 +161,7 @@ function! GitClose()
             if bufName =~? '^fugitive:' || bufName =~? '\.git'.sep.'index$'
                 let window = bufwinnr(buffer)
                 if 0 < window
-                    execute window."wincmd w" 
+                    execute window."wincmd w"
                     wincmd c
                     wincmd p
                 endif
@@ -185,3 +185,10 @@ let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 
 " localvimrc to handle per location/project settings
 let g:localvimrc_ask=0
+
+" customize invisible characters
+set listchars=tab:▸\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
+set showbreak=↪
+
+" toggle invisible characters
+nnoremap <leader>l :set list!<cr>

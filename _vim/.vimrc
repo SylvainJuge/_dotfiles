@@ -152,6 +152,9 @@ noremap <silent><leader>t :FufTag<cr>
 noremap <silent><leader>gs :Gstatus<cr>
 noremap <silent><leader>gd :Gdiff<cr>
 
+" switch to alternate buffer (a lot more usable with qwerty-intl keyb)
+noremap <silent><leader><leader> <c-^>
+
 " closes all fugitive windows in current tab
 function! GitClose()
     let sep = has('win32') ? '\' : '/'

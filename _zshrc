@@ -86,7 +86,7 @@ alias ga='git add -v'
 alias gr='git reset'
 alias gds='git diff --staged'
 alias gd='git diff'
-alias ggpull='git pull --rebase origin $(current_branch)'
+alias ggpull='git fetch origin && git pull --rebase origin $(current_branch)'
 
 # use vim as default editor (called when typing Ctrl-x Ctrl-e
 export EDITOR=vim

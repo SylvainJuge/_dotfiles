@@ -2,14 +2,18 @@
 This file contains all things I've learned and those that I still need to
 
 === TODOs ===
-" TODO : mouse integration for linux console
+
+TODO : use advanced insert mode completion : 
+        -> see help on *i_CTRL-X_index*
+
+TODO : mouse integration for linux console
     mousefocus : auto focus window under cursor
     mousehide : hide mouse when characters are typed
     mousemodel : set right click behavior
         = extend : same behavior as xterm
     TODO : mouse scrolling : scroll-mouse-wheel
 
-" TODO : enable/disable spell check (with a function key??)
+TODO : enable/disable spell check (with a function key??)
 
 TODO see what wildmode does to wildmenu
 TODO vim 7.3 new features : relativenumber and undofile

@@ -187,7 +187,9 @@ nnoremap <silent><leader>du :diffupdate<cr>
 
 " ack integration
 " TODO add suitable configuration for windows
-let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+" .lvimrc are explicitely ignored because ack does not handle properly
+" .dotfiles
+let g:ackprg="ack -G '.lvimrc' --invert-file-match -H --nocolor --nogroup --column"
 
 " localvimrc to handle per location/project settings
 let g:localvimrc_ask=0

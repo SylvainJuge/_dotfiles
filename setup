@@ -2,7 +2,7 @@
 
 # get required packages
 echo "====[ Installing Required Packages ]==="
-sudo apt-get install --yes zsh bash git vim-gtk vim
+sudo apt-get install --yes tree zsh bash git vim-gtk vim
 
 echo "====[ Change default shell to ZSH ]==="
 chsh -s /bin/zsh
@@ -11,8 +11,8 @@ echo "====[ Create Symbolic Links ]==="
 
 dotFilesDir=$(dirname $0)
 
-ln -sfv $HOME/.vimrc      $dotFilesDir/_vim/_vim
-ln -sfv $HOME/.vim        $dotFilesDir/_vim/_vimrc
-ln -sfv $HOME/.oh-my-zsh  $dotFilesDir/_oh-my-zsh
-ln -sfv $HOME/.zshrc      $dotFilesDir/_zshrc
+ln -sfv $dotFilesDir/_vim/_vim   $HOME/.vimrc     
+ln -sfv $dotFilesDir/_vim/_vimrc $HOME/.vim       
+ln -sfv $dotFilesDir/_oh-my-zsh  $HOME/.oh-my-zsh 
+ln -sfv $dotFilesDir/_zshrc      $HOME/.zshrc     
 

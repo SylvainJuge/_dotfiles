@@ -7,3 +7,7 @@ yet another .dotfiles repo
     ~/.vimrc -> .dotfiles/_vim/.vimrc
     ~/.vim   -> .dotfiles/_vim/.vim
     contains plugins as submodules in _vim/.vim/bundle folder
+
+TODO
+    - fix link path when executed from .dotfiles folder itself (ok when from parent folder)
+        -> links miss the .dotfiles folder, and thus refer to a broken target

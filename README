@@ -2,8 +2,8 @@ yet another .dotfiles repo
 
 - zsh 
     .zshrc -> .dotfiles/_zsh/.zshrc
-    contains "oh my zsh" as submodule (automatic update disabled)
+    contains oh-my-zsh as submodule (automatic update disabled)
 - vim
-    .vimrc -> .dotfiles/_vim/.vimrc
-    .vim   -> .dotfiles/_vim/.vim
-    contains plugins as submodules
+    ~/.vimrc -> .dotfiles/_vim/.vimrc
+    ~/.vim   -> .dotfiles/_vim/.vim
+    contains plugins as submodules in _vim/.vim/bundle folder

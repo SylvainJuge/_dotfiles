@@ -1,18 +1,30 @@
 #!/bin/sh
 
+
+dotFilesDir=$(dirname $0)
+
 # get required packages
 echo "====[ Installing Required Packages ]==="
-sudo apt-get install --yes tree zsh bash git vim-gtk vim
+sudo apt-get install --yes --force-yes \
+    bash      \
+    zsh       \
+    git       \
+    tree      \
+    vim       \
+    vim-gtk   \
+    ack-grep  
+
+# TODO : install to "~/.dotfiles" by default, or to folder provided as 1st parameter
+# - clone from git repository
+# - git submodule update --init #sould be done from cloned folder
 
 echo "====[ Change default shell to ZSH ]==="
 chsh -s /bin/zsh
 
 echo "====[ Create Symbolic Links ]==="
 
-dotFilesDir=$(dirname $0)
-
-ln -sfv $dotFilesDir/_vim/_vim   $HOME/.vimrc     
-ln -sfv $dotFilesDir/_vim/_vimrc $HOME/.vim       
+ln -sfv $dotFilesDir/_vim/.vim   $HOME/.vim      
+ln -sfv $dotFilesDir/_vim/.vimrc $HOME/.vimrc
 ln -sfv $dotFilesDir/_oh-my-zsh  $HOME/.oh-my-zsh 
 ln -sfv $dotFilesDir/_zshrc      $HOME/.zshrc     
 

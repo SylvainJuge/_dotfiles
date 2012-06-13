@@ -9,5 +9,9 @@ yet another .dotfiles repo
     contains plugins as submodules in _vim/.vim/bundle folder
 
 TODO
+    - make configuration fit multiple environments using simple conditions
+        - one for vidal
+        - one for each personnal setup
+        - detect installed components and create env variables only when necessary
     - fix link path when executed from .dotfiles folder itself (ok when from parent folder)
         -> links miss the .dotfiles folder, and thus refer to a broken target

@@ -41,8 +41,8 @@ export MVN_HOME=/home/sjuge/tools/apache-maven-3.0.3
 export ANT_HOME=/home/sjuge/tools/apache-ant-1.7.0
 export SOAPUI_HOME=/home/sjuge/tools/soapui-3.6.1
 export SCALA_HOME=/home/sjuge/tools/scala-2.9.0.1
-export JAVA_HOME=/usr/lib/jvm/java-6-sun
-export INSTALL4J_HOME=/opt/install4j5
+export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64
+export INSTALL4J_HOME=/home/sjuge/install4j5
 
 export M2_HOME=$MVN_HOME
 

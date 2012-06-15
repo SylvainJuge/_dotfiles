@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 dotFilesDir=$(dirname $0)
 
 # get required packages
@@ -12,6 +11,8 @@ sudo apt-get install --yes --force-yes \
     tree      \
     vim       \
     vim-gtk   \
+    curl      \
+    htop      \
     ack-grep  
 
 # TODO : install to "~/.dotfiles" by default, or to folder provided as 1st parameter

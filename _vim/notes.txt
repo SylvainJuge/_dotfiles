@@ -3,6 +3,8 @@ This file contains all things I've learned and those that I still need to
 
 === TODOs ===
 
+TODO : add :FufMruCmd to insert most recently used commands
+
 TODO : see how 'clipboard' option works, and how to improve its usage
 
 TODO : use advanced insert mode completion : 

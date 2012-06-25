@@ -5,6 +5,10 @@ This file contains all things I've learned and those that I still need to
 
 TODO : add :FufMruCmd to insert most recently used commands
 
+external command usage:
+.!command : execute command and put output at current line
+%!command : execute command an replace whole buffer content with output
+
 TODO : see how 'clipboard' option works, and how to improve its usage
 
 TODO : use advanced insert mode completion : 

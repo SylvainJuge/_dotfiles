@@ -22,6 +22,7 @@ TODO : mouse integration for linux console
     TODO : mouse scrolling : scroll-mouse-wheel
 
 TODO : enable/disable spell check (with a function key??)
+    set spell! -> toggle spellcheck
 
 TODO see what wildmode does to wildmenu
 TODO vim 7.3 new features : relativenumber and undofile
@@ -39,6 +40,8 @@ TODO : create a mapping to execute d[o|p] + move to next change for quick
 TODO : custom keyboard mappings
     create a map that shows all possibilities (should be a nice graph/visu project)
 
+TODO : find a way to list non visible|printable characters with a flashy color
+
 TODO : find/create a plugin that enable to have per-project and per-environment configurations
     http://stackoverflow.com/questions/456792/vim-apply-settings-on-files-in-directory
         - using a local file that .vimrc uses to detect which parameters should be used
@@ -55,6 +58,14 @@ TODO : find how to manipulate XML tags
 TODO search highlight
     'hl' variable defines all search highlight types
     :[no]hlsearch disables current highlight
+    -> from help, we have to set these color in our theme to change it
+        help 'hl'
+        |hl-IncSearch|	 i  'incsearch' highlighting
+        |hl-Search|	 l  last search pattern highlighting (see 'hlsearch')
+
+TODO : change insert mode notification color
+        help 'hl'
+        |hl-ModeMsg|	 M  Mode (e.g., "-- INSERT --")
 
 TODO text formatting
     right center and left commands 
@@ -64,10 +75,6 @@ TODO truncate long lines when typing
     wrapmargin : right margin, inserts an <CR> when closer than n characters from left border
     ???? : hard margin (can't exceed)
            soft margin (shows what is extra)
-
-TODO open search in right window instead of top half window
-    this mapping does open a new in a separate tab : "noremap <F1> :tabnew<CR>:help<CR><C-W>o"
-    issue: must reuse current help window if already available 
 
 TODO : set "shell" option to select which shell is used when calling commands from vim
 

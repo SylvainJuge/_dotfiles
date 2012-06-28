@@ -40,7 +40,7 @@ nnoremap j gj
 nnoremap k gk
 
 " remove useless help, and prompt for search term instead
-noremap <F1> <esc>:h 
+noremap <F1> <esc>:h
 
 " display a $ at end of change area (thus changed is visually between
 " cursor and highlighted $.
@@ -162,7 +162,7 @@ noremap <silent><leader><leader> <c-^>
 function! GitClose()
     let sep = has('win32') ? '\' : '/'
     for buffer in tabpagebuflist()
-        if 0 < bufnr(buffer) 
+        if 0 < bufnr(buffer)
             let bufName = bufname(buffer)
             if bufName =~? '^fugitive:' || bufName =~? '\.git'.sep.'index$'
                 let window = bufwinnr(buffer)
@@ -206,8 +206,15 @@ let g:ackprg="ack -G '.lvimrc' --invert-file-match -H --nocolor --nogroup --colu
 let g:localvimrc_ask=0
 
 " customize invisible characters
-set listchars=tab:▸\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
-set showbreak=↪
+" TODO : find a font that displays properly on windows
+" TODO : find how to highligh such characters from other text (flashy color)
+if has('win32')
+    set listchars=tab:▸\ ,eol:¬,trail:.,extends:>,precedes:<
+    set showbreak=$
+else
+    set listchars=tab:▸\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
+    set showbreak=↪
+endif
 
 " toggle invisible characters
-nnoremap <leader>l :set list!<cr>
+nnoremap <silent><leader>l :set list!<cr>

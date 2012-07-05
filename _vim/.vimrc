@@ -218,3 +218,6 @@ endif
 
 " toggle invisible characters
 nnoremap <silent><leader>l :set list!<cr>
+
+" toggle line wrapping
+nnoremap <silent><leader>W :set wrap!<cr>

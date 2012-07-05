@@ -5,13 +5,13 @@ This file contains all things I've learned and those that I still need to
 
 TODO : add :FufMruCmd to insert most recently used commands
 
-external command usage:
-.!command : execute command and put output at current line
-%!command : execute command an replace whole buffer content with output
-
 TODO : see how 'clipboard' option works, and how to improve its usage
 
-TODO : use advanced insert mode completion : 
+TODO : use command line completion "cmdline-completion"
+    Ctrl-D : show list of all matches
+    Ctrl-A : show inser list of matches
+
+TODO : use advanced insert mode completion :
         -> see help on *i_CTRL-X_index*
 
 TODO : mouse integration for linux console
@@ -41,6 +41,7 @@ TODO : custom keyboard mappings
     create a map that shows all possibilities (should be a nice graph/visu project)
 
 TODO : find a way to list non visible|printable characters with a flashy color
+    > enhance list mode to be more efficient to track unvisible characters
 
 TODO : find/create a plugin that enable to have per-project and per-environment configurations
     http://stackoverflow.com/questions/456792/vim-apply-settings-on-files-in-directory
@@ -76,18 +77,21 @@ TODO truncate long lines when typing
     ???? : hard margin (can't exceed)
            soft margin (shows what is extra)
 
-TODO : set "shell" option to select which shell is used when calling commands from vim
 
 === Spell Check ===
+
 [no]spell : enable/disable spell check
 spellang : select spell check language
 z= : prompts for suggestions
 
+
 === Keyboard Mappings ===
+
 add <silent> : avoids command to be printed in command line after its execution
 add <unique> : avoids to override an already defined mapping
 add <expr> : string is an expression and have to be evaluated (ex: function calls)
 Note: not all features are available within function, but returning characters allow to execute stuff after return
+
 
 === Surround ===
 
@@ -232,3 +236,10 @@ text objects :
 - ] : between square braces, also works with [
 - > : xml opening tag, also works with <, useful to edit tag and its attributes
 
+
+=== Execute external command ===
+
+.!command : execute command and put output at current line
+%!command : execute command an replace whole buffer content with output
+
+'shell' option controls which shell is used

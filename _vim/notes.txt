@@ -24,7 +24,6 @@ TODO : mouse integration for linux console
 TODO : enable/disable spell check (with a function key??)
     set spell! -> toggle spellcheck
 
-TODO see what wildmode does to wildmenu
 TODO vim 7.3 new features : relativenumber and undofile
 
 TODO use standard regex for search ?
@@ -33,9 +32,22 @@ TODO use standard regex for search ?
   vnoremap / /\v
 
 TODO long lines and text formatting : 'wrap', 'textwidth', 'formatoptions', 'colorcolumn'
+    - [no]wrap : wrap or not long lines
+    - textwidth : maximum line length, 0 to disable
+    - formatoptions : buffer format options see fo-table for reference
+        TODO : test all formatoptions
+        TODO : find what "comment leader" means to actual comments
 
-TODO : create a mapping to execute d[o|p] + move to next change for quick
-    diff apply (+bonus if it can be repeated)
+TODO : text formatting
+    gq : command to format text
+
+TODO :
+    see how 'comments' 'format-comments' 'commentstring' works
+    section 30.6 of help
+    - comments movements : ]/ -> end of comment
+    - different kinds of comments : how to make them work well with xml ?
+
+TODO : surround plugin and comments
 
 TODO : custom keyboard mappings
     create a map that shows all possibilities (should be a nice graph/visu project)
@@ -134,7 +146,8 @@ Ctrl-x : decrement numeric value under cursor
 
 gv : retrieve previous visual selection (from normal mode)
 operators :
-    ~ : switch case ( also works for current character in normal mode )`:w
+    ~ : switch case ( also works for current character in normal mode )
+o : move to the other end of current visual selection
 
 === Insert Mode ===
 

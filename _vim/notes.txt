@@ -3,13 +3,23 @@ This file contains all things I've learned and those that I still need to
 
 === TODOs ===
 
+TODO : try to know better registers to use them faster
+    ex : delete and yank scenarios
+    see help of : c_CTRL-R for a short list
+
+TODO : use marks across buffers (use capital letters)
+    > see if we could "copy this text to at this mark" in a single command
+
 TODO : add :FufMruCmd to insert most recently used commands
 
 TODO : see how 'clipboard' option works, and how to improve its usage
 
 TODO : use command line completion "cmdline-completion"
     Ctrl-D : show list of all matches
-    Ctrl-A : show inser list of matches
+    Ctrl-A : insert list of matches
+
+TODO : command-line editing
+    Cmdline-mode 
 
 TODO : use advanced insert mode completion :
         -> see help on *i_CTRL-X_index*
@@ -23,6 +33,7 @@ TODO : mouse integration for linux console
 
 TODO : enable/disable spell check (with a function key??)
     set spell! -> toggle spellcheck
+    -> needs argument(s) to get the used language/locale
 
 TODO vim 7.3 new features : relativenumber and undofile
 
@@ -68,6 +79,7 @@ TODO : display marks in buffers
 TODO : find how to manipulate XML tags
     -> nothing more than cit, cat, dit, dat, ... => find a plugin for xml
 
+
 TODO search highlight
     'hl' variable defines all search highlight types
     :[no]hlsearch disables current highlight
@@ -89,6 +101,13 @@ TODO truncate long lines when typing
     ???? : hard margin (can't exceed)
            soft margin (shows what is extra)
 
+=== Command Mode ===
+Ctrl-v : insert next character litterally (useful for tabs, line endings, ...)
+Ctrl-Left or Shift-Left : move 1 word left (respectively right)
+Ctrl-b : move to beginning
+Ctrl-e : move to end
+Ctrl-w : delete word before cursor
+Ctrl-r a : insert content of register a
 
 === Spell Check ===
 
@@ -145,9 +164,14 @@ Ctrl-x : decrement numeric value under cursor
 === Visual Mode ===
 
 gv : retrieve previous visual selection (from normal mode)
-operators :
+operators : [visual-operators]
     ~ : switch case ( also works for current character in normal mode )
-o : move to the other end of current visual selection
+o : love to the other end of current visual selection (v_o)
+O : move to the opposite corner on the same line of current visual selection (v_O)
+
+visual markers : < -> start of visual selection
+                 > -> end of visual selection
+thus, to move to start|end of selection we can use `< and `>
 
 === Insert Mode ===
 
@@ -195,7 +219,21 @@ Ctrl+O : move to previous jump
 Ctrl+I : move to next jump
 '' : return to previous position after a jump (like a search, go to start/end of file, ...)
 
+
+=== Colors & Syntax ===
+
+:syntax reset : reset colors when something went wrong
+:syntax on|off : enable/disable syntax hightlight
+
+=== Options ===
+
+:set wrap? : display current option value
+:set wrap! : toggle option (boolean)
+:set wrap& : reset option to default value
+
 === Help ===
+
+:options : display all possible options and current setting
 
 :helpg {pattern} : help grep
     -> then navigate results using quickfix window through :cwindow and :cnext
@@ -256,3 +294,7 @@ text objects :
 %!command : execute command an replace whole buffer content with output
 
 'shell' option controls which shell is used
+
+=== Misc. ===
+
+:TOhtml : convert buffer content to HTML

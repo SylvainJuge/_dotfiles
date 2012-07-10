@@ -187,6 +187,8 @@ function! GitDiffGet(buffer)
    endif
 endfunction
 
+" fugitive : easy merge resolution : ,dg2 to take left part, ,dg3 for right
+" cursor is then moved to next difference
 nnoremap <silent><leader>dg2 :call GitDiffGet(2)<cr>]c
 nnoremap <silent><leader>dg3 :call GitDiffGet(3)<cr>]c
 "

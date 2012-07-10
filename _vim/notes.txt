@@ -3,7 +3,11 @@ This file contains all things I've learned and those that I still need to
 
 === TODOs ===
 
-TODO : try to know better registers to use them faster
+TODO : see :behave
+    -> :behave xterm|mswin : changes how mouse behaves
+    -> default value depends on current system
+
+TODO : try to know better registers to use them faster and term
     ex : delete and yank scenarios
     see help of : c_CTRL-R for a short list
 
@@ -13,6 +17,11 @@ TODO : use marks across buffers (use capital letters)
 TODO : add :FufMruCmd to insert most recently used commands
 
 TODO : see how 'clipboard' option works, and how to improve its usage
+    [09.3] explains 2 kinds of X clipboards : current selection & real
+    -> probably the best explaination on the subject I've found yet
+    "* : current selection clipboard
+    "+ : real clipboard
+    -> experiment how it works with X and within xterm and term
 
 TODO : use command line completion "cmdline-completion"
     Ctrl-D : show list of all matches
@@ -30,6 +39,7 @@ TODO : mouse integration for linux console
     mousemodel : set right click behavior
         = extend : same behavior as xterm
     TODO : mouse scrolling : scroll-mouse-wheel
+    mouse options : 'mouse' 'mousemodel' 'mousetime' 'mousehide' 'selectmode'
 
 TODO : enable/disable spell check (with a function key??)
     set spell! -> toggle spellcheck
@@ -70,6 +80,10 @@ TODO : find/create a plugin that enable to have per-project and per-environment 
     http://stackoverflow.com/questions/456792/vim-apply-settings-on-files-in-directory
         - using a local file that .vimrc uses to detect which parameters should be used
         -> there is a plugin that creates .localvimrc configurations files
+        -> there is an incompatibility with .localvimrc and ack plugin
+
+TODO :
+    ZZ to close window/buffer ?
 
 TODO : search how to use buffers batch operations (bufdo)
 
@@ -100,6 +114,12 @@ TODO truncate long lines when typing
     wrapmargin : right margin, inserts an <CR> when closer than n characters from left border
     ???? : hard margin (can't exceed)
            soft margin (shows what is extra)
+
+=== Tabs ===
+:tab help gt : open "help gt" in a new tab
+:tabonly : close all other tabs
+
+TODO : read [tab-page]
 
 === Command Mode ===
 Ctrl-v : insert next character litterally (useful for tabs, line endings, ...)
@@ -200,6 +220,8 @@ h,j,k,l : move cursor to window
 Ctrl+w : switch to next window
 Ctrl+n : create a new empty window (defaults to hsplit)
 
+:3[v]split : create a 3 line horizontal [vertical] split of current window
+
 === Folds ===
 
 zf + motion to fold manually an item
@@ -287,6 +309,16 @@ text objects :
 - ] : between square braces, also works with [
 - > : xml opening tag, also works with <, useful to edit tag and its attributes
 
+
+=== Text substitutions ===
+
+:[range]s/from/to/[options] : replace "from" with "to" in range
+options :
+    c : confirm each replacement
+    g : global (whole line)
+
+when pattern is full of '/', we can use another character for pattern delimiter
+ex : s+src/before+src/after+g
 
 === Execute external command ===
 

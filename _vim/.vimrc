@@ -219,7 +219,7 @@ else
 endif
 
 " toggle invisible characters
-nnoremap <silent><leader>l :set list!<cr>
+nnoremap <silent><leader>l :set list!<cr>:set list?<cr>
 
 " toggle line wrapping
-nnoremap <silent><leader>W :set wrap!<cr>
+nnoremap <silent><leader>W :set wrap!<cr>:set wrap?<cr>

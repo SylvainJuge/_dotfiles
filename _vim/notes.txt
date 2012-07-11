@@ -3,13 +3,44 @@ This file contains all things I've learned and those that I still need to
 
 === TODOs ===
 
+TODO : investigate shownbreak
+
 TODO : see :behave
     -> :behave xterm|mswin : changes how mouse behaves
     -> default value depends on current system
 
+TODO : see quickfix window and how to use it
+
 TODO : try to know better registers to use them faster and term
     ex : delete and yank scenarios
     see help of : c_CTRL-R for a short list
+    9 types of registers :
+        1. The unnamed register ""
+        2. 10 numbered registers "0 to "9
+            0 contains last yank content
+            1-9 contains delete|change history
+        3. The small delete register "-
+            deletions of less than a line
+        4. 26 named registers "a to "z or "A to "Z
+        5. four read-only registers ":, "., "% and "#
+            . : last inserted text
+            % : current file name
+            # : alternate file name
+            @ : most recent command line, use @: to repeat last
+        6. the expression register "=
+            TODO : how to use it ?
+            -> can we implement a function line "put row number at EOL" ?
+        7. The selection and drop registers "*, "+ and "~
+            * : selection clipboard (same as + on mswin)
+            + : clipboard
+            ~ : last drag&drop (default behavior will insert at cursor)
+        8. The black hole register "_
+        9. Last search pattern register "/
+
+    write to a register
+    :let @/ = "the"
+
+TODO Ctrl-A and Ctrl-@ commands
 
 TODO : use marks across buffers (use capital letters)
     > see if we could "copy this text to at this mark" in a single command
@@ -72,9 +103,7 @@ TODO : surround plugin and comments
 
 TODO : custom keyboard mappings
     create a map that shows all possibilities (should be a nice graph/visu project)
-
-TODO : find a way to list non visible|printable characters with a flashy color
-    > enhance list mode to be more efficient to track unvisible characters
+    use output of :map
 
 TODO : find/create a plugin that enable to have per-project and per-environment configurations
     http://stackoverflow.com/questions/456792/vim-apply-settings-on-files-in-directory
@@ -92,15 +121,6 @@ TODO : display marks in buffers
 
 TODO : find how to manipulate XML tags
     -> nothing more than cit, cat, dit, dat, ... => find a plugin for xml
-
-
-TODO search highlight
-    'hl' variable defines all search highlight types
-    :[no]hlsearch disables current highlight
-    -> from help, we have to set these color in our theme to change it
-        help 'hl'
-        |hl-IncSearch|	 i  'incsearch' highlighting
-        |hl-Search|	 l  last search pattern highlighting (see 'hlsearch')
 
 TODO : change insert mode notification color
         help 'hl'
@@ -326,6 +346,11 @@ ex : s+src/before+src/after+g
 %!command : execute command an replace whole buffer content with output
 
 'shell' option controls which shell is used
+
+=== Highlight ===
+
+:so $VIMRUNTIME/syntax/hitest.vim : display active highligh groups
+:verbose hi SpecialKey : display where SpecialKey group have been last set
 
 === Misc. ===
 

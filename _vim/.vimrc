@@ -125,8 +125,8 @@ set hlsearch
 set ignorecase
 set smartcase
 
-" hide search highlight on ,<space>
-nnoremap <silent><leader><space> :nohlsearch<cr>
+" toggle search highlight on ,<space>
+nnoremap <silent><leader><space> :set hlsearch!<cr>:set hlsearch?<cr>
 
 " fuzzy-finder mappings
 noremap <silent><leader>f :FufFile<cr>

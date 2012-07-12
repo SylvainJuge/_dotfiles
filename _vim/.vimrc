@@ -195,6 +195,21 @@ nnoremap <silent><leader>dg3 :call GitDiffGet(3)<cr>]c
 " window commands on ,w instead of Ctrl+w
 nnoremap <leader>w <c-w>
 
+" ---- highlight customization ----
+" search color
+hi Search guifg=Red gui=bold,standout
+
+" TODO : test and change configuration for cterm and term
+" see : [gui-colors] in help
+" hi Search ctermfg=NONE ctermbg=NONE cterm=underline
+
+" TODO highlight matching parentheses : MatchParen
+
+" invisible characters & whitespace
+hi SpecialKey guifg=yellow guibg=black gui=bold
+hi NonText    guifg=red    guibg=black gui=bold
+" ---------------------------------
+
 " diff update on ,du
 nnoremap <silent><leader>du :diffupdate<cr>
 

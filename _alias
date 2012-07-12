@@ -2,14 +2,14 @@
 
 # Maven
 which mvn > /dev/null
-if [[ "0" -eq "$?" ]]; then
+if [[ 0 -eq $? ]]; then
     alias mci='mvn clean install'
     alias m='mvn'
 fi
 
 # Git
 which git > /dev/null
-if [[ "0" -eq "$?" ]]; then
+if [[ 0 -eq $? ]]; then
     alias gl='git log --decorate --oneline --graph --all -20'
     alias gls='git ls-files --exclude-standard'
     alias gh='git help'
@@ -17,10 +17,14 @@ if [[ "0" -eq "$?" ]]; then
     alias gp='git pull'
     alias gpu='git push'
     alias gf='git fetch'
-    alias gs='git status -s'
-    alias ga='git add -vp'
+    alias gst='git status -s'
+    alias ga='git add'
+    alias gap='git add -vp'
     alias gr='git reset'
     alias gds='git diff --staged'
     alias gd='git diff'
-    alias ggpull='git fetch origin && git pull --rebase origin $(current_branch)'
+    # TODO : will fail because we don't have current_branch function here
+    # -> take the oh_my_zsh version should be fine
+    # alias ggpull='git fetch origin && git pull --rebase origin $(current_branch)'
+    # alias ggpush='git push origin $(current_branch)'
 fi

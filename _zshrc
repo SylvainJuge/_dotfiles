@@ -56,36 +56,8 @@ $PATH"
 
 export TERM='xterm-256color'
 
-# git alias
-#alias ga='git add'
-#alias gp='git push'
-#alias gs='git status'
-#alias gd='git diff'
-#alias gm='git commit -m'
-#alias gma='git commit -am'
-#alias gb='git branch'
-#alias gc='git checkout'
-#alias gra='git remote add'
-#alias grr='git remote rm'
-#alias gpu='git pull'
-#alias gcl='git clone'
-
-alias mci='mvn clean install'
-alias m='mvn'
-# git aliases, some override zsh plugin defaults
-alias gl='git log --decorate --oneline --graph --all -20'
-alias gls='git ls-files --exclude-standard'
-alias gh='git help'
-alias gpr='git pull --rebase'
-alias gp='git pull'
-alias gpu='git push'
-alias gf='git fetch'
-alias gs='git status -s'
-alias ga='git add -vp'
-alias gr='git reset'
-alias gds='git diff --staged'
-alias gd='git diff'
-alias ggpull='git fetch origin && git pull --rebase origin $(current_branch)'
+# aliases
+source ~/.dotfiles/_alias
 
 # use vim as default editor (called when typing Ctrl-x Ctrl-e
 export EDITOR=vim

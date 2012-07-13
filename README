@@ -1,14 +1,24 @@
 yet another .dotfiles repo
 
+
 - zsh 
     .zshrc -> .dotfiles/_zsh/.zshrc
     contains oh-my-zsh as submodule (automatic update disabled)
+
+
 - vim
     ~/.vimrc -> .dotfiles/_vim/.vimrc
     ~/.vim   -> .dotfiles/_vim/.vim
     contains plugins as submodules in _vim/.vim/bundle folder
-- aliases
-    _alias -> add "source ~/.dotfiles/_alias" to .bashrc or .zshrc
+
+
+- bash settings and aliases
+
+    [windows] : create a .bashrc with :
+        source ~/.dotfiles/_bashrc
+
+    [linux] : create symbolic link ~/.bashrc -> ~/.dotfiles/_bashrc
+
 
 TODO
     - make configuration fit multiple environments using simple conditions

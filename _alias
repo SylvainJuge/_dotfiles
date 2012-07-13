@@ -23,6 +23,7 @@ if [[ 0 -eq $? ]]; then
     alias gr='git reset'
     alias gds='git diff --staged'
     alias gd='git diff'
+    alias gc='git commit'
     # TODO : will fail because we don't have current_branch function here
     # -> take the oh_my_zsh version should be fine
     # alias ggpull='git fetch origin && git pull --rebase origin $(current_branch)'

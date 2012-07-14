@@ -1,23 +1,41 @@
 yet another .dotfiles repo
 
 
-- zsh 
-    .zshrc -> .dotfiles/_zsh/.zshrc
+=> ZSH settings
+
     contains oh-my-zsh as submodule (automatic update disabled)
+    bash aliases are common with BASH (_alias file)
+
+    [linux] : create symlink
+    
+        .zshrc -> .dotfiles/_zsh/.zshrc
 
 
-- vim
-    ~/.vimrc -> .dotfiles/_vim/.vimrc
-    ~/.vim   -> .dotfiles/_vim/.vim
+=> VIM
+
     contains plugins as submodules in _vim/.vim/bundle folder
 
+    [linux] : create symlinks
 
-- bash settings and aliases
+        ~/.vimrc -> .dotfiles/_vim/.vimrc
+        ~/.vim   -> .dotfiles/_vim/.vim
+        
+    [windows] : create ~/.vimrc file with content :
 
-    [windows] : create a .bashrc with :
+
+
+=> BASH settings
+
+    bash aliases are common with ZSH (_alias file)
+
+    [windows] : create a ~/.bashrc file with content :
+        
+        #!/bin/bash
         source ~/.dotfiles/_bashrc
 
-    [linux] : create symbolic link ~/.bashrc -> ~/.dotfiles/_bashrc
+    [linux] : create symlink 
+
+        ~/.bashrc -> ~/.dotfiles/_bashrc
 
 
 TODO

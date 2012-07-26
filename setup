@@ -1,8 +1,9 @@
 #!/bin/sh
 
-dotFilesDir=$(dirname $0)
+dotFilesDir="$(dirname $0)"
 
-# get required packages
+# TODO : make this script work on windows (msysgit or cygwin)
+# get required packages (only for ubuntu)
 echo "====[ Installing Required Packages ]==="
 sudo apt-get install --yes --force-yes \
     bash      \
@@ -24,6 +25,7 @@ chsh -s /bin/zsh
 
 echo "====[ Create Symbolic Links ]==="
 
+# TODO : only create links if those features are enabled
 ln -sfv $dotFilesDir/_vim/.vim   $HOME/.vim      
 ln -sfv $dotFilesDir/_vim/.vimrc $HOME/.vimrc
 ln -sfv $dotFilesDir/_oh-my-zsh  $HOME/.oh-my-zsh 

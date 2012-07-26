@@ -11,6 +11,12 @@ fi
 # Git
 which git > /dev/null
 if [[ 0 -eq $? ]]; then
+    # taken as-is form zsh/oh-my-zsh configuration to make it work with bash too
+    function local__current_branch () {
+        ref=$(git symbolic-ref HEAD 2> /dev/null)  || return
+        echo ${ref#refs/heads/}
+    }
+
     alias gl='git log --decorate --oneline --graph --all -20'
     alias gls='git ls-files --exclude-standard'
     alias gh='git help'
@@ -25,8 +31,6 @@ if [[ 0 -eq $? ]]; then
     alias gds='git diff --staged'
     alias gd='git diff'
     alias gc='git commit'
-    # TODO : will fail because we don't have current_branch function here
-    # -> take the oh_my_zsh version should be fine
-    # alias ggpull='git fetch origin && git pull --rebase origin $(current_branch)'
-    # alias ggpush='git push origin $(current_branch)'
+    alias ggpull='git fetch origin && git pull --rebase origin $(local__current_branch)'
+    alias ggpush='git push origin $(local__current_branch)'
 fi

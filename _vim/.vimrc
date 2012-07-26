@@ -197,7 +197,7 @@ nnoremap <leader>w <c-w>
 
 " ---- highlight customization ----
 " search color
-hi Search guifg=Red gui=bold,standout
+hi Search guifg=Red gui=bold,standout ctermfg=Red cterm=bold,standout
 
 " TODO : test and change configuration for cterm and term
 " see : [gui-colors] in help
@@ -205,9 +205,9 @@ hi Search guifg=Red gui=bold,standout
 
 " TODO highlight matching parentheses : MatchParen
 
-" invisible characters & whitespace
-hi SpecialKey guifg=yellow guibg=black gui=bold
-hi NonText    guifg=red    guibg=black gui=bold
+" invisible characters & whitespace      
+hi  SpecialKey  guifg=yellow  guibg=black  gui=bold  ctermfg=yellow  guibg=black  cterm=bold
+hi  NonText     guifg=red     guibg=black  gui=bold  ctermfg=red     guibg=black  cterm=bold
 " ---------------------------------
 
 " diff update on ,du

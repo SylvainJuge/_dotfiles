@@ -205,7 +205,7 @@ nnoremap <leader>p "*p
 " search color
 hi Search guifg=Red gui=bold,standout ctermfg=Red cterm=bold,standout
 
-" TODO : test and change configuration for cterm and term
+" TODO : test and change configuration for term
 " see : [gui-colors] in help
 " hi Search ctermfg=NONE ctermbg=NONE cterm=underline
 
@@ -229,8 +229,6 @@ let g:ackprg="ack -G '.lvimrc' --invert-file-match -H --nocolor --nogroup --colu
 let g:localvimrc_ask=0
 
 " customize invisible characters
-" TODO : find a font that displays properly on windows
-" TODO : find how to highligh such characters from other text (flashy color)
 if has('win32')
     set listchars=tab:▸\ ,eol:¬,trail:.,extends:>,precedes:<
     set showbreak=$

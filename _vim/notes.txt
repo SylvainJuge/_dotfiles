@@ -3,13 +3,14 @@ This file contains all things I've learned and those that I still need to
 
 === TODOs ===
 
-TODO : investigate shownbreak
+TODO : investigate showbreak
 
 TODO : see :behave
     -> :behave xterm|mswin : changes how mouse behaves
     -> default value depends on current system
 
 TODO : see quickfix window and how to use it
+TODO : see how we can make maven errors output to quickfix win
 
 TODO : try to know better registers to use them faster and term
     ex : delete and yank scenarios
@@ -39,8 +40,6 @@ TODO : try to know better registers to use them faster and term
 
     write to a register
     :let @/ = "the"
-
-TODO Ctrl-A and Ctrl-@ commands
 
 TODO : use marks across buffers (use capital letters)
     > see if we could "copy this text to at this mark" in a single command
@@ -203,6 +202,9 @@ Ctrl-x : decrement numeric value under cursor
 
 === Visual Mode ===
 
+Ctrl-@ : insert previously inserted text (and stop insert mode)
+Ctrl-A : insert previously inserted text (and stay in insert mode)
+
 gv : retrieve previous visual selection (from normal mode)
 operators : [visual-operators]
     ~ : switch case ( also works for current character in normal mode )
@@ -355,3 +357,5 @@ ex : s+src/before+src/after+g
 === Misc. ===
 
 :TOhtml : convert buffer content to HTML
+ZZ : alternative to :wq
+ZQ : alternative to :q!

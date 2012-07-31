@@ -12,7 +12,7 @@ fi
 which git > /dev/null
 if [[ 0 -eq $? ]]; then
     # taken as-is form zsh/oh-my-zsh configuration to make it work with bash too
-    function local__current_branch () {
+    _current_branch () {
         ref=$(git symbolic-ref HEAD 2> /dev/null)  || return
         echo ${ref#refs/heads/}
     }
@@ -31,6 +31,69 @@ if [[ 0 -eq $? ]]; then
     alias gds='git diff --staged'
     alias gd='git diff'
     alias gc='git commit'
-    alias ggpull='git fetch origin && git pull --rebase origin $(local__current_branch)'
-    alias ggpush='git push origin $(local__current_branch)'
+    alias ggpull='git fetch origin && git pull --rebase origin $(_current_branch)'
+    alias ggpush='git push origin $(_current_branch)'
+fi
+
+# Virtualbox
+which vboxmanage > /dev/null
+if [[ 0 -eq $? ]]; then
+    #TODO : add zsh autocompletion support
+
+    _waitCommandEnd() {
+       vboxmanage  showvminfo  "$1" >/dev/null
+    }
+
+    _powerOff(){
+       vboxmanage controlvm "$1" poweroff
+       waitCommandEnd "$1"
+    }
+
+    _restoreCurrent(){
+       vboxmanage snapshot "$1" restorecurrent
+       waitCommandEnd "$1"
+    }
+
+    _startVm(){
+       vboxmanage startvm "$1"
+       waitCommandEnd "$1"
+    }
+
+    vbox(){
+        cmd="${1:-usage}"
+        vmId="$2"
+        targetFile="$3"
+
+        case "$cmd" in
+           "usage" )
+              echo "usage :"
+              echo "  vbox usage : display this help"
+              echo "  vbox list : list VMs (and get their ID)"
+              echo "  vbox playagain <id> : power off, restore snapshot and start vm"
+              echo "  vbox start <id> : start vm"
+              echo "  vbox stop <id> : stop vm (power off)"
+              echo "  vbox export <id> [target] : export vm, defaults to box.ovf"
+              return 1
+              ;;
+           "list" )
+              vboxmanage list vms | sed 's/ {/ |{/' | column -t -s \|
+              ;;
+           "start" )
+              _startVm "$vmId" 
+              ;;
+           "playagain" )
+              _powerOff "$vmId"
+              _restoreCurrent "$vmId"
+              _startVm "$vmId"
+              ;;
+           "stop" )
+              _powerOff "$vmId"
+              ;;
+           "export" )
+              vboxmanage export "$vimId" --output "${targetFile:-box.ovf}"
+              ;;
+        esac
+        return $?
+    }
+
 fi

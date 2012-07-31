@@ -181,7 +181,7 @@ nnoremap <silent><leader>gc :call GitClose()<cr>
 " make 3 way merges easier
 " buffer : either 2 or 3 in threee way merge for //2 and //3 bufspecs
 function! GitDiffGet(buffer)
-   if 1 == &diff 
+   if 1 == &diff
       execute "diffget //".a:buffer
       diffupdate
    endif
@@ -191,9 +191,15 @@ endfunction
 " cursor is then moved to next difference
 nnoremap <silent><leader>dg2 :call GitDiffGet(2)<cr>]c
 nnoremap <silent><leader>dg3 :call GitDiffGet(3)<cr>]c
-"
+
 " window commands on ,w instead of Ctrl+w
 nnoremap <leader>w <c-w>
+
+" make system clipboard copy & paste more accessible
+vnoremap <leader>y "*y
+nnoremap <leader>y "*y
+vnoremap <leader>p "*p
+nnoremap <leader>p "*p
 
 " ---- highlight customization ----
 " search color

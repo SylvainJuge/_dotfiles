@@ -33,6 +33,8 @@ if [[ 0 -eq $? ]]; then
     alias gc='git commit'
     alias ggpull='git fetch origin && git pull --rebase origin $(_current_branch)'
     alias ggpush='git push origin $(_current_branch)'
+
+    alias gs='echo use gst instead'
 fi
 
 # Virtualbox

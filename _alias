@@ -48,17 +48,17 @@ if [[ 0 -eq $? ]]; then
 
     _powerOff(){
        vboxmanage controlvm "$1" poweroff
-       waitCommandEnd "$1"
+       _waitCommandEnd "$1"
     }
 
     _restoreCurrent(){
        vboxmanage snapshot "$1" restorecurrent
-       waitCommandEnd "$1"
+       _waitCommandEnd "$1"
     }
 
     _startVm(){
        vboxmanage startvm "$1"
-       waitCommandEnd "$1"
+       _waitCommandEnd "$1"
     }
 
     vbox(){

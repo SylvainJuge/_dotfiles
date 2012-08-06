@@ -38,7 +38,7 @@ precmd () {
 unsetopt correct_all
 
 export MVN_HOME=/home/sjuge/tools/apache-maven-3.0.3
-export ANT_HOME=/home/sjuge/tools/apache-ant-1.7.0
+export ANT_HOME=/home/sjuge/tools/apache-ant-1.8.4
 export SOAPUI_HOME=/home/sjuge/tools/soapui-3.6.1
 export SCALA_HOME=/home/sjuge/tools/scala-2.9.0.1
 export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64

@@ -1,9 +1,18 @@
 
 This file contains all things I've learned and those that I still need to
 
+=== Good beginner tutorial ===
+
+http://ontwik.com/tools/vim-from-novice-to-professional-by-derek-wyatt-p1/
+http://ontwik.com/tools/vim-from-novice-to-professional-by-derek-wyatt-part-2/
+http://ontwik.com/tools/vim-from-novice-to-professional-by-derek-wyatt-part-3/
+
 === TODOs ===
 
 TODO : investigate showbreak
+
+TODO : abbreviations (save typing !!)
+    -> :ab
 
 TODO : see :behave
     -> :behave xterm|mswin : changes how mouse behaves
@@ -222,15 +231,19 @@ Ctrl-r{reg} : insert content of register {reg}, as if typed
 Ctrl-r Ctrl-r{reg} : insert content of register {reg} literally
 
 Ctrl-y : insert caracter above in previous line
+Ctrl^v<tab> : insert character '<tab>' litterally (insert a tab when expandtab is enabled)
 
 -- Auto-Completion --
 
 Ctrl-n : Next Keyword
 Ctrl-p : Next Keyword
+Ctrl-x Ctrl-l : insert whole line
+Ctrl-x Ctrl-f : insert path to relative file
 
 === Buffers ===
 
-Ctrl+^ : switch with alternate buffer
+Ctrl+^ : switch to alternate buffer
+:b#    : switch to alternate buffer
 
 === Windows ===
 
@@ -359,3 +372,11 @@ ex : s+src/before+src/after+g
 :TOhtml : convert buffer content to HTML
 ZZ : alternative to :wq
 ZQ : alternative to :q!
+
+--- command line options ---
+
+vim -o file1 file2 : open files in horizontal split windows
+vim -O file1 file2 : open files in vertical split windows
+
+vim -t tagItem : open first occurence of tagItem (ctags)
+

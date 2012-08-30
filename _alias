@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#TODO : create an alias for ack
+
 # Maven
 which mvn > /dev/null
 if [[ 0 -eq $? ]]; then
@@ -35,6 +37,12 @@ if [[ 0 -eq $? ]]; then
     alias ggpush='git push origin $(_current_branch)'
 
     alias gs='echo use gst instead'
+fi
+
+which vim > /dev/null
+if [[ 0 -eq $? ]]; then
+    #TODO : use gvim for windows
+    alias v=vim
 fi
 
 # Virtualbox

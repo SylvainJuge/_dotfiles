@@ -8,6 +8,7 @@ if [[ 0 -eq $? ]]; then
     alias mcist='mvn clean install -DskipTests'
     alias mci='mvn clean install'
     alias m='mvn'
+    alias md='mvnDebug'
 fi
 
 # Git

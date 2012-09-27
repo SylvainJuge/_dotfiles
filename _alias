@@ -1,13 +1,14 @@
 #!/bin/bash
 
 #TODO : create an alias for ack
+#TODO : install ack for windows
 
 # Maven
 which mvn > /dev/null
 if [[ 0 -eq $? ]]; then
-    alias mcist='mvn clean install -DskipTests'
-    alias mci='mvn clean install'
-    alias m='mvn'
+    alias mcist='mvn -q clean install -DskipTests'
+    alias mci='mvn -q clean install'
+    alias m='mvn -q'
     alias md='mvnDebug'
 fi
 

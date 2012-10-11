@@ -9,6 +9,8 @@ http://ontwik.com/tools/vim-from-novice-to-professional-by-derek-wyatt-part-3/
 
 === TODOs ===
 
+TODO : learn how to use nerdcommenter efficiently
+
 TODO : investigate showbreak
 
 TODO : abbreviations (save typing !!)

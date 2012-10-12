@@ -3,7 +3,7 @@
 # Ack
 # TODO : install ack on windows
 which ack > /dev/null
-if [[ 0 -ne $? ]]; then
+if [[ 0 -eq $? ]]; then
     alias a='ack'
 fi
 

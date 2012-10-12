@@ -25,6 +25,7 @@ TODO : see :behave
 
 TODO : see quickfix window and how to use it
 TODO : see how we can make maven errors output to quickfix win
+    -> how to display java compiler errors & warnings ?
 
 TODO : try to know better registers to use them faster and term
     ex : delete and yank scenarios
@@ -51,6 +52,7 @@ TODO : try to know better registers to use them faster and term
             ~ : last drag&drop (default behavior will insert at cursor)
         8. The black hole register "_
         9. Last search pattern register "/
+
 
     write to a register
     :let @/ = "the"
@@ -90,6 +92,12 @@ TODO : enable/disable spell check (with a function key??)
     -> needs argument(s) to get the used language/locale
 
 TODO vim 7.3 new features : relativenumber and undofile
+
+TODO write swap files in a separate directory
+    :h directory
+    -> use a directory in user home
+    -> create directory if it does not exists on startup
+    -> make it work with windows/linux
 
 TODO use standard regex for search ?
   add a \v to search pattern, see what it means for regex and refs

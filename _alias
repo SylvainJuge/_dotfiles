@@ -1,7 +1,11 @@
 #!/bin/bash
 
-#TODO : create an alias for ack
-#TODO : install ack for windows
+# Ack
+# TODO : install ack on windows
+which ack > /dev/null
+if [[ 0 -ne $? ]]; then
+    alias a='ack'
+fi
 
 # Maven
 which mvn > /dev/null
@@ -43,8 +47,11 @@ fi
 
 which vim > /dev/null
 if [[ 0 -eq $? ]]; then
-    #TODO : use gvim for windows
-    alias v=vim
+    if [[ 1 -eq $IS_WINDOWS ]]; then
+        alias v='gvim'
+    else
+        alias v='vim'
+    fi
 fi
 
 # Virtualbox

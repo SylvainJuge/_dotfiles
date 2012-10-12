@@ -14,6 +14,19 @@ TODO : ctrlp plugin
 TODO : learn how to use nerdcommenter efficiently
 
 - other stuff -
+
+stuff from tony, I have to test
+
+    " directories for swp files
+    set backupdir=~/.vim/backup
+    set directory=~/.vim/backup
+
+    " enable persistant undo
+    set udf
+    set undodir=~/.vim/vimundo
+
+
+
 TODO : investigate showbreak
 
 TODO : abbreviations (save typing !!)

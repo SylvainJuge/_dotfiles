@@ -211,7 +211,7 @@ hi Search guifg=Red gui=bold,standout ctermfg=Red cterm=bold,standout
 
 " TODO highlight matching parentheses : MatchParen
 
-" invisible characters & whitespace      
+" invisible characters & whitespace
 hi  SpecialKey  guifg=yellow  guibg=black  gui=bold  ctermfg=yellow  guibg=black  cterm=bold
 hi  NonText     guifg=red     guibg=black  gui=bold  ctermfg=red     guibg=black  cterm=bold
 " ---------------------------------
@@ -242,3 +242,6 @@ nnoremap <silent><leader>l :set list!<cr>:set list?<cr>
 
 " toggle line wrapping
 nnoremap <silent><leader>W :set wrap!<cr>:set wrap?<cr>
+
+" remove trailing whitespace on save
+autocmd BufWritePre * :%s/\s\+$//e

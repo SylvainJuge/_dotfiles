@@ -12,8 +12,19 @@ http://ontwik.com/tools/vim-from-novice-to-professional-by-derek-wyatt-part-3/
 - plugins -
 TODO : ctrlp plugin
 TODO : learn how to use nerdcommenter efficiently
+    <leader>cc : comment
+    <leader>c<space> : toggle comment
+    <leader>cs : sexy comment
+    <leader>cy : yank and then comment
+    <leader>ca : switch comment delimiter ( // or /* */
+
+    -> find how we can deal with nesting issues
+        javascript in html/jsp file
+    
 
 - other stuff -
+
+TODO : remap <caps-lock> to escape on windows and linux
 
 stuff from tony, I have to test
 

@@ -25,7 +25,7 @@ if [[ 0 -eq $? ]]; then
         echo ${ref#refs/heads/}
     }
 
-    alias gl='git log --decorate --oneline --graph --all -20'
+    alias gl='git log --decorate --oneline --graph -20'
     alias gls='git ls-files --exclude-standard'
     alias gh='git help'
     alias gpr='git pull --rebase'

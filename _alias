@@ -99,7 +99,7 @@ if [[ 0 -eq $? ]]; then
               vboxmanage list vms | sed 's/ {/ |{/' | column -t -s \|
               ;;
            "start" )
-              _startVm "$vmId" 
+              _startVm "$vmId"
               ;;
            "playagain" )
               _powerOff "$vmId"

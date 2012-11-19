@@ -243,7 +243,7 @@ Ctrl-A : insert previously inserted text (and stay in insert mode)
 gv : retrieve previous visual selection (from normal mode)
 operators : [visual-operators]
     ~ : switch case ( also works for current character in normal mode )
-o : love to the other end of current visual selection (v_o)
+o : move to the other end of current visual selection (v_o)
 O : move to the opposite corner on the same line of current visual selection (v_O)
 
 visual markers : < -> start of visual selection

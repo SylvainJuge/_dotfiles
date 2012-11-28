@@ -39,7 +39,7 @@ if [[ 0 -eq $? ]]; then
     alias gds='git diff --staged'
     alias gd='git diff'
     alias gc='git commit'
-    alias ggpull='git fetch origin && git pull --rebase origin $(_current_branch)'
+    alias ggpull='git pull --rebase origin $(_current_branch)'
     alias ggpush='git push origin $(_current_branch)'
     alias gco='git checkout'
 

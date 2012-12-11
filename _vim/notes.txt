@@ -404,6 +404,14 @@ ex : s+src/before+src/after+g
 :so $VIMRUNTIME/syntax/hitest.vim : display active highligh groups
 :verbose hi SpecialKey : display where SpecialKey group have been last set
 
+=== Avoid the Esc Key ===
+
+alt+_ keys : escape insert mode and ...
+alt+[hjkl] : move in direction
+alt+A : move cursor to end of line (and stay in insert mode)
+alt+[pP] : paste at current location
+
+
 === Misc. ===
 
 :TOhtml : convert buffer content to HTML

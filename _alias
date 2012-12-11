@@ -42,6 +42,9 @@ if [[ 0 -eq $? ]]; then
     alias ggpull='git pull --rebase origin $(_current_branch)'
     alias ggpush='git push origin $(_current_branch)'
     alias gco='git checkout'
+    # allow to know which commits have been merged upstream/to specific branch
+    alias gch='git cherry -v'
+    alias gcp='git cherry-pick'
 
     alias gs='echo use gst instead'
 fi

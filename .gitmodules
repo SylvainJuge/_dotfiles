@@ -44,3 +44,6 @@
 [submodule "_vim/.vim/bundle/ctrlp"]
     path = _vim/.vim/bundle/ctrlp
     url = https://github.com/kien/ctrlp.vim.git
+[submodule "zsh-syntax-highlighting"]
+	path = zsh-syntax-highlighting
+	url = git://github.com/zsh-users/zsh-syntax-highlighting.git

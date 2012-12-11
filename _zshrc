@@ -61,3 +61,6 @@ source ~/.dotfiles/_alias
 
 # use vim as default editor (called when typing Ctrl-x Ctrl-e
 export EDITOR=vim
+
+# nice highlight for command line completion suggestions
+zstyle -e :completion:*:default list-colors reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==02=01}:${(s.:.)LS_COLORS}")

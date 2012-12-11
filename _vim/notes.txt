@@ -24,6 +24,8 @@ TODO : learn how to use nerdcommenter efficiently
 
 - other stuff -
 
+TODO : Ctrl-o : in insert mode, allows to execute a single normal command, then return to insert mode
+
 TODO : remap <caps-lock> to escape on windows and linux
 
 stuff from tony, I have to test
@@ -406,11 +408,12 @@ ex : s+src/before+src/after+g
 
 === Avoid the Esc Key ===
 
+Ctrl+[ : alternative to Esc
+
 alt+_ keys : escape insert mode and ...
 alt+[hjkl] : move in direction
 alt+A : move cursor to end of line (and stay in insert mode)
 alt+[pP] : paste at current location
-
 
 === Misc. ===
 

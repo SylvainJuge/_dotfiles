@@ -32,7 +32,7 @@ if [[ 0 -eq $? ]]; then
     alias gp='git pull'
     alias gpu='git push'
     alias gf='git fetch'
-    alias gst='git status -s'
+    alias gst='git status -sb'
     alias ga='git add'
     alias gap='git add -vp'
     alias gr='git reset'

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+which xdg-open > /dev/null
+if [[ 0 -eq $? ]]; then
+    alias o='xdg-open'
+    # TODO : make it work when only gnome-open is available
+fi
+
 # Ack
 # TODO : install ack on windows
 which ack > /dev/null
@@ -25,7 +31,8 @@ if [[ 0 -eq $? ]]; then
         echo ${ref#refs/heads/}
     }
 
-    alias gl='git --no-pager log --decorate --oneline --graph -20'
+    alias gl='git log --decorate --oneline --graph'
+    alias gld='git log --decorate --oneline --graph --simplify-by-decoration'
     alias gls='git ls-files --exclude-standard'
     alias gh='git help'
     alias gpr='git pull --rebase'
@@ -83,7 +90,7 @@ if [[ 0 -eq $? ]]; then
     }
 
     vbox(){
-        cmd="${1:-usage}"
+        cmd="${1:-list}"
         vmId="$2"
         targetFile="$3"
 

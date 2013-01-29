@@ -16,9 +16,9 @@ fi
 # Maven
 which mvn > /dev/null
 if [[ 0 -eq $? ]]; then
-    alias mcist='mvn -q clean install -DskipTests'
-    alias mci='mvn -q clean install'
-    alias m='mvn -q'
+    alias mcist='mvn clean install -DskipTests'
+    alias mci='mvn clean install'
+    alias m='mvn'
     alias md='mvnDebug'
 fi
 

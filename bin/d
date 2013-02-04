@@ -1,0 +1,40 @@
+#!/bin/zsh
+
+[ -f ~/.zshrc ] && source ~/.zshrc
+
+usage () {
+   echo "usage:"
+   echo "  d <command> -- dir1 dir2"
+   echo "example :"
+   echo "  d git status -- dir1 dir2"
+}
+
+cmd=""
+inCmd=1;
+
+for arg in $@;do
+   if [ '--' = "$arg" ]; then
+      inCmd=0;
+   else
+      if [ 1 -eq $inCmd ]; then
+         cmd="$cmd $arg"
+      else
+         dirs="${dirs:+$dirs }$arg"
+      fi
+   fi
+   shift
+done
+
+[ 1 -eq $inCmd ] && echo "error : missing -- separator" && usage && exit 1
+[ '' = "$cmd" ] && echo "error : command is empty" && usage  && exit 1
+
+
+pwd="$(pwd)"
+for dir in $(echo $dirs);do
+   [ ! -d "$dir" ] && echo "error : '$dir' is not a folder" && exit 1
+   echo -e "\n-> $dir"
+   cd "$dir"
+   eval "$cmd"
+   cd -
+done
+

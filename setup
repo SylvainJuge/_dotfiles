@@ -31,3 +31,6 @@ ln -sfv $dotFilesDir/_vim/.vimrc $HOME/.vimrc
 ln -sfv $dotFilesDir/_oh-my-zsh  $HOME/.oh-my-zsh 
 ln -sfv $dotFilesDir/_zshrc      $HOME/.zshrc     
 
+
+# TODO : create links for "ack" and "d" in ~/bin
+

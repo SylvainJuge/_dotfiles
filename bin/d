@@ -1,8 +1,11 @@
 #!/bin/zsh
 
+# sourcing ~/.zshrc enables to use aliases in commands
 [ -f ~/.zshrc ] && source ~/.zshrc
 
 usage () {
+   echo "d[o] : executes a command on a set of folders"
+   echo ""
    echo "usage:"
    echo "  d <command> -- dir1 dir2"
    echo "example :"
@@ -25,13 +28,13 @@ for arg in $@;do
    shift
 done
 
-[ 1 -eq $inCmd ] && echo "error : missing -- separator" && usage && exit 1
-[ '' = "$cmd" ] && echo "error : command is empty" && usage  && exit 1
+[ 1 -eq $inCmd ] && { echo "error : missing -- separator" ; usage ; exit 1 }
+[ '' = "$cmd" ] && { echo "error : command is empty" ; usage  ; exit 1 }
 
 
 pwd="$(pwd)"
 for dir in $(echo $dirs);do
-   [ ! -d "$dir" ] && echo "error : '$dir' is not a folder" && exit 1
+   [ ! -d "$dir" ] && { echo "error : '$dir' is not a folder" ; exit 1 }
    echo -e "\n-> $dir"
    cd "$dir"
    eval "$cmd"

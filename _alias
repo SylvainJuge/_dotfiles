@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# "do" : execute one command on multiple folders
+alias d='~/bin/d'
+
 which xdg-open > /dev/null
 if [[ 0 -eq $? ]]; then
     alias o='xdg-open'

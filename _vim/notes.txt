@@ -24,9 +24,9 @@ TODO : learn how to use nerdcommenter efficiently
 
 - other stuff -
 
-TODO : Ctrl-o : in insert mode, allows to execute a single normal command, then return to insert mode
-
 TODO : remap <caps-lock> to escape on windows and linux
+
+TODO : syntax highlight for java7 : diamond operator
 
 stuff from tony, I have to test
 
@@ -53,35 +53,18 @@ TODO : see quickfix window and how to use it
 TODO : see how we can make maven errors output to quickfix win
     -> how to display java compiler errors & warnings ?
 
-TODO : try to know better registers to use them faster and term
-    ex : delete and yank scenarios
-    see help of : c_CTRL-R for a short list
-    9 types of registers :
-        1. The unnamed register ""
-        2. 10 numbered registers "0 to "9
-            0 contains last yank content
-            1-9 contains delete|change history
-        3. The small delete register "-
-            deletions of less than a line
-        4. 26 named registers "a to "z or "A to "Z
-        5. four read-only registers ":, "., "% and "#
-            . : last inserted text
-            % : current file name
-            # : alternate file name
-            @ : most recent command line, use @: to repeat last
-        6. the expression register "=
-            TODO : how to use it ?
-            -> can we implement a function line "put row number at EOL" ?
-        7. The selection and drop registers "*, "+ and "~
-            * : selection clipboard (same as + on mswin)
-            + : clipboard
-            ~ : last drag&drop (default behavior will insert at cursor)
-        8. The black hole register "_
-        9. Last search pattern register "/
+TODO : insert mode
+    i_CTRL-A : insert text from previous insert
+    i_CTRL-@ : idem Ctrl-a, then leaves insert
+    i_CTRL-W : delete word before cursor
+    i_CTRL-U : delete all entered characters in current line
+        - useful to "revert" current small insert/change 
+            -> weird : repeat Ctrl-u allows to edit outside insert/change area 
+        -> TODO : see i_backspacing for joining lines
+
+    <CR>, i_Ctrl-J,  i_Ctrl-M : begin new line
 
 
-    write to a register
-    :let @/ = "the"
 
 TODO : use marks across buffers (use capital letters)
     > see if we could "copy this text to at this mark" in a single command
@@ -182,6 +165,33 @@ TODO truncate long lines when typing
     ???? : hard margin (can't exceed)
            soft margin (shows what is extra)
 
+=== Registers ===
+
+see help of : c_CTRL-R for a short list
+9 types of registers :
+    1. The unnamed register ""
+    2. 10 numbered registers "0 to "9
+        0 contains last yank content
+        1-9 contains delete|change history
+    3. The small deletechange register "-
+        deletions|changes of less than a line (without explicit reg.)
+    4. 26 named registers "a to "z or "A to "Z 
+        lowercase to replace, uppercase to append
+    5. four read-only registers ":, "., "% and "#
+        . : last inserted text
+        % : current file name
+        # : alternate file name
+        @ : most recent command line, use @: to repeat last
+    6. the expression register "=
+        TODO : how to use it ?
+        -> can we implement a function line "put row number at EOL" ?
+    7. The selection and drop registers "*, "+ and "~
+        * : selection clipboard (same as + on mswin)
+        + : clipboard
+        ~ : last drag&drop (default behavior will insert at cursor)
+    8. The black hole register "_
+    9. Last search pattern register "/
+
 === Tabs ===
 :tab help gt : open "help gt" in a new tab
 :tabonly : close all other tabs
@@ -272,10 +282,12 @@ Ctrl-r Ctrl-r{reg} : insert content of register {reg} literally
 Ctrl-y : insert caracter above in previous line
 Ctrl^v<tab> : insert character '<tab>' litterally (insert a tab when expandtab is enabled)
 
+Ctrl-o <normal cmd> : execute single normal command without leaving insert mode.
+
 -- Auto-Completion --
 
 Ctrl-n : Next Keyword
-Ctrl-p : Next Keyword
+Ctrl-p : Previous Keyword
 Ctrl-x Ctrl-l : insert whole line
 Ctrl-x Ctrl-f : insert path to relative file
 

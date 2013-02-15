@@ -107,7 +107,7 @@ set showcmd
 set hidden
 
 set laststatus=2
-set statusline=%t\ %{fugitive#statusline()}\ [%l,%v]\ %=%{strftime(\"%H:%M\")}
+set statusline=%t\ \{%{&fileencoding?&fileencoding:&encoding}\}\ %{fugitive#statusline()}%=\ [%l,%v]\ %{strftime(\"%H:%M\")}
 
 " extra locations required for swap files. will use 1st usable, so win-*nix
 " friendly. fixes issues with Gdiff on windows
@@ -250,5 +250,11 @@ nnoremap <silent><leader>W :set wrap!<cr>:set wrap?<cr>
 " Ack integration
 nnoremap <silent><leader>a :Ack
 nnoremap <silent><leader>/ :AckFromSearch<cr>
+
+" Extra vimrc : for local settings
+let s:extrarc = expand($HOME . '/.extra.vimrc')
+if filereadable(s:extrarc)
+    exec ':source ' . s:extrarc
+endif
 
 

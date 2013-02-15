@@ -30,10 +30,6 @@
 [submodule "_vim/.vim/bundle/gvimfullscreen_win32"]
     path = _vim/.vim/bundle/gvimfullscreen_win32
     url = https://github.com/derekmcloughlin/gvimfullscreen_win32.git
-[submodule "_vim/.vim/bundle/localvimrc"]
-    path = _vim/.vim/bundle/localvimrc
-    url = https://github.com/vim-scripts/localvimrc.git
-    ignore = dirty
 [submodule "_vim/.vim/bundle/matchit"]
     path = _vim/.vim/bundle/matchit
     url = https://github.com/tsaleh/vim-matchit.git

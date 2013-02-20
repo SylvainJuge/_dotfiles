@@ -125,6 +125,9 @@ set hlsearch
 set ignorecase
 set smartcase
 
+" do not wrap long lines by default
+set nowrap 
+
 " toggle search highlight on ,<space>
 nnoremap <silent><leader><space> :set hlsearch!<cr>:set hlsearch?<cr>
 
@@ -153,7 +156,7 @@ noremap <silent><leader>n :NERDTreeToggle<cr>
 
 " fugitive mapped to ,g*
 noremap <silent><leader>gs :Gstatus<cr>
-noremap <silent><leader>gd :Gdiff<cr>
+noremap <silent><leader>gd :Gdiff<cr>]c
 
 " switch to alternate buffer (a lot more usable with qwerty-intl keyb)
 noremap <silent><leader><leader> <c-^>
@@ -187,10 +190,10 @@ function! GitDiffGet(buffer)
    endif
 endfunction
 
-" fugitive : easy merge resolution : ,dg2 to take left part, ,dg3 for right
+" fugitive : easy merge resolution : ,dgh to take left part, ,dgl for right
 " cursor is then moved to next difference
-nnoremap <silent><leader>dg2 :call GitDiffGet(2)<cr>]c
-nnoremap <silent><leader>dg3 :call GitDiffGet(3)<cr>]c
+nnoremap <silent><leader>dgh :call GitDiffGet(2)<cr>]c
+nnoremap <silent><leader>dgl :call GitDiffGet(3)<cr>]c
 
 " window commands on ,w instead of Ctrl+w
 nnoremap <leader>w <c-w>
@@ -218,6 +221,9 @@ hi  NonText     guifg=red     guibg=black  gui=bold  ctermfg=red     guibg=black
 
 " diff update on ,du
 nnoremap <silent><leader>du :diffupdate<cr>
+" easier diff put/pull + move to next diff
+nnoremap <silent><leader>do do]c
+nnoremap <silent><leader>dp dp]c
 
 " ack integration
 " TODO add suitable configuration for windows

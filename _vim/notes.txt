@@ -9,6 +9,11 @@ http://ontwik.com/tools/vim-from-novice-to-professional-by-derek-wyatt-part-3/
 
 === TODOs ===
 
+- navigation between modes : see help of "i_esc"
+
+- difference between select and visual modes ? same for replace and vreplace ?
+    ->  *Select-mode*
+
 - plugins -
 TODO : ctrlp plugin
 TODO : learn how to use nerdcommenter efficiently
@@ -24,7 +29,7 @@ TODO : learn how to use nerdcommenter efficiently
 
 - other stuff -
 
-TODO : remap <caps-lock> to escape on windows and linux
+TODO : remap <caps-lock> to escape|ctrl on windows and linux
 
 TODO : syntax highlight for java7 : diamond operator
 
@@ -141,16 +146,10 @@ TODO : find/create a plugin that enable to have per-project and per-environment 
         -> there is a plugin that creates .localvimrc configurations files
         -> there is an incompatibility with .localvimrc and ack plugin
 
-TODO :
-    ZZ to close window/buffer ?
-
 TODO : search how to use buffers batch operations (bufdo)
 
 TODO : display marks in buffers 
     -> sounds like it is not possible (according to help)
-
-TODO : find how to manipulate XML tags
-    -> nothing more than cit, cat, dit, dat, ... => find a plugin for xml
 
 TODO : change insert mode notification color
         help 'hl'

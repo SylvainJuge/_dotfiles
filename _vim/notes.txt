@@ -29,8 +29,6 @@ TODO : learn how to use nerdcommenter efficiently
 
 - other stuff -
 
-TODO : remap <caps-lock> to escape|ctrl on windows and linux
-
 TODO : syntax highlight for java7 : diamond operator
 
 stuff from tony, I have to test

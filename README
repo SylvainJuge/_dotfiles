@@ -3,6 +3,7 @@ yet another .dotfiles repo
 
 => ZSH settings
 
+    .zshrc -> .dotfiles/_zsh/.zshrc
     contains oh-my-zsh as submodule (automatic update disabled)
     bash aliases are common with BASH (_alias file)
 
@@ -28,14 +29,20 @@ yet another .dotfiles repo
 
     bash aliases are common with ZSH (_alias file)
 
-    [windows] : create a ~/.bashrc file with content :
-        
+    [windows xp] : create a .bashrc in folder %userprofile% with :
         #!/bin/bash
         source ~/.dotfiles/_bashrc
 
-    [linux] : create symlink 
+    [windows 7 & further] : create symbolic links
+        - open a command window as administator
+        - execute command (mklink : using .\ in path is mandatory to make link relative)
 
-        ~/.bashrc -> ~/.dotfiles/_bashrc
+        cd %userprofile%
+        mklink .bashrc .\.dotfiles\_bashrc
+        mkdir .\bin
+        mklink .\bin\ack .\.dotfiles\bin\ack
+
+    [linux] : create symbolic link ~/.bashrc -> ~/.dotfiles/_bashrc
 
 
 TODO

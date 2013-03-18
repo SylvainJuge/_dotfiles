@@ -3,6 +3,17 @@
 # "do" : execute one command on multiple folders
 alias d='~/bin/d'
 
+uname="$(uname)"
+if [ 'MINGW' = "${uname:0:5}" ]; then
+    IS_WINDOWS=1
+else
+    IS_WINDOWS=0
+fi
+
+if [[ 1 -eq $IS_WINDOWS ]]; then
+    alias dir='ls'
+fi
+
 which xdg-open > /dev/null
 if [[ 0 -eq $? ]]; then
     alias o='xdg-open'
@@ -10,7 +21,6 @@ if [[ 0 -eq $? ]]; then
 fi
 
 # Ack
-# TODO : install ack on windows
 which ack > /dev/null
 if [[ 0 -eq $? ]]; then
     alias a='ack'

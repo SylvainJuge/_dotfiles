@@ -68,9 +68,10 @@ set autoindent
 set backspace=eol,start,indent
 
 " GUI font
+" TODO : move this to local .extra.vimrc files
 if has("gui_gtk2")
     " TODO find appropriate font for gtk2
-    "set guifont=Luxi\ Mono\ 12
+    set guifont=Ubuntu\ Mono\ 12
 elseif has("gui_win32")
     " TODO : find appropriate font for windows xp
     set guifont=Consolas:h11

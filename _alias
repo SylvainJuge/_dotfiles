@@ -65,6 +65,7 @@ if [[ 0 -eq $? ]]; then
         alias v='gvim'
     else
         alias v='vim'
+        alias gv='UBUNTU_MENUPROXY=gvim;gvim'
     fi
 fi
 

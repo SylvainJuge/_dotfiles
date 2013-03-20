@@ -15,7 +15,6 @@ http://ontwik.com/tools/vim-from-novice-to-professional-by-derek-wyatt-part-3/
     ->  *Select-mode*
 
 - plugins -
-TODO : ctrlp plugin
 TODO : learn how to use nerdcommenter efficiently
     <leader>cc : comment
     <leader>c<space> : toggle comment
@@ -229,6 +228,40 @@ ysw : surround word
 - in visual mode -
 s : surround selection
 S : surround selection and indent it (if in visual-line)
+
+=== Ctrl-P ===
+
+Ctrl-p to open ctrl-p
+Ctrl-d : switch full path and file name matching
+Ctrl-r : switch regexp search on|off
+
+Shift-Tab : switch focus : window|prompt
+    >> TODO : no idea what it means
+
+Ctrl-j : move selection up
+Ctrl-k : move selection down
+
+-- Cursor prompt movements --
+Ctrl-a : to start
+Ctrl-e : to end
+Ctrl-h : left
+Ctrl-l : right
+
+-- Prompt editing --
+Ctrl-w : remove preceding (inner) word
+Ctrl-u : clear prompt
+
+-- Files operations --
+
+- open -
+<cr> : in current window
+Ctrl-t : in a new tab
+Ctrl-v : in a vertical split
+
+- create -
+Ctrl-y : create file and its parent difiles r
+
+TODO : multiple selection ?
 
 === NerdTree ===
 

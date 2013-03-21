@@ -264,4 +264,6 @@ if filereadable(s:extrarc)
     exec ':source ' . s:extrarc
 endif
 
-
+" ctrl-p configuration
+let g:ctrlp_show_hidden = 1
+let g:ctrlp_extensions = ['mixed','dir']

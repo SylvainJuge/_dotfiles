@@ -219,6 +219,10 @@ Note: not all features are available within function, but returning characters a
 
 === Surround ===
 
+TODO : delete surround does not work with * character ?
+-> like when editing some markdown
+-> does not seem to be supported (thanks to documentation)
+
 yss : surround whole line
 ySS : surround whole line and indent it
 
@@ -228,6 +232,7 @@ ysw : surround word
 - in visual mode -
 s : surround selection
 S : surround selection and indent it (if in visual-line)
+==> seems to be broken in current release
 
 === Ctrl-P ===
 
@@ -253,15 +258,24 @@ Ctrl-u : clear prompt
 
 -- Files operations --
 
-- open -
-<cr> : in current window
-Ctrl-t : in a new tab
-Ctrl-v : in a vertical split
+<cr> : open in current window
+Ctrl-t : open in a new tab
+Ctrl-v : open in a vertical split
 
-- create -
-Ctrl-y : create file and its parent difiles r
+Ctrl-y : create file and its parent folders
 
+F5 : purge cache
+
+TODO : see how "wildignore" allows to ignore certain paths 
+    -> :h ctrlp-wildignore
+    -> but has some side-effects, so use with care
+TODO : ignore only for ctrl-p : let g:ctrlp_custom_ignore = '' 
+TODO : see how ctrl_p_user_command helps to list files faster
+    - can use vcs or custom shell commands
+TODO : open already open file (and options)
+TODO : navigate between open buffers
 TODO : multiple selection ?
+TODO : mru (persistent history ?)
 
 === NerdTree ===
 

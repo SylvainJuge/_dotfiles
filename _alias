@@ -65,6 +65,7 @@ if [[ 0 -eq $? ]]; then
     # allow to know which commits have been merged upstream/to specific branch
     alias gch='git cherry -v'
     alias gcp='git cherry-pick'
+    alias gsl='git shortlog --email'
 
     alias gs='echo use gst instead'
 fi

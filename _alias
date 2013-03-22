@@ -68,7 +68,6 @@ if [[ 0 -eq $? ]]; then
     alias gcp='git cherry-pick'
     alias gsl='git shortlog --email'
 
-    alias gs='echo use gst instead'
 fi
 
 which vim > /dev/null

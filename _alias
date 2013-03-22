@@ -44,6 +44,7 @@ if [[ 0 -eq $? ]]; then
         echo ${ref#refs/heads/}
     }
 
+    alias g='git'
     alias gl='git log --decorate --oneline --graph'
     alias gld='git log --decorate --oneline --graph --simplify-by-decoration'
     alias gls='git ls-files --exclude-standard'

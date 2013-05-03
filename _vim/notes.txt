@@ -328,6 +328,15 @@ Ctrl^v<tab> : insert character '<tab>' litterally (insert a tab when expandtab i
 
 Ctrl-o <normal cmd> : execute single normal command without leaving insert mode.
 
+-- Digraphs input --
+
+Ctrl-k a: : insert ä
+Ctrl-k e> : insert ê
+
+'digraph' option allows to use "a <BS> :" to insert "ä"
+
+:digraphs : display all available digraphs
+
 -- Auto-Completion --
 
 Ctrl-n : Next Keyword

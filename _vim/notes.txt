@@ -9,6 +9,8 @@ http://ontwik.com/tools/vim-from-novice-to-professional-by-derek-wyatt-part-3/
 
 === TODOs ===
 
+- wildignore : ignore *.class and "target" for maven projects (pom.xml)
+
 - navigation between modes : see help of "i_esc"
 
 - difference between select and visual modes ? same for replace and vreplace ?

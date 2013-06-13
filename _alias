@@ -33,6 +33,7 @@ if [[ 0 -eq $? ]]; then
     alias mci='mvn clean install'
     alias m='mvn'
     alias md='mvnDebug'
+    alias mdep='mvn dependency:tree -DoutputFile=$TTY >/dev/null'
 fi
 
 # Git

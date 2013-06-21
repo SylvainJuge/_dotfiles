@@ -33,7 +33,7 @@ if [[ 0 -eq $? ]]; then
     alias mci='mvn clean install'
     alias m='mvn'
     alias md='mvnDebug'
-    alias mdep='(mvn dependency:tree -DoutputFile=$TTY >/dev/null)'
+    alias mdep='(mvn dependency:tree -DoutputFile=.mdep >/dev/null && cat .mdep); rm -r .mdep'
 fi
 
 # Git
@@ -53,7 +53,7 @@ if [[ 0 -eq $? ]]; then
     alias gpr='git pull --rebase'
     alias gp='git pull'
     alias gpu='git push'
-    alias gf='git fetch'
+    alias gf='git fetch --all --tags'
     alias gst='git status -sb'
     alias ga='git add'
     alias gap='git add -vp'

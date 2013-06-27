@@ -61,7 +61,7 @@ if [[ 0 -eq $? ]]; then
     alias gds='git diff --staged'
     alias gd='git diff'
     alias gc='git commit'
-    alias ggpull='git pull --rebase origin $(_current_branch)'
+    alias ggpull='git pull --rebase origin $(_current_branch) && git fetch --all'
     alias ggpush='git push origin $(_current_branch)'
     alias gco='git checkout'
     # allow to know which commits have been merged upstream/to specific branch

@@ -38,7 +38,29 @@ if [[ 0 -eq $? ]]; then
     alias mci='mvn clean install'
     alias m='mvn'
     alias md='mvnDebug'
-    alias mdep='(mvn dependency:tree -DoutputFile=.mdep >/dev/null && cat .mdep); rm -r .mdep'
+
+    mdep (){
+       local outFile='target/.mdep'
+       mvn dependency:tree -DoutputFile="$outFile" >/dev/null
+       cat "$outFile"
+       rm -f "$outFile"
+    }
+
+    # WIP tools
+    # TODO : add feature detection of xmlstarlet
+    # maven project version (with submodules)
+    mpv () {
+       local outFile='target/effective-pom.xml'
+       mvn help:effective-pom -Doutput="${outFile}" > /dev/null || return 1
+       # remove namespace declarations for easy selection (xmlstarlet is a pain here)
+       sed -i 's/<project .*>/<project>/' "${outFile}"
+
+       xmlstarlet sel -t -m '//project' \
+          -v 'groupId'  -o ' '  -v 'artifactId'  -o ' '  -v 'version' -n \
+          "$outFile"
+       rm -f "$outFile"
+    }
+
 fi
 
 # Git

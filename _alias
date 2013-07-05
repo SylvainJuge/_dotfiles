@@ -39,6 +39,15 @@ if [[ 0 -eq $? ]]; then
     alias m='mvn'
     alias md='mvnDebug'
 
+    # default effective pom output
+    mvn_effective_pom_file='target/effective-pom.xml'
+
+    # maven effective pom
+    mvn_effective_pom () {
+       local out="${1:-$mvn_effective_pom_file}"
+       mvn help:effective-pom -Doutput="$out" >/dev/null || return 1
+    }
+
     mdep (){
        local outFile='target/.mdep'
        mvn dependency:tree -DoutputFile="$outFile" >/dev/null || return 1
@@ -48,18 +57,26 @@ if [[ 0 -eq $? ]]; then
 
     # WIP tools
     # TODO : add feature detection of xmlstarlet
+
     # maven project version (with submodules)
     mpv () {
-       local outFile='target/effective-pom.xml'
-       mvn help:effective-pom -Doutput="${outFile}" > /dev/null || return 1
+       mvn_effective_pom || return 1
+
        # remove namespace declarations for easy selection (xmlstarlet is a pain here)
-       sed -i 's/<project .*>/<project>/' "${outFile}"
+       sed -i 's/<project .*>/<project>/' "${mvn_effective_pom_file}"
 
        xmlstarlet sel -t -m '//project' \
           -v 'groupId'  -o ' '  -v 'artifactId'  -o ' '  -v 'version' -n \
-          "$outFile"
-       rm -f "$outFile"
+          "${mvn_effective_pom_file}"
+       rm -f "${mvn_effective_pom_file}"
     }
+
+    # maven effective pom (output to console for easy grep)
+    mep () {
+       local out="${1:-$mvn_effective_pom_file}"
+       mvn_effective_pom $out && cat $out && rm -f $out
+    }
+
 
 fi
 
@@ -68,8 +85,8 @@ which git > /dev/null
 if [[ 0 -eq $? ]]; then
     # taken as-is form zsh/oh-my-zsh configuration to make it work with bash too
     _current_branch () {
-        ref=$(git symbolic-ref HEAD 2> /dev/null)  || return
-        echo ${ref#refs/heads/}
+      ref=$(git symbolic-ref HEAD 2>/dev/null) || head=$(git rev-parse --short HEAD 2>/dev/null)
+      echo ${ref#refs/heads/}
     }
 
     alias g='git'
@@ -95,6 +112,21 @@ if [[ 0 -eq $? ]]; then
     alias gch='git cherry -v'
     alias gcp='git cherry-pick'
     alias gsl='git shortlog --email'
+
+    # git for branch : execute command on a branch
+    # parameters
+    # 1 : branch name
+    # 2 and more : command parameters (passed as-is)
+    gfb () {
+       local head="$(_current_branch)"
+       [[ -n "$(git status -s)" ]] && echo "can't work on dirty state repo" && return 1
+       local branch="${1:-master}"
+       shift
+       git checkout "$branch" 2>/dev/null 1>/dev/null
+       echo "$branch -> $@\n"
+       $@
+       git checkout "$head" 2>/dev/null 1>/dev/null
+    }
 
 fi
 

@@ -50,7 +50,7 @@ if [[ 0 -eq $? ]]; then
 
     mdep (){
        local outFile='target/.mdep'
-       mvn dependency:tree -DoutputFile="$outFile" >/dev/null || return 1
+       mvn dependency:tree -DoutputFile="$outFile" "$@">/dev/null || return 1
        cat "$outFile"
        rm -f "$outFile"
     }

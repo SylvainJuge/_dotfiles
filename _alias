@@ -34,6 +34,7 @@ fi
 # Maven
 which mvn > /dev/null
 if [[ 0 -eq $? ]]; then
+    # TODO : print error when cwd does not contains a pom.xml
     alias mcist='mvn clean install -DskipTests'
     alias mci='mvn clean install'
     alias m='mvn'

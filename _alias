@@ -48,6 +48,7 @@ if [[ 0 -eq $? ]]; then
        mvn help:effective-pom -Doutput="$out" >/dev/null || return 1
     }
 
+    # maven dependency graph (without clutter)
     mdep (){
        local outFile='target/.mdep'
        mvn dependency:tree -DoutputFile="$outFile" "$@">/dev/null || return 1
@@ -55,21 +56,27 @@ if [[ 0 -eq $? ]]; then
        rm -f "$outFile"
     }
 
-    # WIP tools
-    # TODO : add feature detection of xmlstarlet
-
     # maven project version (with submodules)
-    mpv () {
-       mvn_effective_pom || return 1
+    which xmlstarlet > /dev/null
+    if [[ 0 -ne $? ]]; then
+        mpv () {
+            echo "missing dependency : xmlstarlet"
+            return 1;
+        }
+    else
+        mpv () {
+           mvn_effective_pom || return 1
 
-       # remove namespace declarations for easy selection (xmlstarlet is a pain here)
-       sed -i 's/<project .*>/<project>/' "${mvn_effective_pom_file}"
+           # remove namespace declarations for easy selection (xmlstarlet is a pain here)
+           sed -i 's/<project .*>/<project>/' "${mvn_effective_pom_file}"
 
-       xmlstarlet sel -t -m '//project' \
-          -v 'groupId'  -o ' '  -v 'artifactId'  -o ' '  -v 'version' -n \
-          "${mvn_effective_pom_file}"
-       rm -f "${mvn_effective_pom_file}"
-    }
+           xmlstarlet sel -t -m '//project' \
+              -v 'groupId'  -o ' '  -v 'artifactId'  -o ' '  -v 'version' -n \
+              "${mvn_effective_pom_file}"
+           rm -f "${mvn_effective_pom_file}"
+        }
+    fi
+
 
     # maven effective pom (output to console for easy grep)
     mep () {
@@ -105,7 +112,7 @@ if [[ 0 -eq $? ]]; then
     alias gds='git diff --staged'
     alias gd='git diff'
     alias gc='git commit'
-    alias ggpull='git pull --rebase origin $(_current_branch) && git fetch --all'
+    alias ggpull='git pull --rebase origin $(_current_branch) && git fetch origin $(_current_branch)'
     alias ggpush='git push origin $(_current_branch)'
     alias gco='git checkout'
     # allow to know which commits have been merged upstream/to specific branch

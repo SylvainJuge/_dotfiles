@@ -46,6 +46,7 @@ yet another .dotfiles repo
 
 
 TODO
+    - add xmlstarlet for windows
     - make use of zsh aliases to use file associations
     - make configuration fit multiple environments using simple conditions
         - one for vidal

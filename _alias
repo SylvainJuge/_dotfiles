@@ -35,10 +35,12 @@ fi
 which mvn > /dev/null
 if [[ 0 -eq $? ]]; then
     # TODO : print error when cwd does not contains a pom.xml
-    alias mcist='mvn clean install -DskipTests'
-    alias mci='mvn clean install'
     alias m='mvn'
     alias md='mvnDebug'
+    alias mi='mvn install'
+    alias mci='mvn clean install'
+    alias mist='mvn install -DskipTests'
+    alias mcist='mvn clean install -DskipTests'
 
     # default effective pom output
     mvn_effective_pom_file='target/effective-pom.xml'

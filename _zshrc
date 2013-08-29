@@ -42,9 +42,13 @@ export ANT_HOME=/home/sjuge/tools/ant
 export SOAPUI_HOME=/home/sjuge/tools/soapui-3.6.1
 export SCALA_HOME=/home/sjuge/tools/scala-2.9.0.1
 export JAVA_HOME=/usr/lib/jvm/default-java
-export INSTALL4J_HOME=/home/sjuge/install4j5
+
+export INSTALL4J_HOME=/home/sjuge/install4j5-5.1.4
+export INSTALL4J_HOME_5_1_4=/home/sjuge/install4j5-5.1.4
+export INSTALL4J_HOME_5_1_5=/home/sjuge/install4j5-5.1.5
 
 export M2_HOME=$MVN_HOME
+export JIRA_URL=http://bugs.vidal.net/
 
 export PATH="\
 $ANT_HOME/bin:\

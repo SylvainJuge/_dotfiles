@@ -21,8 +21,9 @@ fi
 
 which xdg-open > /dev/null
 if [[ 0 -eq $? ]]; then
-    alias o='xdg-open'
-    # TODO : make it work when only gnome-open is available
+    o () {
+       xdg-open "$@" 2>&1 > /dev/null
+    }
 fi
 
 # Ack

@@ -19,11 +19,18 @@ if [[ 0 -eq $? ]]; then
     alias x='xmlstarlet'
 fi
 
-which xdg-open > /dev/null
-if [[ 0 -eq $? ]]; then
-    o () {
-       xdg-open "$@" 2>&1 > /dev/null
-    }
+
+if [[ 1 -eq $IS_WINDOWS ]]; then
+   o (){
+      start "$@"
+   }
+else
+    which xdg-open > /dev/null
+    if [[ 0 -eq $? ]]; then
+       o (){
+           xdg-open "$@" 2>&1 > /dev/null
+       }
+   fi
 fi
 
 # Ack

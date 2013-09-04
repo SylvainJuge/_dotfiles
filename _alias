@@ -262,6 +262,7 @@ export MARKPATH=$HOME/.marks
 function jump {
     cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
 }
+alias j='jump'
 function mark {
     mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
 }
@@ -274,15 +275,19 @@ function marks {
 function _completemarks {
     reply=($(ls $MARKPATH))
 }
-# zsh style completion
-#compctl -K _completemarks jump
-#compctl -K _completemarks unmark
+if [[ 'zsh' = "${SHELL#/bin/}" ]];then
+   # zsh style completion
+   compctl -K _completemarks jump
+   compctl -K _completemarks unmark
+fi
 
-# bash style completion
-#_completemarks() {
-#  local curw=${COMP_WORDS[COMP_CWORD]}
-#  local wordlist=$(find $MARKPATH -type l -printf "%f\n")
-#  COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
-#  return 0
-#}
-#complete -F _completemarks jump unmark
+if [[ 'bash' = "${SHELL#/bin/}" ]];then
+   # bash style completion
+   _completemarks() {
+     local curw=${COMP_WORDS[COMP_CWORD]}
+     local wordlist=$(find $MARKPATH -type l -printf "%f\n")
+     COMPREPLY=($(compgen -W '${wordlist[@]}' -- "$curw"))
+     return 0
+   }
+   complete -F _completemarks jump unmark
+fi

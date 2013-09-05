@@ -130,6 +130,9 @@ if [[ 0 -eq $? ]]; then
     alias gch='git cherry -v'
     alias gcp='git cherry-pick'
     alias gsl='git shortlog --email'
+    glsu (){
+       git ls-files -u | awk '{print $4}' | sort -u
+    }
 
     # git for branch : execute command on a branch
     # parameters

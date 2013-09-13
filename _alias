@@ -62,9 +62,13 @@ if [[ 0 -eq $? ]]; then
     # maven dependency graph (without clutter)
     mdep (){
        local outFile='target/.mdep'
-       mvn dependency:tree -DoutputFile="$outFile" "$@">/dev/null || return 1
-       cat **/$outFile
-       rm -f **/$outFile
+       mvn dependency:tree -DoutputFile="$outFile" "$@">/dev/null
+       if [[ 0 -eq $? ]]; then
+          cat **/$outFile
+          rm -f **/$outFile
+       else
+          echo "error : can't retrieve dependency tree, 'clean install' required if you haven't built project yet"
+       fi
     }
 
     # maven project version (with submodules)

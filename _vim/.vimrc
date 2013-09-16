@@ -228,9 +228,7 @@ nnoremap <silent><leader>dp dp]c
 
 " ack integration
 " TODO add suitable configuration for windows
-" .lvimrc are explicitely ignored because ack does not handle properly
-" .dotfiles
-let g:ackprg="ack -G '.lvimrc' --invert-file-match -H --nocolor --nogroup --column"
+let g:ackprg="ack -H --nocolor --nogroup --column"
 
 " localvimrc to handle per location/project settings
 let g:localvimrc_ask=0

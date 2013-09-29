@@ -134,6 +134,10 @@ if [[ 0 -eq $? ]]; then
     alias gch='git cherry -v'
     alias gcp='git cherry-pick'
     alias gsl='git shortlog --email'
+
+    alias gdesc='git describe --tags --always --dirty'
+
+    # git list unmerged files
     glsu (){
        git ls-files -u | awk '{print $4}' | sort -u
     }

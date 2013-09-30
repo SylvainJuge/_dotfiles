@@ -271,20 +271,20 @@ fi
 # thanks to http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
 # TODO : bypass calls to "column" when it does not exists (like on windows)
 export MARKPATH=$HOME/.marks
-function jump {
+jump() {
     cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
 }
 alias j='jump'
-function mark {
+mark() {
     mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
 }
-function unmark {
+unmark() {
     rm -i "$MARKPATH/$1"
 }
-function marks {
+marks() {
     ls -l "$MARKPATH" | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' | column -t
 }
-function _completemarks {
+_completemarks() {
     reply=($(ls $MARKPATH))
 }
 if [[ 'zsh' = "${SHELL#/bin/}" ]];then

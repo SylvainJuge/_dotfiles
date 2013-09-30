@@ -116,9 +116,9 @@ set undofile
 " write swap, backup and undo files to system temp folder and not next to
 " original file. double trailing / allow to open two files with same name 
 " without conflict.
-set directory=$TMP//
-set backupdir=$TMP//
-set undodir=$TMP//
+set directory=/tmp//,$TMP//
+set backupdir=/tmp//,$TMP//
+set undodir=/tmp//,$TMP//
 
 " comma as leader key
 let mapleader = ","

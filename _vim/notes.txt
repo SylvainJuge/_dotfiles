@@ -85,6 +85,8 @@ TODO : see how 'clipboard' option works, and how to improve its usage
 TODO : use command line completion "cmdline-completion"
     Ctrl-D : show list of all matches
     Ctrl-A : insert list of matches
+    -> auto-complete with same completion behavior as in text file ?
+        - for ex. when using surround for xml tags, or calling a command like ack with words from current open file
 
 TODO : command-line editing
     Cmdline-mode 

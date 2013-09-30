@@ -110,9 +110,15 @@ set hidden
 set laststatus=2
 set statusline=%t\ \{%{&fileencoding?&fileencoding:&encoding}\}\ %{fugitive#statusline()}%=\ [%l,%v]\ %{strftime(\"%H:%M\")}
 
-" extra locations required for swap files. will use 1st usable, so win-*nix
-" friendly. fixes issues with Gdiff on windows
-set directory+=,~/tmp,$TMP
+" enable persistent undo
+set undofile
+
+" write swap, backup and undo files to system temp folder and not next to
+" original file. double trailing / allow to open two files with same name 
+" without conflict.
+set directory=$TMP//
+set backupdir=$TMP//
+set undodir=$TMP//
 
 " comma as leader key
 let mapleader = ","

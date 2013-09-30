@@ -32,18 +32,6 @@ TODO : learn how to use nerdcommenter efficiently
 
 TODO : syntax highlight for java7 : diamond operator
 
-stuff from tony, I have to test
-
-    " directories for swp files
-    set backupdir=~/.vim/backup
-    set directory=~/.vim/backup
-
-    " enable persistant undo
-    set udf
-    set undodir=~/.vim/vimundo
-
-
-
 TODO : investigate showbreak
 
 TODO : abbreviations (save typing !!)
@@ -107,12 +95,6 @@ TODO : enable/disable spell check (with a function key??)
     -> needs argument(s) to get the used language/locale
 
 TODO vim 7.3 new features : relativenumber and undofile
-
-TODO write swap files in a separate directory
-    :h directory
-    -> use a directory in user home
-    -> create directory if it does not exists on startup
-    -> make it work with windows/linux
 
 TODO use standard regex for search ?
   add a \v to search pattern, see what it means for regex and refs

@@ -42,6 +42,10 @@ TODO : see :behave
     -> default value depends on current system
 
 TODO : see quickfix window and how to use it
+    :ccl : close quickfix window
+    :cwin : open quickfix window
+    -> find a way to quickly "toggle" quickfix using a single keymap
+
 TODO : see how we can make maven errors output to quickfix win
     -> how to display java compiler errors & warnings ?
 

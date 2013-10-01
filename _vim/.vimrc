@@ -147,6 +147,9 @@ noremap <silent><leader>t :FufTag<cr>
 " nerdtree mapped to ,n
 noremap <silent><leader>n :NERDTreeToggle<cr>
 
+" gundo mapped to ,g
+noremap <silent><leader>g :GundoToggle<CR>
+
 " fuzzy-finder features to explore :
 " - file coverage
 " - mru file

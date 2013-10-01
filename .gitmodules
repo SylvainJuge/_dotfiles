@@ -43,3 +43,6 @@
 [submodule "_vim/.vim/bundle/vim-commentary"]
 	path = _vim/.vim/bundle/vim-commentary
 	url = git@github.com:tpope/vim-commentary.git
+[submodule "_vim/.vim/bundle/gundo"]
+	path = _vim/.vim/bundle/gundo
+	url = http://github.com/sjl/gundo.vim.git

@@ -138,6 +138,9 @@ set nowrap
 " toggle search highlight on ,<space>
 nnoremap <silent><leader><space> :set hlsearch!<cr>:set hlsearch?<cr>
 
+" write-quit on ,q
+nnoremap <leader>q :wqa<cr>
+
 " fuzzy-finder mappings
 noremap <silent><leader>f :FufFile<cr>
 noremap <silent><leader>b :FufBuffer<cr>

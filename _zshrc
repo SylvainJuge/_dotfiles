@@ -74,3 +74,13 @@ source $HOME/.dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zs
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[cursor]='fg=blue'
 
+# TODO : find a way to do this with bash
+# -> the only zsh specific part is to avoid temp file creation
+# output allowed ssh keys in human-readable format
+sshaudit (){
+   for server in "$@"; do
+      ssh $server -C 'cat ~/.ssh/authorized_keys' | sort | while read line; do
+         echo $server $(ssh-keygen -lf =(echo "$line") | cut -d ' ' -f2,4)
+      done
+   done
+}

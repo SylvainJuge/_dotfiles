@@ -304,3 +304,14 @@ if [[ 'bash' = "${SHELL#/bin/}" ]];then
    complete -F _completemarks jump unmark
 fi
 
+# ssh "audit" : see who accesses what
+sshaudit (){
+   for server in "$@"; do
+      ssh $server -C 'cat ~/.ssh/authorized_keys' | sort | while read line; do
+         tmp="$(mktemp)"
+         echo "$line" > "$tmp"
+         echo $server $(ssh-keygen -lf "$tmp" | cut -d ' ' -f2,4)
+         rm -f "$tmp"
+      done
+   done
+}

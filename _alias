@@ -287,11 +287,11 @@ unmark() {
 marks() {
     ls -l "$MARKPATH" | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' | column -t
 }
-_completemarks() {
-    reply=($(ls $MARKPATH))
-}
 if [[ 'zsh' = "${SHELL#/bin/}" ]];then
    # zsh style completion
+   _completemarks() {
+       reply=($(ls $MARKPATH))
+   }
    compctl -K _completemarks jump
    compctl -K _completemarks unmark
 fi

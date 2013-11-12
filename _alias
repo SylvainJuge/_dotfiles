@@ -129,6 +129,9 @@ if [[ 0 -eq $? ]]; then
     alias gc='git commit'
     alias ggpull='git pull --rebase origin $(_current_branch) && git fetch origin $(_current_branch)'
     alias ggpush='git push origin $(_current_branch)'
+    # TODO : improve 'gco' to make it set upstream branch when checkout origin/branch
+    # -> only when branch name starts with 'origin/' because we (very rarely) need to 
+    # checkout a remote branch
     alias gco='git checkout'
     # allow to know which commits have been merged upstream/to specific branch
     alias gch='git cherry -v'

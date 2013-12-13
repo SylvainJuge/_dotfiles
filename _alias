@@ -140,6 +140,9 @@ if [[ 0 -eq $? ]]; then
 
     alias gdesc='git describe --tags --always --dirty'
 
+    # git commit files : modified files in ref
+    alias gcf='git diff-tree --no-commit-id --name-only -r "$@"'
+
     # git list unmerged files
     glsu (){
        git ls-files -u | awk '{print $4}' | sort -u

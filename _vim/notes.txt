@@ -9,6 +9,19 @@ http://ontwik.com/tools/vim-from-novice-to-professional-by-derek-wyatt-part-3/
 
 === TODOs ===
 
+== command-line history ==
+
+q: for commands q/ for searches : open cmd history in window
+: or / , then Ctrl-f : open cmd history in window
+
+-- once in history window --
+
+Up/Down to navigate, search like in regular windows
+Enter : execute current line
+Ctrl-w q : close window (like any other window)
+
+===========
+
 - wildignore : ignore *.class and "target" for maven projects (pom.xml)
 
 - navigation between modes : see help of "i_esc"

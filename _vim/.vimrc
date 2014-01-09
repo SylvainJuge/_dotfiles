@@ -267,7 +267,14 @@ nnoremap <silent><leader>W :set wrap!<cr>:set wrap?<cr>
 " Ack integration
 nnoremap <silent><leader>a :Ack
 nnoremap <silent><leader>/ :AckFromSearch<cr>
+" ,/ in visual mode searches for current selection
 vnoremap <leader>/ <esc>:Ack <c-r>*<cr>
+
+" visual mode search (whithin file)
+" ,# and ,* work like # and * in normal mode, but with current selection
+vnoremap <leader># <esc>?\<<c-r>*\><cr>
+vnoremap <leader>* <esc>/\<<c-r>*\><cr>
+
 
 " Extra vimrc : for local settings
 let s:extrarc = expand($HOME . '/.extra.vimrc')

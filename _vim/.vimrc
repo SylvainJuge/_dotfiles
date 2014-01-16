@@ -272,8 +272,8 @@ vnoremap <leader>/ <esc>:Ack <c-r>*<cr>
 
 " visual mode search (whithin file)
 " ,# and ,* work like # and * in normal mode, but with current selection
-vnoremap <leader># <esc>?\<<c-r>*\><cr>
-vnoremap <leader>* <esc>/\<<c-r>*\><cr>
+vnoremap <leader># <esc>?\<<c-r>*\><cr>:set hlsearch<cr>
+vnoremap <leader>* <esc>/\<<c-r>*\><cr>:set hlsearch<cr>
 
 
 " Extra vimrc : for local settings

@@ -242,6 +242,7 @@ S : surround selection and indent it (if in visual-line)
 Ctrl-p to open ctrl-p
 Ctrl-d : switch full path and file name matching
 Ctrl-r : switch regexp search on|off
+Ctrl-f : switch match mode
 
 Shift-Tab : switch focus : window|prompt
     >> TODO : no idea what it means

@@ -313,10 +313,15 @@ fi
 # ssh "audit" : see who accesses what
 sshaudit (){
    for server in "$@"; do
-      ssh $server -C 'cat ~/.ssh/authorized_keys' | sort | while read line; do
+      # note : we use grep to prefix each line with file name
+      ssh $server -C 'grep -H "^" $(find /root/.ssh/ -name authorized_keys) $(find /home/*/.ssh/ -name authorized_keys)' | sort | while read line; do
          tmp="$(mktemp)"
-         echo "$line" > "$tmp"
-         echo $server $(ssh-keygen -lf "$tmp" | cut -d ' ' -f2,4)
+         echo "$line" | sed 's/^.*://' > "$tmp" # remove file prefix
+         # get user from file location
+         [[ $line == /root/* ]] \
+            && user=root \
+            || user=$(echo "$line" | sed 's+/home/\(.*\)/\.ssh.*$+\1+')
+         echo $server $user $(ssh-keygen -lf "$tmp" | cut -d ' ' -f2,4)
          rm -f "$tmp"
       done
    done

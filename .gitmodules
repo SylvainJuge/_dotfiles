@@ -32,7 +32,7 @@
     url = https://github.com/derekmcloughlin/gvimfullscreen_win32.git
 [submodule "_vim/.vim/bundle/matchit"]
     path = _vim/.vim/bundle/matchit
-    url = https://github.com/tsaleh/vim-matchit.git
+    url = https://github.com/jwhitley/vim-matchit.git
     ignore = untracked
 [submodule "_vim/.vim/bundle/ctrlp"]
     path = _vim/.vim/bundle/ctrlp

@@ -34,6 +34,11 @@ else
 fi
 
 # Ack
+# quick and dirty way to handle 'ack-grep' as 'ack'
+which ack-grep > /dev/null
+if [[ 0 -eq $? ]]; then
+    alias ack='ack-grep'
+fi
 which ack > /dev/null
 if [[ 0 -eq $? ]]; then
     alias a='ack'

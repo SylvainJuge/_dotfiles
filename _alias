@@ -44,6 +44,17 @@ if [[ 0 -eq $? ]]; then
     alias a='ack'
 fi
 
+# Cassandra cqlsh
+which ack > /dev/null
+if [[ 0 -eq $? ]]; then
+    cqldesc(){
+        cqlsh << END
+describe keyspace $1
+END
+    }
+fi
+
+
 # Maven
 which mvn > /dev/null
 if [[ 0 -eq $? ]]; then

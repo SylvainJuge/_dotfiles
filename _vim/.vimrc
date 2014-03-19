@@ -287,3 +287,6 @@ let g:ctrlp_show_hidden = 1
 let g:ctrlp_extensions = ['mixed','dir']
 
 set wildignore+=*.class
+
+" CQL syntax
+autocmd BufRead *.cql set syntax=cql

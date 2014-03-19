@@ -46,3 +46,6 @@
 [submodule "_vim/.vim/bundle/gundo"]
 	path = _vim/.vim/bundle/gundo
 	url = http://github.com/sjl/gundo.vim.git
+[submodule "_vim/.vim/bundle/cql-vim"]
+	path = _vim/.vim/bundle/cql-vim
+	url = git@github.com:elubow/cql-vim.git

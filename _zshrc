@@ -43,6 +43,7 @@ export JAVA_HOME=/usr/lib/jvm/default-java
 export CASSANDRA_HOME=/home/sylvain/tools/apache-cassandra-1.1.12
 
 export PATH="\
+~/.dotfiles/bin:\
 $ANT_HOME/bin:\
 $MVN_HOME/bin:\
 $JAVA_HOME/bin:\

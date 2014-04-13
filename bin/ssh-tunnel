@@ -1,0 +1,97 @@
+#!/bin/bash
+
+# this scripts makes it easier to switch between local/ssh tunneling to same host
+# - generates ssh tunnel config to put in your ~/.ssh/config
+# - edits /etc/hosts file on start|stop to make localhost appear as remote server
+# - add/removes iptables rules to use same ports as on remote server
+
+# host name on the local network accessed through ssh
+tunnel_remote_host=remote-server
+
+# list of remote ports you want to redirect
+tunnel_remote_ports="80"
+
+# local ip used as redirection to remote host in 127.0.0.0/8 range
+tunnel_local_ip=127.0.0.10
+
+# used to identify iptables rule & lines in /etc/hosts file
+tag=ssh-tunnel
+
+PID_FILE=~/.ssh-tunnel.pid
+
+remove(){
+    sudo sed -i "/# $tag/d" /etc/hosts
+    rules=$( \
+        sudo iptables -t nat --list --numeric --line-numbers \
+        | grep "$tag" \
+        | awk '{print $1}' \
+        | sort -n --reverse)
+    for rule in $rules; do
+        sudo iptables -t nat -D OUTPUT $rule
+    done
+}
+
+setup(){
+    remove
+
+    # make tunnel port appear as local
+    sshconfig=""
+    for remote_port in $tunnel_remote_ports; do
+        local_port=$((10000+$remote_port))
+        sudo iptables -t nat -A OUTPUT -p tcp -m tcp \
+            -d $tunnel_local_ip \
+            --dport $remote_port \
+            -j REDIRECT \
+            --to-ports $local_port \
+            -m comment --comment "$tag $remote_port"
+
+        sshconfig="$sshconfig\n  LocalForward $local_port $tunnel_local_ip:$remote_port"
+    done
+    echo "you need to add this to your ~/.ssh/config"
+    echo -e "$sshconfig"
+
+}
+
+usage(){
+    echo "usage : $0 <command> [parameters]"
+    echo "commands : "
+    echo " setup : setup port redirection through nat/iptables"
+    echo " remove : remove port redirection through nat/iptables"
+    echo " start user@host : open ssh tunnel to specified host"
+    echo " stop : stop ssh tunnel"
+}
+
+start_tunnel(){
+    # TODO : check for ssh parameter
+    ssh -N $1 &
+    if [[ 0 == $? ]]; then
+        echo $! > $PID_FILE 
+        # make localhost appear as remote host
+        sudo sed -i "\$ a $tunnel_local_ip $tunnel_remote_host # $tag" /etc/hosts
+    fi
+}
+
+stop_tunnel(){
+    sudo sed -i "/# $tag/d" /etc/hosts
+    if [ -e $PID_FILE ]; then
+        kill -9 $(cat $PID_FILE)
+        rm $PID_FILE
+    fi
+}
+
+case "$1" in
+    setup)
+        setup
+        ;;
+    remove)
+        remove
+        ;;
+    start)
+        start_tunnel "$2"
+        ;;
+    stop)
+        stop_tunnel
+        ;;
+    *) usage; exit 1 ;;
+esac
+

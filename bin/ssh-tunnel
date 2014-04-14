@@ -45,7 +45,7 @@ setup(){
             --to-ports $local_port \
             -m comment --comment "$tag $remote_port"
 
-        sshconfig="$sshconfig\n  LocalForward $local_port $tunnel_local_ip:$remote_port"
+        sshconfig="$sshconfig\n  LocalForward $local_port 127.0.0.1:$remote_port"
     done
     echo "you need to add this to your ~/.ssh/config"
     echo -e "$sshconfig"

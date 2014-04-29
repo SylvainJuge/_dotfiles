@@ -48,7 +48,7 @@ setup_iptables(){
             --to-ports $local_port \
             -m comment --comment "$tag $remote_port"
 
-        sshconfig="$sshconfig -R $local_port:$tunnel_remote_host:$remote_port"
+        sshconfig="$sshconfig -L $local_port:127.0.0.1:$remote_port"
     done
     echo "$sshconfig"
 }

@@ -7,11 +7,11 @@
 
 # TODO : load configuration from user-local configuration, to avoid editing this file in place
 # TODO : make redirect rule only on local 127.0.0.10 ip
-# TODO : check that we have no conflicts with local open ports (that may be listenign on *.*.*.* by default)
+# TODO : check that we have no conflicts with local open ports (that may be listening on *.*.*.* by default)
 # TODO : autonatically disable tunnel when script is killed
-# TODO : compact syntax for mapping :
-# dev1:22,80,3690;dev2
+# TODO : compact syntax for mapping : dev1:22,80,3690;dev2
 # TODO : take port offset from parameters, with default in 10k range
+# TODO : clean stop on sigkill signal (trap)
 
 # host name on the local network accessed through ssh
 tunnel_remote_host=remote-server
@@ -84,6 +84,7 @@ start_tunnel(){
         echo $! > $PID_FILE 
     else
         echo "error while opening ssh tunnel with command 'ssh -N \"$@\"'"
+        stop_tunnel
     fi
 }
 

@@ -342,3 +342,28 @@ sshaudit (){
       done
    done
 }
+
+TOMCAT_HOME=/home/sylvain/tools/apache-tomcat-7.0.52
+tomcat_deploy (){
+	war=${1?ERROR usage : tomcat_deploy <your-app.war>}
+	fullPath="$(pwd)/$1"
+	filename="${1##*/}" 
+	name="${2:-${filename%.war}}"
+	echo "deploy $fullPath as $name"
+	
+	cd $TOMCAT_HOME
+	./bin/shutdown.sh
+	sleep 5
+	ps -ef| grep java | grep $TOMCAT_HOME | awk '{print $1}' | xargs kill -9
+	rm -rf ./logs && mkdir ./logs
+	rm -rf ./work && mkdir ./work
+	rm -rf $fullPath ./webapps/${name}*
+	cp $fullPath ./webapps/${name}.war
+	./bin/startup.sh
+	cd -
+	
+}
+
+tomcat_log (){
+	tail -f $TOMCAT_HOME/logs/*
+}

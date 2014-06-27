@@ -1,9 +1,8 @@
-#!/bin/bash
+#!/bin/bash 
 
 # this scripts makes it easier to switch between local/ssh tunneling to same host
-# - generates ssh tunnel config to put in your ~/.ssh/config
-# - edits /etc/hosts file on start|stop to make localhost appear as remote server
-# - add/removes iptables rules to use same ports as on remote server
+# - binds remote host on a local adress that is not 127.0.0.1 
+# - launches ssh tunnel with port forwarding for transparent remote host usage
 
 # TODO : load configuration from user-local configuration, to avoid editing this file in place
 # TODO : make redirect rule only on local 127.0.0.10 ip
@@ -14,43 +13,72 @@
 # TODO : clean stop on sigkill signal (trap)
 
 # host name on the local network accessed through ssh
-tunnel_remote_host=remote-server
+tunnel_remote_host=dev1
 
 # list of remote ports you want to redirect
-tunnel_remote_ports="80"
+tunnel_remote_ports="22 80 3690"
 
 # local ip used as redirection to remote host in 127.0.0.0/8 range
 tunnel_local_ip=127.0.0.10
 
-local_port_offset=10000;
+tunnel_port_offset=10000;
+
+# name of the ssh connection
+connection="$2"
+
+action="$1"
 
 # used to identify iptables rule & lines in /etc/hosts file
-tag=ssh-tunnel
+tag="ssh-tunnel-$connection"
 
 PID_FILE=~/.ssh-tunnel.pid
 
+CONFIG_FILE=~/.ssh/tunnel
+
+
+# intercept signals (from this script)
+# -> what we need is to trigger stuff when ssh process is killed
+trap 'echo SIGINT or SIGQUIT' SIGINT SIGQUIT
+trap 'echo SIGTERM' SIGTERM 
+
+hostPorts="$(grep "$connection" $CONFIG_FILE|sed "s/$connection://")";
+#for host_port in $hostPorts; do
+#	echo $host_port
+#done
+
 setup_hosts(){
-    sudo sed -i "\$ a $tunnel_local_ip $tunnel_remote_host # $tag" /etc/hosts
+    for host in $(grep "$connection" $CONFIG_FILE | cut -f 2 -d : | sort -u); do
+        sudo sed -i "\$ a $tunnel_local_ip $host# $tag" /etc/hosts
+    done
 }
 
 remove_hosts(){
     sudo sed -i "/# $tag/d" /etc/hosts
 }
 
-setup_iptables(){
-    sshconfig=""
-    for remote_port in $tunnel_remote_ports; do
-        local_port=$(($local_port_offset+$remote_port))
-        sudo iptables -t nat -A OUTPUT -p tcp -m tcp \
-            -d $tunnel_local_ip \
-            --dport $remote_port \
-            -j REDIRECT \
-            --to-ports $local_port \
-            -m comment --comment "$tag $remote_port"
-
-        sshconfig="$sshconfig -L $local_port:$tunnel_remote_host:$remote_port"
+tunnel_options(){
+    tunnelOptions=""
+    for host_port in $hostPorts; do
+		remote_port=${host_port##*:}
+		local_port=$(( $tunnel_port_offset + $remote_port))
+        tunnelOptions="$tunnelOptions -L ${local_port}:${host_port}"
     done
-    echo "$sshconfig"
+    echo "$tunnelOptions"
+}
+
+setup_iptables(){
+	for host_port in $hostPorts; do
+		remote_port=${host_port##*:}
+		local_port=$(( $tunnel_port_offset + $remote_port))
+        sudo iptables -t nat -A OUTPUT -p tcp -m tcp \
+            --source ${tunnel_local_ip} \
+            --destination ${tunnel_local_ip} \
+            --dport ${remote_port} \
+            -j REDIRECT \
+            --to-ports ${local_port} \
+            -m comment --comment "${tag} ${remote_port}"
+	done
+	echo "$iptablesOptions"
 }
 
 remove_iptables(){
@@ -75,34 +103,38 @@ start_tunnel(){
 
     stop_tunnel
 
-    sshConfig="$(setup_iptables)"
+    tunnelOptions="$(tunnel_options)"
     setup_hosts
+	setup_iptables
 
-    # TODO : check for ssh parameters
-    ssh -N "$@" $sshConfig&
+	cmd="ssh $connection -N $tunnelOptions"
+	#$cmd
     if [[ "0" == "$?" ]]; then
         echo $! > $PID_FILE 
     else
-        echo "error while opening ssh tunnel with command 'ssh -N \"$@\"'"
+        echo "error while opening ssh tunnel with command '$cmd'"
         stop_tunnel
     fi
 }
 
 stop_tunnel(){
-    remove_iptables
     remove_hosts
+	remove_iptables
     if [ -e $PID_FILE ]; then
         kill -9 $(cat $PID_FILE) 2>/dev/null
         rm $PID_FILE
     fi
 }
 
-case "$1" in
+case "$action" in
     start)
-        start_tunnel "$2"
+        start_tunnel "$connection"
         ;;
     stop)
         stop_tunnel
+        ;;
+    debug)
+        setup_hosts
         ;;
     *) usage; exit 1 ;;
 esac

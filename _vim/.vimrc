@@ -57,6 +57,9 @@ set tabstop=4
 " make deleting on spaces like its tabs
 set softtabstop=4
 
+" level5 : no expand tab (yet)
+set noexpandtab 
+
 " << / >> right / left shift by 4 spaces
 set shiftwidth=4
 

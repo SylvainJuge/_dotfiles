@@ -353,12 +353,13 @@ tomcat_deploy (){
 	
 	cd $TOMCAT_HOME
 	./bin/shutdown.sh
+    jps | grep Bootstrap | awk '{print }' | xargs kill -9
 	sleep 5
 	ps -ef| grep java | grep $TOMCAT_HOME | awk '{print $1}' | xargs kill -9
 	rm -rf ./logs && mkdir ./logs
 	rm -rf ./work && mkdir ./work
-	rm -rf $fullPath ./webapps/${name}*
-	cp $fullPath ./webapps/${name}.war
+	rm -rf ${TOMCAT_HOME}/webapps/${name}*
+	cp $fullPath ${TOMCAT_HOME}/webapps/${name}.war
 	./bin/startup.sh
 	cd -
 	

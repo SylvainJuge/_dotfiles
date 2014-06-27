@@ -42,8 +42,10 @@ export ANT_HOME=/home/sylvain/tools/ant
 export JAVA_HOME=/usr/lib/jvm/default-java
 export CASSANDRA_HOME=/home/sylvain/tools/apache-cassandra-1.1.12
 
+if [ -e $HOME/bin ]; then
+    PATH="$PATH:$HOME/bin"
+fi
 export PATH="\
-~/.dotfiles/bin:\
 $ANT_HOME/bin:\
 $MVN_HOME/bin:\
 $JAVA_HOME/bin:\
@@ -66,3 +68,4 @@ source $HOME/.dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zs
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[cursor]='fg=blue'
 
+alias antlr='java -jar /home/sylvain/tools/antlr/antlr-4.2.2-complete.jar'

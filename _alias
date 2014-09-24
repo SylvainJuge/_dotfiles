@@ -370,7 +370,6 @@ tomcat_deploy (){
 	
 	rm -rf ${TOMCAT_HOME}/webapps/${name}*
 	cp $fullPath ${TOMCAT_HOME}/webapps/${name}.war
-	cd -
 	
 }
 
@@ -388,13 +387,13 @@ tomcat (){
 		deploy)
 			tomcat_stop
 			tomcat_deploy $2 $3
-			tomcat_log
 			tomcat_start
 			;;
 		clean)
 			tomcat_stop
-			rm -rf ${TOMCAT_HOME}/logs/*
-			rm -rf ${TOMCAT_HOME}/work/*
+			rm -rf ${TOMCAT_HOME}/logs && mkdir ${TOMCAT_HOME}/logs
+			rm -rf ${TOMCAT_HOME}/work && mkdir ${TOMCAT_HOME}/work
+			rm -rf ${TOMCAT_HOME}/webapps && mkdir ${TOMCAT_HOME}/webapps
 		;;
 		*)
 			echo "usage : $0 [start|stop|log|deploy]"

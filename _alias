@@ -343,7 +343,24 @@ sshaudit (){
    done
 }
 
+
+# TODO : externalize this to local-env settings
 TOMCAT_HOME=/home/sylvain/tools/apache-tomcat-7.0.52
+
+#TODO : make script to find war by itself (or take the 1st), so that only deployment name is required
+
+tomcat_log (){
+	tail -f $TOMCAT_HOME/logs/*
+}
+
+tomcat_start (){
+	${TOMCAT_HOME}/bin/catalina.sh start
+}
+
+tomcat_stop (){
+	${TOMCAT_HOME}/bin/catalina.sh stop -force
+}
+
 tomcat_deploy (){
 	war=${1?ERROR usage : tomcat_deploy <your-app.war>}
 	fullPath="$(pwd)/$1"
@@ -351,20 +368,41 @@ tomcat_deploy (){
 	name="${2:-${filename%.war}}"
 	echo "deploy $fullPath as $name"
 	
-	cd $TOMCAT_HOME
-	./bin/shutdown.sh
-    jps | grep Bootstrap | awk '{print }' | xargs kill -9
-	sleep 5
-	ps -ef| grep java | grep $TOMCAT_HOME | awk '{print $1}' | xargs kill -9
-	rm -rf ./logs && mkdir ./logs
-	rm -rf ./work && mkdir ./work
 	rm -rf ${TOMCAT_HOME}/webapps/${name}*
 	cp $fullPath ${TOMCAT_HOME}/webapps/${name}.war
-	./bin/startup.sh
 	cd -
 	
 }
 
-tomcat_log (){
-	tail -f $TOMCAT_HOME/logs/*
+tomcat (){
+	case "$1" in
+		log)
+			tomcat_log &
+			;;
+		start)
+			tomcat_start
+			;;
+		stop)
+			tomcat_stop
+			;;
+		deploy)
+			tomcat_stop
+			tomcat_deploy $2 $3
+			tomcat_log
+			tomcat_start
+			;;
+		clean)
+			tomcat_stop
+			rm -rf ${TOMCAT_HOME}/logs/*
+			rm -rf ${TOMCAT_HOME}/work/*
+		;;
+		*)
+			echo "usage : $0 [start|stop|log|deploy]"
+			;;
+	esac
 }
+# TODO : provide zsh|bash completion for tomcat command
+
+
+
+

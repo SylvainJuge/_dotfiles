@@ -304,7 +304,7 @@ unmark() {
     rm -i "$MARKPATH/$1"
 }
 marks() {
-    ls -l "$MARKPATH" | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' | column -t
+    ls -l "$MARKPATH" | sed 's/\s\+/ /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' | column -t
 }
 if [[ 'zsh' = "${SHELL#/bin/}" ]];then
    # zsh style completion

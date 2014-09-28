@@ -384,6 +384,10 @@ tomcat (){
 		stop)
 			tomcat_stop
 			;;
+		restart)
+			tomcat_stop
+			tomcat_start
+			;;
 		deploy)
 			tomcat_stop
 			tomcat_deploy $2 $3

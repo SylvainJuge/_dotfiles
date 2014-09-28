@@ -40,7 +40,6 @@ unsetopt correct_all
 export MVN_HOME=/home/sylvain/tools/maven
 export ANT_HOME=/home/sylvain/tools/ant
 export JAVA_HOME=/usr/lib/jvm/default-java
-export CASSANDRA_HOME=/home/sylvain/tools/apache-cassandra-1.1.12
 
 if [ -e $HOME/bin ]; then
     PATH="$PATH:$HOME/bin"
@@ -49,7 +48,6 @@ export PATH="\
 $ANT_HOME/bin:\
 $MVN_HOME/bin:\
 $JAVA_HOME/bin:\
-$CASSANDRA_HOME/bin:\
 $PATH"
 
 export TERM='xterm-256color'

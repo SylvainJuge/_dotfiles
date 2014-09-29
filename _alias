@@ -400,7 +400,7 @@ tomcat (){
 			rm -rf ${TOMCAT_HOME}/webapps && mkdir ${TOMCAT_HOME}/webapps
 		;;
 		*)
-			echo "usage : $0 [start|stop|log|deploy]"
+			echo "usage : $0 [start|stop|restart|log|deploy]"
 			;;
 	esac
 }

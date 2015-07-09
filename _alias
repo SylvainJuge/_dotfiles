@@ -344,76 +344,75 @@ sshaudit (){
 }
 
 
-# TODO : externalize this to local-env settings
-TOMCAT_HOME=/home/sylvain/tools/apache-tomcat-7.0.52
-
 #TODO : make script to find war by itself (or take the 1st), so that only deployment name is required
 
-tomcat_log (){
-	tail -f $TOMCAT_HOME/logs/*
-}
+if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 
-tomcat_start (){
-	${TOMCAT_HOME}/bin/catalina.sh start
-}
+	tomcat_log (){
+		tail -f $TOMCAT_HOME/logs/*
+	}
 
-tomcat_stop (){
-	${TOMCAT_HOME}/bin/catalina.sh stop -force
-}
+	tomcat_start (){
+		${TOMCAT_HOME}/bin/catalina.sh start
+	}
 
-tomcat_deploy (){
-	war=${1?ERROR usage : tomcat_deploy <your-app.war>}
-	fullPath="$(pwd)/$1"
-	filename="${1##*/}" 
-	name="${2:-${filename%.war}}"
-	echo "deploy $fullPath as $name"
-	
-	rm -rf ${TOMCAT_HOME}/webapps/${name}*
-	cp $fullPath ${TOMCAT_HOME}/webapps/${name}.war
-	
-}
+	tomcat_stop (){
+		${TOMCAT_HOME}/bin/catalina.sh stop -force
+	}
 
-tomcat (){
-	case "$1" in
-		log)
-			tomcat_log &
+	tomcat_deploy (){
+		war=${1?ERROR usage : tomcat_deploy <your-app.war>}
+		fullPath="$(pwd)/$1"
+		filename="${1##*/}" 
+		name="${2:-${filename%.war}}"
+		echo "deploy $fullPath as $name"
+		
+		rm -rf ${TOMCAT_HOME}/webapps/${name}*
+		cp $fullPath ${TOMCAT_HOME}/webapps/${name}.war
+		
+	}
+
+	tomcat (){
+		case "$1" in
+			log)
+				tomcat_log &
+				;;
+			start)
+				tomcat_start
+				;;
+			stop)
+				tomcat_stop
+				;;
+			restart)
+				tomcat_stop
+				tomcat_start
+				;;
+			deploy)
+				tomcat_stop
+				tomcat_deploy $2 $3
+				tomcat_start
+				;;
+			clean)
+				tomcat_stop
+				rm -rf ${TOMCAT_HOME}/logs && mkdir ${TOMCAT_HOME}/logs
+				rm -rf ${TOMCAT_HOME}/work && mkdir ${TOMCAT_HOME}/work
+				rm -rf ${TOMCAT_HOME}/webapps && mkdir ${TOMCAT_HOME}/webapps
 			;;
-		start)
-			tomcat_start
-			;;
-		stop)
-			tomcat_stop
-			;;
-		restart)
-			tomcat_stop
-			tomcat_start
-			;;
-		deploy)
-			tomcat_stop
-			tomcat_deploy $2 $3
-			tomcat_start
-			;;
-		clean)
-			tomcat_stop
-			rm -rf ${TOMCAT_HOME}/logs && mkdir ${TOMCAT_HOME}/logs
-			rm -rf ${TOMCAT_HOME}/work && mkdir ${TOMCAT_HOME}/work
-			rm -rf ${TOMCAT_HOME}/webapps && mkdir ${TOMCAT_HOME}/webapps
-		;;
-		*)
-			echo "usage : $0 [start|stop|restart|log|deploy]"
-			;;
-	esac
-}
+			*)
+				echo "usage : $0 [start|stop|restart|log|deploy]"
+				;;
+		esac
+	}
 
-alias t='tomcat'
-alias tl='tomcat log'
-alias ts='tomcat stop'
-alias trs='tomcat restart'
+	alias t='tomcat'
+	alias tl='tomcat log'
+	alias ts='tomcat stop'
+	alias trs='tomcat restart'
+	# TODO : provide zsh|bash completion for tomcat command
+fi
 
-# TODO : provide zsh|bash completion for tomcat command
-
-alias jp='javap -c -verbose'
-
-
-
+which javap > /dev/null
+if [[ 0 -eq $? ]]; then
+	alias jp='javap -c -verbose'
+fi
 

@@ -404,6 +404,12 @@ tomcat (){
 			;;
 	esac
 }
+
+alias t='tomcat'
+alias tl='tomcat log'
+alias ts='tomcat stop'
+alias trs='tomcat restart'
+
 # TODO : provide zsh|bash completion for tomcat command
 
 

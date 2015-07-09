@@ -52,6 +52,8 @@ $PATH"
 
 export TERM='xterm-256color'
 
+export NUDGE_PROBE=~/tools/nudge-probe/dev
+
 # aliases
 source ~/.dotfiles/_alias
 

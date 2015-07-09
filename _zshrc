@@ -69,3 +69,7 @@ ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[cursor]='fg=blue'
 
 alias antlr='java -jar /home/sylvain/tools/antlr/antlr-4.2.2-complete.jar'
+
+export XMODIFIERS=@im=ibus
+# remove annoying jayatanaag message
+unset JAVA_TOOL_OPTIONS

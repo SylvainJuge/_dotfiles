@@ -293,3 +293,6 @@ set wildignore+=*.class
 
 " CQL syntax
 autocmd BufRead *.cql set syntax=cql
+
+autocmd BufNewFile,BufRead *.class %!echo javap -verbose "\"%\""
+

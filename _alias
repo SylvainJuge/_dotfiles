@@ -412,6 +412,8 @@ alias trs='tomcat restart'
 
 # TODO : provide zsh|bash completion for tomcat command
 
+alias jp='javap -c -verbose'
+
 
 
 

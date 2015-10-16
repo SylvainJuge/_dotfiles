@@ -357,7 +357,7 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 	}
 
 	tomcat_stop (){
-		${TOMCAT_HOME}/bin/catalina.sh stop -force
+		${TOMCAT_HOME}/bin/catalina.sh stop -force $1
 	}
 
 	tomcat_deploy (){
@@ -367,7 +367,7 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 		name="${2:-${filename%.war}}"
 		echo "deploy $fullPath as $name"
 		
-		rm -rf ${TOMCAT_HOME}/webapps/${name}*
+		rm -rf ${TOMCAT_HOME}/webapps/${name}{,.war}
 		cp $fullPath ${TOMCAT_HOME}/webapps/${name}.war
 		
 	}
@@ -376,6 +376,9 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 		case "$1" in
 			log)
 				tomcat_log &
+				;;
+			viewlog)
+				$EDITOR ${TOMCAT_HOME}/logs/catalina.out
 				;;
 			start)
 				tomcat_start
@@ -399,13 +402,14 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 				rm -rf ${TOMCAT_HOME}/webapps && mkdir ${TOMCAT_HOME}/webapps
 			;;
 			*)
-				echo "usage : $0 [start|stop|restart|log|deploy]"
+				echo "usage : $0 [start|stop|restart|log|viewlog|deploy|]"
 				;;
 		esac
 	}
 
 	alias t='tomcat'
 	alias tl='tomcat log'
+	alias tvl='tomcat viewlog'
 	alias ts='tomcat stop'
 	alias trs='tomcat restart'
 	# TODO : provide zsh|bash completion for tomcat command

@@ -469,3 +469,13 @@ fi
 alias visualvm='${VISUAL_VM_HOME}/bin/visualvm &'
 
 
+if [[ -f "/usr/bin/teamviewer" ]]; then
+	launch_teamviewer(){
+		sudo /opt/teamviewer/tv_bin/script/teamviewerd.sysv start
+		/usr/bin/teamviewer
+		sudo /opt/teamviewer/tv_bin/script/teamviewerd.sysv stop
+	}
+	alias teamviewer='launch_teamviewer &'
+fi
+
+

@@ -215,10 +215,10 @@ nnoremap <silent><leader>dgl :call GitDiffGet(3)<cr>]c
 nnoremap <leader>w <c-w>
 
 " make system clipboard copy & paste more accessible
-vnoremap <leader>y "*y
-nnoremap <leader>y "*y
-vnoremap <leader>p "*p
-nnoremap <leader>p "*p
+vnoremap <leader>y "+y
+nnoremap <leader>y "+y
+vnoremap <leader>p "+p
+nnoremap <leader>p "+p
 
 " ---- highlight customization ----
 " search color

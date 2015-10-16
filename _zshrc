@@ -53,7 +53,7 @@ $PATH"
 export TERM='xterm-256color'
 
 # TODO : externalize local-env variables to local env file
-export NUDGE_PROBE=~/tools/nudge-probe/dev
+export NUDGE_PROBE_HOME=~/tools/nudge-probe/dev
 export TOMCAT_HOME=/home/sylvain/tools/apache-tomcat-7.0.52
 
 # aliases

@@ -420,3 +420,49 @@ if [[ 0 -eq $? ]]; then
 	alias jp='javap -c -verbose'
 fi
 
+if [[ -f "${NUDGE_PROBE_HOME}/probe" ]]; then
+	# nudge probe commands	
+
+	nudge_probe(){
+		cmd="$1"
+		[[ $# > 0 ]] && shift
+		case "${cmd}" in
+			log)
+				tail -f ${NUDGE_PROBE_HOME}/log/nudge.log
+			;;
+			instrumented)
+				cat ${NUDGE_PROBE_HOME}/log/nudge.log | grep 'instrumentation'
+			;;
+			logview)
+				${EDITOR:-vi} ${NUDGE_PROBE_HOME}/log/nudge.log
+			;;
+			clean)
+				/bin/rm -rf ${NUDGE_PROBE_HOME}/log
+			;;
+			conf)
+				${EDITOR:-vim} ${NUDGE_PROBE_HOME}/nudge.properties
+			;;
+			view)
+				[[ $# > 0 ]] \
+					&& java -jar ${NUDGE_PROBE_HOME}/nudge-*.jar -va "$@" \
+					|| java -jar ${NUDGE_PROBE_HOME}/nudge-*.jar -va ${NUDGE_PROBE_HOME}/log/raw*.log
+			;;
+			print)
+				java -jar ${NUDGE_PROBE_HOME}/nudge-*.jar -pa "$@"
+			;;
+			*)
+				echo "usage : $0 [log|logview|clean|conf|view|print]"
+				;;
+		esac
+	}
+
+
+	alias np='nudge_probe'
+	alias npl='nudge_probe log'
+	alias npi='nudge_probe instrumented'
+	alias npvl='nudge_probe logview'
+	alias npc='nudge_probe clean'
+	alias npp='nudge_probe print'
+	alias npd='nudge_probe view'
+fi
+

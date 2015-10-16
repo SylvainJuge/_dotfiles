@@ -466,3 +466,6 @@ if [[ -f "${NUDGE_PROBE_HOME}/probe" ]]; then
 	alias npd='nudge_probe view'
 fi
 
+alias visualvm='${VISUAL_VM_HOME}/bin/visualvm &'
+
+

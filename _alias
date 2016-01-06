@@ -417,7 +417,17 @@ fi
 
 which javap > /dev/null
 if [[ 0 -eq $? ]]; then
-	alias jp='javap -c -verbose'
+	jp(){
+		javap -c -verbose $1
+	}
+
+	vjp(){
+		vim =(jp $1)
+	}
+
+	vdjp(){
+		vimdiff =(jp $1) =(jp $2)
+	}
 fi
 
 if [[ -f "${NUDGE_PROBE_HOME}/probe" ]]; then

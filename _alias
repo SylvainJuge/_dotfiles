@@ -466,8 +466,10 @@ if [[ -e "${NUDGE_PROBE_HOME}" ]]; then
 		esac
 	}
 
+	np(){
+		nudge_probe "$@"
+	}
 
-	alias np='nudge_probe'
 	alias npl='nudge_probe log'
 	alias npi='nudge_probe instrumented'
 	alias npvl='nudge_probe logview'

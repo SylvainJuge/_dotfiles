@@ -430,7 +430,7 @@ if [[ 0 -eq $? ]]; then
 	}
 fi
 
-if [[ -f "${NUDGE_PROBE_HOME}/probe" ]]; then
+if [[ -e "${NUDGE_PROBE_HOME}" ]]; then
 	# nudge probe commands	
 
 	nudge_probe(){
@@ -438,7 +438,7 @@ if [[ -f "${NUDGE_PROBE_HOME}/probe" ]]; then
 		[[ $# > 0 ]] && shift
 		case "${cmd}" in
 			log)
-				tail -f ${NUDGE_PROBE_HOME}/log/nudge.log
+				tail -F ${NUDGE_PROBE_HOME}/log/nudge.log
 			;;
 			instrumented)
 				cat ${NUDGE_PROBE_HOME}/log/nudge.log | grep 'instrumentation'

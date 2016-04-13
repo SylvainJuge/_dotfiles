@@ -129,6 +129,7 @@ if [[ 0 -eq $? ]]; then
 
     alias g='git'
     alias gl='git log --decorate --oneline --graph'
+    alias gla='git log --decorate --oneline --graph --all'
     alias gld='git log --decorate --oneline --graph --simplify-by-decoration'
     alias gls='git ls-files --exclude-standard'
     alias gh='git help'
@@ -158,6 +159,9 @@ if [[ 0 -eq $? ]]; then
 
     # git commit files : modified files in ref
     alias gcf='git diff-tree --no-commit-id --name-only -r "$@"'
+
+    # edit modified files with $EDITOR
+    alias vgm='$EDITOR $(gls -m)'
 
     # git list unmerged files
     glsu (){
@@ -301,7 +305,7 @@ mark() {
     mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
 }
 unmark() {
-    rm -i "$MARKPATH/$1"
+    /bin/rm -i "$MARKPATH/$1"
 }
 marks() {
     ls -l "$MARKPATH" | sed 's/\s\+/ /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' | column -t
@@ -330,15 +334,15 @@ fi
 sshaudit (){
    for server in "$@"; do
       # note : we use grep to prefix each line with file name
-      ssh $server -C 'grep -H "^" $(find /root/.ssh/ -name authorized_keys) $(find /home/*/.ssh/ -name authorized_keys)' | sort | while read line; do
+      ssh $server -C 'sudo grep -H "^" $(sudo find /root/.ssh/ -name authorized_keys) $(sudo ls -0d /home/*/.ssh/authorized_keys)' | sort | while read line; do
          tmp="$(mktemp)"
          echo "$line" | sed 's/^.*://' > "$tmp" # remove file prefix
          # get user from file location
          [[ $line == /root/* ]] \
             && user=root \
             || user=$(echo "$line" | sed 's+/home/\(.*\)/\.ssh.*$+\1+')
-         echo $server $user $(ssh-keygen -lf "$tmp" | cut -d ' ' -f2,4)
-         rm -f "$tmp"
+         echo $server $user $(ssh-keygen -lf "$tmp")
+         /bin/rm -f "$tmp"
       done
    done
 }
@@ -347,6 +351,10 @@ sshaudit (){
 #TODO : make script to find war by itself (or take the 1st), so that only deployment name is required
 
 if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
+
+	tomcat_cleanlog (){
+		/bin/rm -rf $TOMCAT_HOME/logs/*
+	}
 
 	tomcat_log (){
 		tail -F $TOMCAT_HOME/logs/*
@@ -381,6 +389,7 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 				$EDITOR ${TOMCAT_HOME}/logs/catalina.out
 				;;
 			start)
+				tomcat_cleanlog
 				tomcat_start
 				;;
 			stop)
@@ -388,16 +397,18 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 				;;
 			restart)
 				tomcat_stop
+				tomcat_cleanlog
 				tomcat_start
 				;;
 			deploy)
 				tomcat_stop
+				tomcat_cleanlog
 				tomcat_deploy $2 $3
 				tomcat_start
 				;;
 			clean)
 				tomcat_stop
-				rm -rf ${TOMCAT_HOME}/logs && mkdir ${TOMCAT_HOME}/logs
+				tomcat_cleanlog
 				rm -rf ${TOMCAT_HOME}/work && mkdir ${TOMCAT_HOME}/work
 				rm -rf ${TOMCAT_HOME}/webapps && mkdir ${TOMCAT_HOME}/webapps
 			;;
@@ -447,7 +458,7 @@ if [[ -e "${NUDGE_PROBE_HOME}" ]]; then
 				${EDITOR:-vi} ${NUDGE_PROBE_HOME}/log/nudge.log
 			;;
 			clean)
-				/bin/rm -rf ${NUDGE_PROBE_HOME}/log
+				/bin/rm -rf ${NUDGE_PROBE_HOME}/log/*
 			;;
 			conf)
 				${EDITOR:-vim} ${NUDGE_PROBE_HOME}/nudge.properties
@@ -478,7 +489,14 @@ if [[ -e "${NUDGE_PROBE_HOME}" ]]; then
 	alias npd='nudge_probe view'
 fi
 
-alias visualvm='${VISUAL_VM_HOME}/bin/visualvm &'
+if [[ -f "${VISUAL_VM_HOME}/bin/visualvm" ]];then
+
+	visualvm(){
+		[[ -f "~/.visualvm/1.3.8/lock" ]] && rm -f ~/.visualvm/1.3.8/lock
+		export JAVA_HOME=/usr/lib/jvm/java8oracle
+		${VISUAL_VM_HOME}/bin/visualvm --jdkhome $JAVA_HOME&
+	}
+fi
 
 
 if [[ -f "/usr/bin/teamviewer" ]]; then
@@ -491,3 +509,16 @@ if [[ -f "/usr/bin/teamviewer" ]]; then
 fi
 
 
+which vagrant > /dev/null
+if [[ 0 -eq $? ]]; then
+	vagu(){
+		vagrant up
+	}
+	vagd(){
+		vagrant destroy --force
+	}
+	vagdu(){
+		vagd
+		vagu
+	}
+fi

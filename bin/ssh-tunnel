@@ -14,15 +14,15 @@
 # TODO : clean stop on sigkill signal (trap)
 
 # host name on the local network accessed through ssh
-tunnel_remote_host=remote-server
+tunnel_remote_host=dev-tools.nudge-apm.com
 
 # list of remote ports you want to redirect
-tunnel_remote_ports="80"
+tunnel_remote_ports="22 443"
 
 # local ip used as redirection to remote host in 127.0.0.0/8 range
 tunnel_local_ip=127.0.0.10
 
-local_port_offset=10000;
+local_port_offset=5000;
 
 # used to identify iptables rule & lines in /etc/hosts file
 tag=ssh-tunnel

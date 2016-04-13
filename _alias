@@ -81,7 +81,7 @@ if [[ 0 -eq $? ]]; then
        mvn dependency:tree -DoutputFile="$outFile" "$@">/dev/null
        if [[ 0 -eq $? ]]; then
           cat **/$outFile
-          rm -f **/$outFile
+          /bin/rm -f **/$outFile
        else
           echo "error : can't retrieve dependency tree, 'clean install' required if you haven't built project yet"
        fi
@@ -104,7 +104,7 @@ if [[ 0 -eq $? ]]; then
            xmlstarlet sel -t -m '//project' \
               -v 'groupId'  -o ' '  -v 'artifactId'  -o ' '  -v 'version' -n \
               "${mvn_effective_pom_file}"
-           rm -f "${mvn_effective_pom_file}"
+           /bin/rm -f "${mvn_effective_pom_file}"
         }
     fi
 
@@ -112,7 +112,7 @@ if [[ 0 -eq $? ]]; then
     # maven effective pom (output to console for easy grep)
     mep () {
        local out="${1:-$mvn_effective_pom_file}"
-       mvn_effective_pom $out && cat $out && rm -f $out
+       mvn_effective_pom $out && cat $out && /bin/rm -f $out
     }
 
 

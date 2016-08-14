@@ -42,6 +42,9 @@ fi
 which ack > /dev/null
 if [[ 0 -eq $? ]]; then
     alias a='ack'
+    alias ai='ack -i'
+    alias al='ack -l'
+    alias ali='ack -li'
 fi
 
 # Cassandra cqlsh

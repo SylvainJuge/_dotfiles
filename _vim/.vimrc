@@ -217,8 +217,8 @@ nnoremap <leader>w <c-w>
 " make system clipboard copy & paste more accessible
 vnoremap <leader>y "+y
 nnoremap <leader>y "+y
-vnoremap <leader>p "+p
-nnoremap <leader>p "+p
+vnoremap <leader>p :set paste<esc>"+p
+nnoremap <leader>p :set paste<esc>"+p
 
 " ---- highlight customization ----
 " search color

@@ -388,6 +388,9 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 			log)
 				tomcat_log &
 				;;
+			conf)
+				$EDITOR ${TOMCAT_HOME}/bin/setenv.sh
+				;;
 			viewlog)
 				$EDITOR ${TOMCAT_HOME}/logs/catalina.out
 				;;
@@ -416,7 +419,7 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 				rm -rf ${TOMCAT_HOME}/webapps && mkdir ${TOMCAT_HOME}/webapps
 			;;
 			*)
-				echo "usage : $0 [start|stop|restart|log|viewlog|deploy|]"
+				echo "usage : $0 [start|stop|conf|restart|log|viewlog|deploy|]"
 				;;
 		esac
 	}

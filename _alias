@@ -28,7 +28,7 @@ else
     which xdg-open > /dev/null
     if [[ 0 -eq $? ]]; then
        o (){
-           xdg-open "$@" 2>&1 > /dev/null
+           xdg-open "$@" 2> /dev/null
        }
    fi
 fi

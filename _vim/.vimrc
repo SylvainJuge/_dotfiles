@@ -152,9 +152,11 @@ noremap <silent><leader>t :FufTag<cr>
 
 " nerdtree mapped to ,n
 noremap <silent><leader>n :NERDTreeToggle<cr>
+" nerdtree find current fil with ,m
+noremap <silent><leader>m :NERDTreeFind<cr>
 
 " gundo mapped to ,g
-noremap <silent><leader>g :GundoToggle<CR>
+noremap <silent><leader>g :GundoToggle<cr>
 
 " fuzzy-finder features to explore :
 " - file coverage
@@ -296,3 +298,5 @@ autocmd BufRead *.cql set syntax=cql
 
 " autocmd BufNewFile,BufRead *.class %!echo "'" . expand('%:r') . "'"
 
+
+autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy

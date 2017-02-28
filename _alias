@@ -498,7 +498,7 @@ fi
 if [[ -f "${VISUAL_VM_HOME}/bin/visualvm" ]];then
 
 	visualvm(){
-		[[ -f "~/.visualvm/1.3.8/lock" ]] && rm -f ~/.visualvm/1.3.8/lock
+		rm -f ~/.visualvm/*/lock 2>&1 > /dev/null
 		export JAVA_HOME=/usr/lib/jvm/java8oracle
 		${VISUAL_VM_HOME}/bin/visualvm --jdkhome $JAVA_HOME&
 	}

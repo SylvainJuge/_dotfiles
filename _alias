@@ -434,13 +434,28 @@ fi
 
 which javap > /dev/null
 if [[ 0 -eq $? ]]; then
+	# from .class file
 	jp(){
 		javap -c -verbose $1
 	}
-
 	vjp(){
 		vim =(jp $1)
 	}
+
+	# from .class within a .jar
+	jjp(){
+		jarFile=${1}
+		classFile=${2}
+
+		tmpFile="/tmp/$(basename ${classFile})"
+		unzip -p ${jarFile} ${classFile} > ${tmpFile}
+		jp ${tmpFile}
+		rm ${tmpFile}
+	}
+	vjjp(){
+		vim =(jjp $1 $2)
+	}
+
 
 	vdjp(){
 		vimdiff =(jp $1) =(jp $2)

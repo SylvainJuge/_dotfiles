@@ -39,17 +39,24 @@ unsetopt correct_all
 
 export MVN_HOME=/home/sylvain/tools/maven
 export ANT_HOME=/home/sylvain/tools/ant
-export JAVA_HOME=/usr/lib/jvm/default-java
+export JAVA_HOME=/usr/lib/jvm/java8oracle
 
 # TODO : externalize local-env variables to local env file
 export NUDGE_PROBE_HOME=~/tools/nudge-probe/dev
-export TOMCAT_HOME=/home/sylvain/tools/apache-tomcat-7.0.52
-export VISUAL_VM_HOME=/home/sylvain/tools/visualvm/visualvm_138
+export TOMCAT_HOME=/home/sylvain/tools/apache-tomcat-8.0.11
+export VISUAL_VM_HOME=/home/sylvain/tools/visualvm/visualvm_139
 export PACKER_HOME=/home/sylvain/tools/packer
+
+export GOROOT=${HOME}/go
+if [ -d ${GOROOT} ]; then
+	export GOPATH=${HOME}/gopath
+    PATH="${PATH}:${GOPATH}/bin:${GOROOT}/bin"
+fi
 
 if [ -e $HOME/bin ]; then
     PATH="$PATH:$HOME/bin"
 fi
+
 export PATH="\
 $ANT_HOME/bin:\
 $MVN_HOME/bin:\

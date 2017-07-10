@@ -439,8 +439,15 @@ if [[ 0 -eq $? ]]; then
 	jp(){
 		javap -c -verbose $1
 	}
+	_javap(){
+		tmp=$(mktemp '/tmp/XXX.javap')
+		javap -c -verbose $1 > ${tmp}
+		echo ${tmp}
+	}
 	vjp(){
-		vim =(jp $1)
+		tmp=$(_javap ${1})
+		vim ${tmp}
+		rm ${tmp}
 	}
 
 	# from .class within a .jar
@@ -448,18 +455,23 @@ if [[ 0 -eq $? ]]; then
 		jarFile=${1}
 		classFile=${2}
 
-		tmpFile="/tmp/$(basename ${classFile})"
-		unzip -p ${jarFile} ${classFile} > ${tmpFile}
-		jp ${tmpFile}
-		rm ${tmpFile}
+		tmpClass="/tmp/$(basename ${classFile})"
+		unzip -p ${jarFile} ${classFile} > ${tmpClass}
+		
+		tmp=$(_javap ${tmpClass})
+		cat ${tmp}
+
+		rm ${tmpClass}
+		rm ${tmp}
 	}
 	vjjp(){
 		vim =(jjp $1 $2)
 	}
 
-
 	vdjp(){
-		vimdiff =(jp $1) =(jp $2)
+		f1="$(_javap $1)"
+		f2="$(_javap $2)"
+		vimdiff "${f1}" "${f2}"
 	}
 fi
 

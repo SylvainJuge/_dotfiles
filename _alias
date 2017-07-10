@@ -556,3 +556,10 @@ if [[ 0 -eq $? ]]; then
 		vagu
 	}
 fi
+
+
+which python > /dev/null
+if [[ 0 -eq $? ]]; then
+	alias json='python -m json.tool'
+fi
+

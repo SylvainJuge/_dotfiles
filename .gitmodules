@@ -49,3 +49,6 @@
 [submodule "_vim/.vim/bundle/cql-vim"]
 	path = _vim/.vim/bundle/cql-vim
 	url = git@github.com:elubow/cql-vim.git
+[submodule "_vim/.vim/bundle/vim-java-bytecode"]
+	path = _vim/.vim/bundle/vim-java-bytecode
+	url = https://github.com/neapel/vim-java-bytecode.git

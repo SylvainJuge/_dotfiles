@@ -84,3 +84,13 @@ alias antlr='java -jar /home/sylvain/tools/antlr/antlr-4.2.2-complete.jar'
 export XMODIFIERS=@im=ibus
 # remove annoying jayatanaag message
 unset JAVA_TOOL_OPTIONS
+
+# start tmux & attach to existing session if any
+#tmux attach &> /dev/null
+#if [[ ! $TERM =~ screen ]]; then
+#	exec tmux
+#fi
+#
+export MAVEN_OPTS="-Xmx1G"
+
+export JAVA_DEBUG=-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000

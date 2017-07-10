@@ -39,7 +39,7 @@ TODO : learn how to use nerdcommenter efficiently
 
     -> find how we can deal with nesting issues
         javascript in html/jsp file
-    
+
 
 - other stuff -
 
@@ -369,7 +369,26 @@ Ctrl+n : create a new empty window (defaults to hsplit)
 
 zf + motion to fold manually an item
 {Visual}zf to fold selection
-zo to delete current fold
+
+zo : to Open fold, zO on all levels
+zc : to Close fold, zC on all levels
+zr : to Reduce (open) all folds at current level, zR on all levels
+zm : to fold More (close) all folds, zM on all levels
+
+zi : Invert (toggle) foldenable
+[z
+]z
+zj : move to next fold
+zk : move to previous fold
+
+zd : delete fold at cursor
+zD : delete all folds at cursor
+
+set foldcolumn=4 : use 4 char column as fold indicator
+
+TODO
+- save and restore folds see :h usr_28 28.4
+- customize how folds are displayed
 
 === Macros ===
 

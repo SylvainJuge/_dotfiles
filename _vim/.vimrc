@@ -280,6 +280,9 @@ vnoremap <leader>/ <esc>:Ack <c-r>*<cr>
 vnoremap <leader># <esc>?\<<c-r>*\><cr>:set hlsearch<cr>
 vnoremap <leader>* <esc>/\<<c-r>*\><cr>:set hlsearch<cr>
 
+" reload file
+nnoremap <leader>e <esc>:e!<cr>
+
 
 " Extra vimrc : for local settings
 let s:extrarc = expand($HOME . '/.extra.vimrc')
@@ -294,9 +297,36 @@ let g:ctrlp_extensions = ['mixed','dir']
 set wildignore+=*.class
 
 " CQL syntax
-autocmd BufRead *.cql set syntax=cql
+augroup cql
+    autocmd!
+    autocmd BufRead *.cql set syntax=cql
+augroup END
 
-" autocmd BufNewFile,BufRead *.class %!echo "'" . expand('%:r') . "'"
+augroup jenkins
+    autocmd!
+    autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy
+augroup END
+
+function! Javap()
+    :silent %! javap -v %
+    set filetype=java-bytecode
+    " TODO fold constant pool
+    " TODO fold method details
+
+    "set foldmethod=indent
+    "set shiftwidth=2
+    "set foldcolumn=4
+    "set foldlevel=0
+endfunction
+
+augroup javabytecode
+    autocmd!
+    autocmd BufNewFile,BufRead *.class call Javap()
+    autocmd BufNewFile,BufRead zipfile:*.class echo "hello"
+augroup END
+
+nnoremap <leader>d <esc>:windo diffthis
 
 
-autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy
+" use proper indent for yaml
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab

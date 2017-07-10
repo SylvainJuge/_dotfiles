@@ -143,6 +143,7 @@ if [[ 0 -eq $? ]]; then
     alias gst='git status -sb'
     alias ga='git add'
     alias gap='git add -vp'
+    alias gai='git add -i'
     alias gr='git reset'
     alias gds='git diff --staged'
     alias gd='git diff'

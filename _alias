@@ -361,7 +361,7 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 	}
 
 	tomcat_log (){
-		tail -F $TOMCAT_HOME/logs/*
+		tail -F $TOMCAT_HOME/logs/{catalina.out,localhost_access}*
 	}
 
 	tomcat_start (){

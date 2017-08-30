@@ -46,6 +46,7 @@ export NUDGE_PROBE_HOME=~/tools/nudge-probe/dev
 export TOMCAT_HOME=/home/sylvain/tools/apache-tomcat-8.0.11
 export VISUAL_VM_HOME=/home/sylvain/tools/visualvm/visualvm_139
 export PACKER_HOME=/home/sylvain/tools/packer
+export CASSANDRA_HOME=/home/sylvain/tools/cassandra/cassandra2
 
 export GOROOT=${HOME}/go
 if [ -d ${GOROOT} ]; then
@@ -85,12 +86,7 @@ export XMODIFIERS=@im=ibus
 # remove annoying jayatanaag message
 unset JAVA_TOOL_OPTIONS
 
-# start tmux & attach to existing session if any
-#tmux attach &> /dev/null
-#if [[ ! $TERM =~ screen ]]; then
-#	exec tmux
-#fi
-#
 export MAVEN_OPTS="-Xmx1G"
 
-export JAVA_DEBUG=-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000
+export JAVA_DEBUG="-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000"
+export JAVA_DEBUG_SUSPEND="-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000"

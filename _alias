@@ -47,16 +47,17 @@ if [[ 0 -eq $? ]]; then
     alias ali='ack -li'
 fi
 
-# Cassandra cqlsh
-which ack > /dev/null
-if [[ 0 -eq $? ]]; then
-    cqldesc(){
-        cqlsh << END
-describe keyspace $1
-END
-    }
-fi
-
+waitLogMsg(){
+	pattern="${1}"
+	shift
+	logfile="${1}"
+	shift
+	(
+			grep -m 1 "${pattern}" <(tail -1f "${logfile}")
+			kill $(ps -ef | grep "tail -1f ${logfile}" | awk '{print $2}') # kill tail
+			$@
+	) & # start in background
+}
 
 # Maven
 which mvn > /dev/null
@@ -365,7 +366,9 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 	}
 
 	tomcat_start (){
+		tomcat_cleanlog
 		${TOMCAT_HOME}/bin/catalina.sh start
+		waitLogMsg 'Server startup in' "${TOMCAT_HOME}/logs/catalina.out" notify-send -i user-available 'Tomcat started'
 	}
 
 	tomcat_stop (){
@@ -431,6 +434,39 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 	alias ts='tomcat stop'
 	alias trs='tomcat restart'
 	# TODO : provide zsh|bash completion for tomcat command
+fi
+
+if [[ -f "${CASSANDRA_HOME}/bin/cassandra" ]]; then
+	cassandra(){
+		cmd="${CASSANDRA_HOME}/bin/cassandra"
+		pid="${CASSANDRA_HOME}/cassandra.pid"
+		case "$1" in
+			start)
+				truncate ${CASSANDRA_HOME}/logs/system.log
+				${CASSANDRA_HOME}/bin/cassandra start -p ${pid}
+				waitLogMsg 'state jump to NORMAL' "${CASSANDRA_HOME}/logs/system.log" notify-send -i user-available 'C* Ready'
+				;;
+			stop)
+				${CASSANDRA_HOME}/bin/nodetool drain
+				kill $(cat ${pid})
+				;;
+			status)
+				[ -e ${pid} ] && kill -0 $(cat ${pid})
+				if [ 0 -eq $? ]; then
+					echo "Cassandra running with pid = $(cat ${pid})"
+				else
+					echo "Cassandra not running"
+				fi
+				;;
+			*)
+				echo "usage : $0 [start|stop|status]"
+				;;
+		esac
+	}
+
+	alias c='cassandra'
+	alias cql='${CASSANDRA_HOME}/bin/cqlsh'
+	alias nt='${CASSANDRA_HOME}/bin/nodetool'
 fi
 
 which javap > /dev/null

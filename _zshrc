@@ -37,16 +37,17 @@ precmd () {
 # disable autocorrect feature
 unsetopt correct_all
 
-export MVN_HOME=/home/sylvain/tools/maven
-export ANT_HOME=/home/sylvain/tools/ant
+export MVN_HOME=~/tools/maven
+export ANT_HOME=~/tools/ant
 export JAVA_HOME=/usr/lib/jvm/java8oracle
 
 # TODO : externalize local-env variables to local env file
 export NUDGE_PROBE_HOME=~/tools/nudge-probe/dev
-export TOMCAT_HOME=/home/sylvain/tools/apache-tomcat-8.0.11
-export VISUAL_VM_HOME=/home/sylvain/tools/visualvm/visualvm_139
-export PACKER_HOME=/home/sylvain/tools/packer
-export CASSANDRA_HOME=/home/sylvain/tools/cassandra/cassandra2
+export TOMCAT_HOME=~/tools/apache-tomcat-8.0.11
+export VISUAL_VM_HOME=~/tools/visualvm/visualvm_139
+export PACKER_HOME=~/tools/packer
+export CASSANDRA_HOME=~/tools/cassandra/cassandra2
+export ANSIBLE_ROLES_PATH=~/.ansible/roles
 
 export GOROOT=${HOME}/go
 if [ -d ${GOROOT} ]; then
@@ -88,5 +89,5 @@ unset JAVA_TOOL_OPTIONS
 
 export MAVEN_OPTS="-Xmx1G"
 
-export JAVA_DEBUG="-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000"
-export JAVA_DEBUG_SUSPEND="-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000"
+export JAVA_DEBUG="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000"
+export JAVA_DEBUG_SUSPEND="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000"

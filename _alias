@@ -54,7 +54,8 @@ waitLogMsg(){
 	shift
 	(
 			grep -m 1 "${pattern}" <(tail -1f "${logfile}")
-			kill $(ps -ef | grep "tail -1f ${logfile}" | awk '{print $2}') # kill tail
+			# kill tail
+			kill $(ps -ef | grep "tail -1f ${logfile}" | awk '{print $2}')
 			$@
 	) & # start in background
 }

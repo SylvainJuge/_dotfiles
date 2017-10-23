@@ -442,7 +442,7 @@ if [[ -f "${CASSANDRA_HOME}/bin/cassandra" ]]; then
 		pid="${CASSANDRA_HOME}/cassandra.pid"
 		case "$1" in
 			start)
-				truncate ${CASSANDRA_HOME}/logs/system.log
+				echo '' > ${CASSANDRA_HOME}/logs/system.log
 				${CASSANDRA_HOME}/bin/cassandra start -p ${pid}
 				waitLogMsg 'state jump to NORMAL' "${CASSANDRA_HOME}/logs/system.log" notify-send -i user-available 'C* Ready'
 				;;

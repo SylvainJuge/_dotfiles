@@ -599,3 +599,4 @@ if [[ 0 -eq $? ]]; then
 	alias json='python -m json.tool'
 fi
 
+alias unswap='sudo swapoff -a && sudo swapon -a'

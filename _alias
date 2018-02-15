@@ -614,4 +614,8 @@ if [[ 0 -eq $? ]]; then
   alias dcc='docker-compose'
 fi
 
+idea(){
+  "${HOME}/tools/idea/bin/idea.sh" "${1:-}" 2>/dev/null
+}
+
 alias unswap='sudo swapoff -a && sudo swapon -a'

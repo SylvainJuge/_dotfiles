@@ -600,4 +600,18 @@ if [[ 0 -eq $? ]]; then
 	alias json='python -m json.tool'
 fi
 
+which docker > /dev/null
+if [[ 0 -eq $? ]]; then
+  alias d='docker'
+  alias ds='docker stats'
+  alias dc='docker container'
+  dsh(){
+    docker exec -it ${1} sh
+  }
+fi
+which docker-compose > /dev/null
+if [[ 0 -eq $? ]]; then
+  alias dcc='docker-compose'
+fi
+
 alias unswap='sudo swapoff -a && sudo swapon -a'

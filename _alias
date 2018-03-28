@@ -363,7 +363,7 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 	}
 
 	tomcat_log (){
-		tail -F $TOMCAT_HOME/logs/{catalina.out,localhost_access,nudge-server.log}*
+		tail -F $TOMCAT_HOME/logs/{catalina.out,localhost_access}*
 	}
 
 	tomcat_start (){
@@ -397,7 +397,7 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 				$EDITOR ${TOMCAT_HOME}/bin/setenv.sh
 				;;
 			viewlog)
-				$EDITOR ${TOMCAT_HOME}/logs/{catalina.out,nudge-server.log}
+				$EDITOR ${TOMCAT_HOME}/logs/{catalina.out}
 				;;
 			start)
 				tomcat_cleanlog

@@ -26,11 +26,12 @@ chsh -s /bin/zsh
 echo "====[ Create Symbolic Links ]==="
 
 # TODO : only create links if those features are enabled
-ln -sfv $dotFilesDir/_vim/.vim   $HOME/.vim
-ln -sfv $dotFilesDir/_vim/.vimrc $HOME/.vimrc
-ln -sfv $dotFilesDir/_oh-my-zsh  $HOME/.oh-my-zsh 
-ln -sfv $dotFilesDir/_zshrc      $HOME/.zshrc
-ln -sfv $dotFilesDir/_Xmodmap    $HOME/.Xmodmap
+ln -sfv ${dotFilesDir}/_vim/.vim   ${HOME}/.vim
+ln -sfv ${dotFilesDir}/_vim/.vimrc ${HOME}/.vimrc
+ln -sfv ${dotFilesDir}/_oh-my-zsh  ${HOME}/.oh-my-zsh
+ln -sfv ${dotFilesDir}/_zshrc      ${HOME}/.zshrc
+ln -sfv ${dotFilesDir}/_tmux.conf  ${HOME}/.tmux.conf
+#ln -sfv {dotFilesDir}r/_Xmodmap    $HOME/.Xmodmap
 
 # TODO : create links for "ack" and "d" in ~/bin
 

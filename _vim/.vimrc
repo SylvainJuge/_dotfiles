@@ -57,9 +57,6 @@ set tabstop=4
 " make deleting on spaces like its tabs
 set softtabstop=4
 
-" level5 : no expand tab (yet)
-set noexpandtab 
-
 " << / >> right / left shift by 4 spaces
 set shiftwidth=4
 
@@ -221,6 +218,10 @@ vnoremap <leader>y "+y
 nnoremap <leader>y "+y
 vnoremap <leader>p :set paste<esc>"+p
 nnoremap <leader>p :set paste<esc>"+p
+
+if !has('clipboard')
+    echom "WARNING : system clipboard not available in this version"
+endif
 
 " ---- highlight customization ----
 " search color

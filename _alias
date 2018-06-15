@@ -68,8 +68,6 @@ if [[ 0 -eq $? ]]; then
     alias md='mvnDebug'
     alias mi='mvn install'
     alias mci='mvn clean install'
-    alias mist='mvn install -DskipTests'
-    alias mcist='mvn clean install -DskipTests'
 
     # default effective pom output
     mvn_effective_pom_file='target/effective-pom.xml'
@@ -363,7 +361,7 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 	}
 
 	tomcat_log (){
-		tail -F $TOMCAT_HOME/logs/{catalina.out,localhost_access}*
+		tail -F $TOMCAT_HOME/logs/catalina.out
 	}
 
 	tomcat_start (){
@@ -397,7 +395,7 @@ if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
 				$EDITOR ${TOMCAT_HOME}/bin/setenv.sh
 				;;
 			viewlog)
-				$EDITOR ${TOMCAT_HOME}/logs/{catalina.out}
+				$EDITOR ${TOMCAT_HOME}/logs/catalina.out
 				;;
 			start)
 				tomcat_cleanlog
@@ -564,8 +562,8 @@ if [[ -f "${VISUAL_VM_HOME}/bin/visualvm" ]];then
 
 	visualvm(){
 		rm -f ~/.visualvm/*/lock 2>&1 > /dev/null
-		export JAVA_HOME=/usr/lib/jvm/java8oracle
-		${VISUAL_VM_HOME}/bin/visualvm --jdkhome $JAVA_HOME&
+        echo ${JAVA_HOME}
+		${VISUAL_VM_HOME}/bin/visualvm --jdkhome ${JAVA_HOME}&
 	}
 fi
 

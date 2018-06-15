@@ -37,7 +37,7 @@ precmd () {
 # disable autocorrect feature
 unsetopt correct_all
 
-export MVN_HOME=~/tools/maven/current/
+export MVN_HOME=~/tools/maven/current
 export ANT_HOME=~/tools/ant/current
 export GRADLE_HOME=~/tools/gradle/current
 export TOMCAT_HOME=~/tools/tomcat/current
@@ -46,16 +46,10 @@ export JAVA_HOME=/usr/lib/jvm/java8-openjdk
 
 # TODO : externalize local-env variables to local env file
 
-export VISUAL_VM_HOME=~/tools/visualvm/visualvm_14
+export VISUAL_VM_HOME=~/tools/visualvm/visualvm_141
 export PACKER_HOME=~/tools/packer
 export CASSANDRA_HOME=~/tools/cassandra/cassandra2
 export ANSIBLE_ROLES_PATH=~/.ansible/roles
-
-export GOROOT=${HOME}/go
-if [ -d ${GOROOT} ]; then
-	export GOPATH=${HOME}/gopath
-    PATH="${PATH}:${GOPATH}/bin:${GOROOT}/bin"
-fi
 
 if [ -e $HOME/bin ]; then
     PATH="$PATH:$HOME/bin"
@@ -71,6 +65,7 @@ $PATH"
 
 export TERM='xterm-256color'
 # aliases
+source ~/tools/sqreen-agent/agent.sh
 source ~/.dotfiles/_alias
 
 # use vim as default editor (called when typing Ctrl-x Ctrl-e

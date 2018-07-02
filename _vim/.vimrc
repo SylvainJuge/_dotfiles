@@ -221,7 +221,12 @@ nnoremap <leader>p :set paste<esc>"+p
 
 if !has('clipboard')
     echom "WARNING : system clipboard not available in this version"
+else
+    set clipboard+=system
 endif
+
+" disable auto indent on paste
+set paste
 
 " ---- highlight customization ----
 " search color

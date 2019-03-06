@@ -37,22 +37,14 @@ precmd () {
 # disable autocorrect feature
 unsetopt correct_all
 
-export MVN_HOME=~/tools/maven/current
-export ANT_HOME=~/tools/ant/current
-export GRADLE_HOME=~/tools/gradle/current
-export TOMCAT_HOME=~/tools/tomcat/current
-
-export JAVA_HOME=/usr/lib/jvm/java8-openjdk
-
-# TODO : externalize local-env variables to local env file
-
-export VISUAL_VM_HOME=~/tools/visualvm/visualvm_141
-export PACKER_HOME=~/tools/packer
-export CASSANDRA_HOME=~/tools/cassandra/cassandra2
-export ANSIBLE_ROLES_PATH=~/.ansible/roles
 
 if [ -e $HOME/bin ]; then
     PATH="$PATH:$HOME/bin"
+fi
+
+# get local config, if any
+if [[ -f ${HOME}/localzshrc ]]; then
+    source ${HOME}/localzshrc
 fi
 
 export PATH="\
@@ -60,13 +52,14 @@ $ANT_HOME/bin:\
 $MVN_HOME/bin:\
 $GRADLE_HOME/bin:\
 $JAVA_HOME/bin:\
+$GROOVY_HOME/bin:\
 $PACKER_HOME:\
+$HUB_HOME/bin:\
 $PATH"
 
 export TERM='xterm-256color'
+
 # aliases
-source ~/tools/sqreen-agent/agent.sh
-source ~/.dotfiles/_alias
 
 # use vim as default editor (called when typing Ctrl-x Ctrl-e
 export EDITOR=vim
@@ -79,8 +72,6 @@ source $HOME/.dotfiles/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zs
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[cursor]='fg=blue'
 
-alias antlr='java -jar /home/sylvain/tools/antlr/antlr-4.2.2-complete.jar'
-
 export XMODIFIERS=@im=ibus
 # remove annoying jayatanaag message
 unset JAVA_TOOL_OPTIONS
@@ -92,3 +83,42 @@ export JAVA_DEBUG_SUSPEND="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+# virtualenv
+export WORKON_HOME=~/.virtualenvs
+mkdir -p $WORKON_HOME
+source ~/.local/bin/virtualenvwrapper.sh
+
+# yarn
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+SSH_ENV="$HOME/.ssh/environment"
+
+# -------------------------------------------
+# start ssh agent when needed
+function start_agent {
+    echo "Initialising new SSH agent..."
+    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    echo succeeded
+    chmod 600 "${SSH_ENV}"
+    . "${SSH_ENV}" > /dev/null
+    /usr/bin/ssh-add ${HOME}/.ssh/id_rsa{,_aws,_aws_mongo_ro};
+}
+# Source SSH settings, if applicable
+if [ -f "${SSH_ENV}" ]; then
+    . "${SSH_ENV}" > /dev/null
+    #ps ${SSH_AGENT_PID} doesn't work under cywgin
+    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+        start_agent;
+    }
+else
+    start_agent
+fi
+
+
+source ~/.dotfiles/_alias

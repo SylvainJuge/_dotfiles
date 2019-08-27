@@ -29,7 +29,7 @@ precmd () {
     # taken as-is from ZSH precmd definition
     title $ZSH_THEME_TERM_TAB_TITLE_IDLE $ZSH_THEME_TERM_TITLE_IDLE
 
-    export PS1='%{$fg_bold[green]%}%d %{$reset_color%}'
+    export PS1='$(random_emoji) %{$fg_bold[green]%}%d %{$reset_color%}'
     export PS2='%{$fg_bold[green]%}%_> %{$reset_color%}'
     export RPS1='%{$fg_bold[blue]%}$(git_prompt_info)%{$reset_color%}'
 }

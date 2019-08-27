@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -u
+set -e
+set -o pipefail
+
+img=/tmp/screenshot.png
+gnome-screenshot -f ${img}
+i3lock -i ${img} -u -p default -n

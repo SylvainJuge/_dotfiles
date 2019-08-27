@@ -1,0 +1,12 @@
+#!/bin/bash
+
+which qrencode > /dev/null
+if [[ 0 -ne $? ]]; then
+    echo "missing dependency: qrencode"
+    exit 1
+else
+    file="$(mktemp --suffix=.svg)"
+    cat - | qrencode -t png -o "${file}"
+    display "${file}"
+    #rm "${file}"
+fi

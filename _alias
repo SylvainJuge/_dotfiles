@@ -603,8 +603,20 @@ if [[ 0 -eq $? ]]; then
   alias d='docker'
   alias ds='docker stats'
   alias dc='docker container'
+  alias dm='docker inspect -f "{{ .Mounts }}"'
+
+  drsh(){
+    docker exec -it --user 0 ${1} bash
+  }
   dsh(){
-    docker exec -it ${1} sh
+    docker exec -it ${1} bash
+  }
+  dip(){
+    docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${1}
+  }
+
+  dg(){
+    docker ps | grep ${1} | awk '{print $1}'
   }
 fi
 which docker-compose > /dev/null

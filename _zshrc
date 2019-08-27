@@ -43,8 +43,8 @@ if [ -e $HOME/bin ]; then
 fi
 
 # get local config, if any
-if [[ -f ${HOME}/localzshrc ]]; then
-    source ${HOME}/localzshrc
+if [[ -f ${HOME}/.localzshrc ]]; then
+    source ${HOME}/.localzshrc
 fi
 
 export PATH="\

@@ -26,6 +26,7 @@ set fileencoding=utf-8
 " auto complete on tab
 set wildmenu
 
+
 " disable arrow key mappings (normal and insert modes)
 nnoremap <Up> <nop>
 nnoremap <Down> <nop>
@@ -310,7 +311,7 @@ augroup END
 
 augroup jenkins
     autocmd!
-    autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy
+    autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy expandtab
 augroup END
 
 function! Javap()
@@ -336,3 +337,5 @@ nnoremap <leader>d <esc>:windo diffthis
 
 " use proper indent for yaml
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+set expandtab

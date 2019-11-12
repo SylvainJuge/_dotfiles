@@ -3,12 +3,12 @@
 # "do" : execute one command on multiple folders
 alias d='~/bin/d'
 
-uname="$(uname)"
-if [ 'MINGW' = "${uname:0:5}" ]; then
-    IS_WINDOWS=1
-else
-    IS_WINDOWS=0
-fi
+IS_WINDOWS=0
+IS_MACOS=0
+case "$(uname -s)" in
+    MINGW*) IS_WINDOWS=1 ;;
+    Darwin*) IS_MACOS=1 ;;
+esac
 
 if [[ 1 -eq $IS_WINDOWS ]]; then
     alias dir='ls'
@@ -24,7 +24,12 @@ if [[ 1 -eq $IS_WINDOWS ]]; then
    o (){
       start "$@"
    }
+elif [[ 1 -eq $IS_MACOS ]]; then
+   o (){
+      open "$@"
+   }
 else
+    # assume linux
     which xdg-open > /dev/null
     if [[ 0 -eq $? ]]; then
        o (){
@@ -67,7 +72,10 @@ if [[ 0 -eq $? ]]; then
     alias m='mvn'
     alias md='mvnDebug'
     alias mi='mvn install'
+    alias mp='mvn package'
+    alias mpst='mvn package -DskipTests'
     alias mci='mvn clean install'
+    alias mcist='mvn clean install -DskipTests'
 
     # default effective pom output
     mvn_effective_pom_file='target/effective-pom.xml'
@@ -148,8 +156,8 @@ if [[ 0 -eq $? ]]; then
     alias gds='git diff --staged'
     alias gd='git diff'
     alias gc='git commit'
-    alias ggpull='git pull --rebase origin $(_current_branch) && git fetch origin $(_current_branch)'
-    alias ggpush='git push origin $(_current_branch)'
+#    alias ggpull='git pull --rebase origin $(_current_branch) && git fetch origin $(_current_branch)'
+#    alias ggpush='git push origin $(_current_branch)'
     # TODO : improve 'gco' to make it set upstream branch when checkout origin/branch
     # -> only when branch name starts with 'origin/' because we (very rarely) need to 
     # checkout a remote branch
@@ -629,3 +637,11 @@ idea(){
 }
 
 alias unswap='sudo swapoff -a && sudo swapon -a'
+
+# per projects aliases
+doc_build(){
+    ${HOME}/dev/docs/build_docs \
+        --doc ${HOME}/dev/apm-agent-java/docs/index.asciidoc \
+        --out /tmp/doc \
+        --open
+}

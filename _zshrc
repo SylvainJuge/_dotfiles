@@ -78,25 +78,6 @@ unset JAVA_TOOL_OPTIONS
 
 export MAVEN_OPTS="-Xmx1G"
 
-export JAVA_DEBUG="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000"
-export JAVA_DEBUG_SUSPEND="-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000"
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-
-# virtualenv
-export WORKON_HOME=~/.virtualenvs
-mkdir -p $WORKON_HOME
-source ~/.local/bin/virtualenvwrapper.sh
-
-# yarn
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
 SSH_ENV="$HOME/.ssh/environment"
 
 # -------------------------------------------

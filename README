@@ -7,9 +7,10 @@ yet another .dotfiles repo
     contains oh-my-zsh as submodule (automatic update disabled)
     bash aliases are common with BASH (_alias file)
 
-    [linux] : create symlink
+    [linux] : create symlinks
     
-        .zshrc -> .dotfiles/_zsh/.zshrc
+	ln -s ~/.dotfiles/_zshrc ~/.zshrc
+	ln -s ~/.dotfiles/_oh-my-zsh ~/.oh-my-zsh
 
 
 => VIM
@@ -18,8 +19,8 @@ yet another .dotfiles repo
 
     [linux] : create symlinks
 
-        ~/.vimrc -> .dotfiles/_vim/.vimrc
-        ~/.vim   -> .dotfiles/_vim/.vim
+	ln -s ~/.dotfiles/_vim ~/.vim
+	ln -s ~/.dotfiles/_vimrc ~/.vimrc
         
     [windows] : create ~/.vimrc file with content :
 

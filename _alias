@@ -143,7 +143,7 @@ if [[ 0 -eq $? ]]; then
     alias gla='git log --decorate --oneline --graph --all'
     alias gld='git log --decorate --oneline --graph --simplify-by-decoration'
     alias gls='git ls-files --exclude-standard'
-    alias gh='git help'
+
     alias gpr='git pull --rebase'
     alias gp='git pull'
     alias gpu='git push'
@@ -152,82 +152,31 @@ if [[ 0 -eq $? ]]; then
     alias ga='git add'
     alias gap='git add -vp'
     alias gai='git add -i'
-    alias gr='git reset'
     alias gds='git diff --staged'
     alias gd='git diff'
     alias gc='git commit'
-#    alias ggpull='git pull --rebase origin $(_current_branch) && git fetch origin $(_current_branch)'
-#    alias ggpush='git push origin $(_current_branch)'
-    # TODO : improve 'gco' to make it set upstream branch when checkout origin/branch
-    # -> only when branch name starts with 'origin/' because we (very rarely) need to 
-    # checkout a remote branch
+
+
+
     alias gco='git checkout'
     # allow to know which commits have been merged upstream/to specific branch
     alias gch='git cherry -v'
     alias gcp='git cherry-pick'
-    alias gsl='git shortlog --email'
 
     alias gdesc='git describe --tags --always --dirty'
-
-    # git commit files : modified files in ref
-    alias gcf='git diff-tree --no-commit-id --name-only -r "$@"'
-
-    # edit modified files with $EDITOR
-    alias vgm='$EDITOR $(gls -m)'
 
     # git list unmerged files
     glsu (){
        git ls-files -u | awk '{print $4}' | sort -u
     }
 
-    # git for branch : execute command on a branch
-    # parameters
-    # 1 : branch name
-    # 2 and more : command parameters (passed as-is)
-    gfb () {
-       local head="$(_current_branch)"
-       [[ -n "$(git status -s)" ]] && echo "can't work on dirty state repo" && return 1
-       local branch="${1:-master}"
-       shift
-       git checkout "$branch" 2>/dev/null 1>/dev/null
-       echo "$branch -> $@\n"
-       $@
-       git checkout "$head" 2>/dev/null 1>/dev/null
-    }
-
-    # git repo url
-    #gru (){
-    #  echo '$(git config --get remote.origin.url | sed -e 's+git@\(.*\):\(.*\)\.git+https://\1/\2/+')'
-    #}
-    ## git branch url
-    ## parameters :
-    ## 1 : branch name, defaults to current branch if not provided
-    #gbu (){
-    #  local branch="${1:-$(_current_branch)}"
-    #  echo "$(gru)tree/$branch"
-    #}
-    ## git commit url
-    ## generate commit url using repository url, tested only with github
-    ## parameters :
-    ## 1 : commit ref, fallback to HEAD if not provided
-    #gcu (){
-    #  local ref="$(git rev-parse ${1:-HEAD})"
-    #  echo "$(gru)commit/$ref"
-    #}
-    if [ -n "$JIRA_URL" ]; then
-      # generate git jira message
-      # parameters :
-      # 1 : commit ref (defaults to HEAD)
-      # 2 : branch name (defaults to current branch)
-      gjm (){
-         local commit="$(git rev-parse ${1:-HEAD})"
-         local commitUrl="$(gcu $commit)"
-         local branch="${2:-$(_current_branch)}"
-         local branchUrl="$(gbu $branch)"
-         echo "fixed at commit [[$commit|$commitUrl]]"
-         echo "on branch [[$branch|$branchUrl]]"
-      }
-   fi
+    alias gwl='git worktree list'
+    which fzf > /dev/null
+    if [[ 0 -eq $? ]]; then
+        gwcd (){
+            cd $(gwl | fzf | awk '{print $1}')
+        }
+    fi
 
 fi
 
@@ -632,9 +581,9 @@ if [[ 0 -eq $? ]]; then
   alias dcc='docker-compose'
 fi
 
-idea(){
-  "${HOME}/tools/idea/bin/idea.sh" "${1:-}" 2>/dev/null
-}
+#idea(){
+#  "${HOME}/tools/idea/bin/idea.sh" "${1:-}" 2>/dev/null
+#}
 
 alias unswap='sudo swapoff -a && sudo swapon -a'
 

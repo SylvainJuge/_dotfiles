@@ -110,5 +110,9 @@ source ~/.dotfiles/_alias
 
 FZF_FOLDER=/usr/share/doc/fzf
 if [ -e "${FZF_FOLDER}" ]; then
+
+    FZF_DEFAULT_OPTS="--multi"
+
+    source ${FZF_FOLDER}/examples/completion.zsh
     source ${FZF_FOLDER}/examples/key-bindings.zsh
 fi

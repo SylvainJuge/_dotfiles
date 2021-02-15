@@ -52,6 +52,18 @@ if [[ 0 -eq $? ]]; then
     alias ali='ack -li'
 fi
 
+HAS_FZF=0
+which fzf > /dev/null
+if [[ 0 -eq $? ]]; then
+    HAS_FZF=1
+fi
+
+HAS_GH=0
+which gh > /dev/null
+if [[ 0 -eq $? ]]; then
+    HAS_GH=1
+fi
+
 waitLogMsg(){
 	pattern="${1}"
 	shift
@@ -144,7 +156,7 @@ if [[ 0 -eq $? ]]; then
     alias gld='git log --decorate --oneline --graph --simplify-by-decoration'
     alias gls='git ls-files --exclude-standard'
 
-    alias gpr='git pull --rebase'
+    #alias gpr='git pull --rebase'
     alias gp='git pull'
     alias gpu='git push'
     alias gf='git fetch --all --tags'
@@ -171,10 +183,21 @@ if [[ 0 -eq $? ]]; then
     }
 
     alias gwl='git worktree list'
-    which fzf > /dev/null
-    if [[ 0 -eq $? ]]; then
-        gwcd (){
+    if [[ 1 -eq $HAS_FZF ]]; then
+        gw() {
             cd $(gwl | fzf | awk '{print $1}')
+        }
+    fi
+
+    if [[ 1 -eq $HAS_FZF ]] && [[ 1 -eq $HAS_GH ]]; then
+        # interactive prompt to select pull-request
+        gpr() {
+            gh pr list | fzf | awk '{print $1}'
+        }
+        # interactive prompt to checkout PR, will use current branch if available
+        # TODO add remote if required for a fork to allow pushing
+        gwco() {
+            gh pr checkout $(gpr)
         }
     fi
 

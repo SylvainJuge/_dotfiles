@@ -185,7 +185,9 @@ if [[ 0 -eq $? ]]; then
     alias gwl='git worktree list'
     if [[ 1 -eq $HAS_FZF ]]; then
         gw() {
-            cd $(gwl | fzf | awk '{print $1}')
+            folder="$(gwl | fzf | awk '{print $1}')"
+            [ "${folder}" != '' ] || return 1
+            cd ${folder}
         }
     fi
 
@@ -195,9 +197,22 @@ if [[ 0 -eq $? ]]; then
             gh pr list | fzf | awk '{print $1}'
         }
         # interactive prompt to checkout PR, will use current branch if available
-        # TODO add remote if required for a fork to allow pushing
+        # add remote if required for a fork to allow convenient push
         gwco() {
-            gh pr checkout $(gpr)
+            pr="$(gpr)"
+            [ "${pr}" != '' ] || return 1
+
+            gh pr checkout ${pr}
+
+            # add remote if not already available
+            remote_ssh=$(gh api repos/:owner/:repo/pulls/${pr} --jq '.head.repo.ssh_url')
+            remote_name=${remote_ssh#git@github.com:}
+            remote_name=${remote_name%%/*}
+            git remote -v | tr '\t' ' ' | grep "${remote_name} ${remote_ssh}" > /dev/null
+            if [ $? != 0 ]; then
+                echo "adding remote: ${remote_name}"
+                git remote add ${remote_name} ${remote_ssh}
+            fi
         }
     fi
 

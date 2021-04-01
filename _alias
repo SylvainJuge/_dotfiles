@@ -198,7 +198,7 @@ if [[ 0 -eq $? ]]; then
         }
         # interactive prompt to checkout PR, will use current branch if available
         # add remote if required for a fork to allow convenient push
-        gwco() {
+        gprco() {
             pr="$(gpr)"
             [ "${pr}" != '' ] || return 1
 
@@ -208,7 +208,7 @@ if [[ 0 -eq $? ]]; then
             remote_ssh=$(gh api repos/:owner/:repo/pulls/${pr} --jq '.head.repo.ssh_url')
             remote_name=${remote_ssh#git@github.com:}
             remote_name=${remote_name%%/*}
-            git remote -v | tr '\t' ' ' | grep "${remote_name} ${remote_ssh}" > /dev/null
+            git remote -v | tr '\t' ' ' | grep "${remote_ssh}" > /dev/null
             if [ $? != 0 ]; then
                 echo "adding remote: ${remote_name}"
                 git remote add ${remote_name} ${remote_ssh}

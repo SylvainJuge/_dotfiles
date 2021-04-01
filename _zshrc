@@ -81,46 +81,28 @@ export XMODIFIERS=@im=ibus
 # remove annoying jayatanaag message
 unset JAVA_TOOL_OPTIONS
 
-export MAVEN_OPTS="-Xmx1G"
-
 SSH_ENV="$HOME/.ssh/environment"
-
-# -------------------------------------------
-# start ssh agent when needed
-# ---> ssh agent disabled for now
-# function start_agent {
-#     echo "Initialising new SSH agent..."
-#     /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-#     echo succeeded
-#     chmod 600 "${SSH_ENV}"
-#     . "${SSH_ENV}" > /dev/null
-#     /usr/bin/ssh-add ${HOME}/.ssh/id_rsa{,_aws,_aws_mongo_ro};
-# }
-# # Source SSH settings, if applicable
-# if [ -f "${SSH_ENV}" ]; then
-#     . "${SSH_ENV}" > /dev/null
-#     #ps ${SSH_AGENT_PID} doesn't work under cywgin
-#     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-#         start_agent;
-#     }
-# else
-#     start_agent
-# fi
-
 
 source ~/.dotfiles/_alias
 
 which fd > /dev/null
 if [[ 0 -eq $? ]]; then
-    export FZF_DEFAULT_COMMAND="fd . $HOME"
-    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-    export FZF_ALT_C_COMMAND="fd -t d . $HOME"
+    export FZF_DEFAULT_COMMAND="fd ."
+    export FZF_CTRL_T_COMMAND="fd --color=always ."
+    export FZF_ALT_C_COMMAND="fd --color=always --type d ."
 fi
 
 FZF_FOLDER=/usr/share/doc/fzf
 if [ -e "${FZF_FOLDER}" ]; then
 
-    FZF_DEFAULT_OPTS="--multi"
+    # multi-line + ansi colors
+    export FZF_DEFAULT_OPTS="--multi --ansi --reverse --height 40% --border"
+
+    export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+    --color=dark
+    --color=fg:-1,bg:-1,hl:#5fff87,fg+:-1,bg+:-1,hl+:#ffaf5f
+    --color=info:#af87ff,prompt:#5fff87,pointer:#ab5cff,marker:#ff0000,spinner:#ff87d7
+    '
 
     source ${FZF_FOLDER}/examples/completion.zsh
     source ${FZF_FOLDER}/examples/key-bindings.zsh

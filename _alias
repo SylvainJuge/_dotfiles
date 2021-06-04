@@ -184,10 +184,23 @@ if [[ 0 -eq $? ]]; then
 
     alias gwl='git worktree list'
     if [[ 1 -eq $HAS_FZF ]]; then
+        # git worktree select
+        gws() {
+            echo "$(gwl | fzf | awk '{print $1}')"
+        }
+
+        # git worktree (move to)
         gw() {
-            folder="$(gwl | fzf | awk '{print $1}')"
+            folder="$(gws)"
             [ "${folder}" != '' ] || return 1
             cd ${folder}
+        }
+    fi
+
+    if [[ 1 -eq $HAS_GH ]]; then
+        # open current pr in browser
+        gprv() {
+            gh pr view --web
         }
     fi
 

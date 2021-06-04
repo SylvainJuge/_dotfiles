@@ -64,19 +64,6 @@ if [[ 0 -eq $? ]]; then
     HAS_GH=1
 fi
 
-waitLogMsg(){
-	pattern="${1}"
-	shift
-	logfile="${1}"
-	shift
-	(
-			grep -m 1 "${pattern}" <(tail -1f "${logfile}")
-			# kill tail
-			kill $(ps -ef | grep "tail -1f ${logfile}" | awk '{print $2}')
-			$@
-	) & # start in background
-}
-
 # Maven
 which mvn > /dev/null
 if [[ 0 -eq $? ]]; then
@@ -138,7 +125,6 @@ if [[ 0 -eq $? ]]; then
        mvn_effective_pom $out && cat $out && /bin/rm -f $out
     }
 
-
 fi
 
 # Git
@@ -167,8 +153,6 @@ if [[ 0 -eq $? ]]; then
     alias gds='git diff --staged'
     alias gd='git diff'
     alias gc='git commit'
-
-
 
     alias gco='git checkout'
     # allow to know which commits have been merged upstream/to specific branch
@@ -359,123 +343,6 @@ sshaudit (){
    done
 }
 
-
-#TODO : make script to find war by itself (or take the 1st), so that only deployment name is required
-
-if [[ -f "${TOMCAT_HOME}/bin/catalina.sh" ]]; then
-
-	tomcat_cleanlog (){
-		/bin/rm -rf $TOMCAT_HOME/logs/*
-	}
-
-	tomcat_log (){
-		tail -F $TOMCAT_HOME/logs/catalina.out
-	}
-
-	tomcat_start (){
-		tomcat_cleanlog
-		${TOMCAT_HOME}/bin/catalina.sh start
-		waitLogMsg 'Server startup in' "${TOMCAT_HOME}/logs/catalina.out" notify-send -i user-available 'Tomcat started'
-	}
-
-	tomcat_stop (){
-		${TOMCAT_HOME}/bin/catalina.sh stop -force $1
-	}
-
-	tomcat_deploy (){
-		war=${1?ERROR usage : tomcat_deploy <your-app.war>}
-		fullPath="$(pwd)/$1"
-		filename="${1##*/}" 
-		name="${2:-${filename%.war}}"
-		echo "deploy $fullPath as $name"
-		
-		rm -rf ${TOMCAT_HOME}/webapps/${name}{,.war}
-		cp $fullPath ${TOMCAT_HOME}/webapps/${name}.war
-		
-	}
-
-	tomcat (){
-		case "$1" in
-			log)
-				tomcat_log &
-				;;
-			conf)
-				$EDITOR ${TOMCAT_HOME}/bin/setenv.sh
-				;;
-			viewlog)
-				$EDITOR ${TOMCAT_HOME}/logs/catalina.out
-				;;
-			start)
-				tomcat_cleanlog
-				tomcat_start
-				;;
-			stop)
-				tomcat_stop
-				;;
-			restart)
-				tomcat_stop
-				tomcat_cleanlog
-				tomcat_start
-				;;
-			deploy)
-				tomcat_stop
-				tomcat_cleanlog
-				tomcat_deploy $2 $3
-				tomcat_start
-				;;
-			clean)
-				tomcat_stop
-				tomcat_cleanlog
-				rm -rf ${TOMCAT_HOME}/work && mkdir ${TOMCAT_HOME}/work
-				rm -rf ${TOMCAT_HOME}/webapps && mkdir ${TOMCAT_HOME}/webapps
-			;;
-			*)
-				echo "usage : $0 [start|stop|conf|restart|log|viewlog|deploy|]"
-				;;
-		esac
-	}
-
-	alias t='tomcat'
-	alias tl='tomcat log'
-	alias tvl='tomcat viewlog'
-	alias ts='tomcat stop'
-	alias trs='tomcat restart'
-	# TODO : provide zsh|bash completion for tomcat command
-fi
-
-if [[ -f "${CASSANDRA_HOME}/bin/cassandra" ]]; then
-	cassandra(){
-		cmd="${CASSANDRA_HOME}/bin/cassandra"
-		pid="${CASSANDRA_HOME}/cassandra.pid"
-		case "$1" in
-			start)
-				echo '' > ${CASSANDRA_HOME}/logs/system.log
-				${CASSANDRA_HOME}/bin/cassandra start -p ${pid}
-				waitLogMsg 'state jump to NORMAL' "${CASSANDRA_HOME}/logs/system.log" notify-send -i user-available 'C* Ready'
-				;;
-			stop)
-				${CASSANDRA_HOME}/bin/nodetool drain
-				kill $(cat ${pid})
-				;;
-			status)
-				[ -e ${pid} ] && kill -0 $(cat ${pid})
-				if [ 0 -eq $? ]; then
-					echo "Cassandra running with pid = $(cat ${pid})"
-				else
-					echo "Cassandra not running"
-				fi
-				;;
-			*)
-				echo "usage : $0 [start|stop|status]"
-				;;
-		esac
-	}
-
-	alias c='cassandra'
-	alias cql='${CASSANDRA_HOME}/bin/cqlsh'
-	alias nt='${CASSANDRA_HOME}/bin/nodetool'
-fi
-
 which javap > /dev/null
 if [[ 0 -eq $? ]]; then
 	# from .class file
@@ -518,54 +385,6 @@ if [[ 0 -eq $? ]]; then
 	}
 fi
 
-if [[ -e "${NUDGE_PROBE_HOME}" ]]; then
-	# nudge probe commands	
-
-	nudge_probe(){
-		cmd="$1"
-		[[ $# > 0 ]] && shift
-		case "${cmd}" in
-			log)
-				tail -F ${NUDGE_PROBE_HOME}/log/nudge.log
-			;;
-			instrumented)
-				cat ${NUDGE_PROBE_HOME}/log/nudge.log | grep 'instrumentation'
-			;;
-			logview)
-				${EDITOR:-vi} ${NUDGE_PROBE_HOME}/log/nudge.log
-			;;
-			clean)
-				/bin/rm -rf ${NUDGE_PROBE_HOME}/log/*
-			;;
-			conf)
-				${EDITOR:-vim} ${NUDGE_PROBE_HOME}/nudge.properties
-			;;
-			view)
-				[[ $# > 0 ]] \
-					&& java -jar ${NUDGE_PROBE_HOME}/nudge-*.jar -va "$@" \
-					|| java -jar ${NUDGE_PROBE_HOME}/nudge-*.jar -va ${NUDGE_PROBE_HOME}/log/raw*.log
-			;;
-			print)
-				java -jar ${NUDGE_PROBE_HOME}/nudge-*.jar -pa "$@"
-			;;
-			*)
-				echo "usage : $0 [log|logview|clean|conf|view|print]"
-				;;
-		esac
-	}
-
-	np(){
-		nudge_probe "$@"
-	}
-
-	alias npl='nudge_probe log'
-	alias npi='nudge_probe instrumented'
-	alias npvl='nudge_probe logview'
-	alias npc='nudge_probe clean'
-	alias npp='nudge_probe print'
-	alias npd='nudge_probe view'
-fi
-
 if [[ -f "${VISUAL_VM_HOME}/bin/visualvm" ]];then
 
 	visualvm(){
@@ -573,16 +392,6 @@ if [[ -f "${VISUAL_VM_HOME}/bin/visualvm" ]];then
         echo ${JAVA_HOME}
 		${VISUAL_VM_HOME}/bin/visualvm --jdkhome ${JAVA_HOME}&
 	}
-fi
-
-
-if [[ -f "/usr/bin/teamviewer" ]]; then
-	launch_teamviewer(){
-		sudo systemctl start teamviewerd.service
-		/usr/bin/teamviewer
-		sudo systemctl stop teamviewerd.service
-	}
-	alias teamviewer='launch_teamviewer &'
 fi
 
 
@@ -601,42 +410,34 @@ if [[ 0 -eq $? ]]; then
 fi
 
 
-which python > /dev/null
-if [[ 0 -eq $? ]]; then
-	alias json='python -m json.tool'
-fi
-
 which docker > /dev/null
 if [[ 0 -eq $? ]]; then
+  # docker select (container)
+  ds(){
+      docker ps | sed '1d' | fzf | awk '{print $1}'
+  }
+  di(){
+      docker image ls | sed '1d' | fzf | awk '{print $1 ":" $2}'
+  }
+
   alias d='docker'
-  alias ds='docker stats'
   alias dc='docker container'
   alias dm='docker inspect -f "{{ .Mounts }}"'
 
+  # root shell
   drsh(){
     docker exec -it --user 0 ${1} bash
   }
+  # open shell
   dsh(){
     docker exec -it ${1} bash
   }
+  # get container IP
   dip(){
     docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${1}
   }
 
-  dg(){
-    docker ps | grep ${1} | awk '{print $1}'
-  }
 fi
-which docker-compose > /dev/null
-if [[ 0 -eq $? ]]; then
-  alias dcc='docker-compose'
-fi
-
-#idea(){
-#  "${HOME}/tools/idea/bin/idea.sh" "${1:-}" 2>/dev/null
-#}
-
-alias unswap='sudo swapoff -a && sudo swapon -a'
 
 # per projects aliases
 doc_build(){

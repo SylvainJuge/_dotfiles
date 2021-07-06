@@ -201,15 +201,28 @@ if [[ 0 -eq $? ]]; then
 
             gh pr checkout ${pr}
 
+            upstream_ssh=$(gh api repos/:owner/:repo --jq '.ssh_url')
+
             # add remote if not already available
             remote_ssh=$(gh api repos/:owner/:repo/pulls/${pr} --jq '.head.repo.ssh_url')
             remote_name=${remote_ssh#git@github.com:}
             remote_name=${remote_name%%/*}
-            git remote -v | tr '\t' ' ' | grep "${remote_ssh}" > /dev/null
-            if [ $? != 0 ]; then
-                echo "adding remote: ${remote_name}"
-                git remote add ${remote_name} ${remote_ssh}
+
+            if [[ "${upstream_ssh}" == "${remote_ssh}" ]]; then
+                # PR branch is on upstream remote
+                remote_name=$(git remote -v|grep "${upstream_ssh}"| awk '{print $1}'|uniq)
+            else
+                # PR is not on upstream remote, add it if required
+                git remote -v | tr '\t' ' ' | grep "${remote_ssh}" > /dev/null
+                if [ $? != 0 ]; then
+                    echo "adding remote: ${remote_name}"
+                    git remote add ${remote_name} ${remote_ssh}
+                fi
             fi
+
+            remote_branch=$(gh api repos/:owner/:repo/pulls/${pr}|jq -Mr '.head.ref')
+            git fetch ${remote_name} ${remote_branch}
+            git push --set-upstream ${remote_name} ${remote_branch}
         }
     fi
 

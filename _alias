@@ -373,19 +373,22 @@ if [[ 0 -eq $? ]]; then
 		rm ${tmp}
 	}
 
-	# from .class within a .jar
-	jjp(){
-		jarFile=${1}
-		classFile=${2}
+	# Open files within a .jar
+	jjf(){
+		jarFile="$(find . -name '*.jar'|fzf)"
+        
+		file="$(unzip -Z1 "${jarFile}"|fzf)"
 
-		tmpClass="/tmp/$(basename ${classFile})"
-		unzip -p ${jarFile} ${classFile} > ${tmpClass}
+		tmpFile="/tmp/jjf-$(basename ${file})"
+		unzip -p ${jarFile} ${file} > ${tmpFile}
+
+        if [[ '.class' == "${tmpFile: -6}" ]]; then
+            cat $(_javap ${tmpFile})
+        else
+            cat "${tmpFile}"
+        fi
 		
-		tmp=$(_javap ${tmpClass})
-		cat ${tmp}
-
-		rm ${tmpClass}
-		rm ${tmp}
+		rm ${tmpFile}
 	}
 	vjjp(){
 		vim =(jjp $1 $2)

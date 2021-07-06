@@ -39,18 +39,17 @@ sensors:
   # Individual sensors need to be picked out with the "indices:" keyword.
   # This can be used with a stable path that does not depend on driver load
   # order. However certain drivers may not appear under such a stable path.
-  - hwmon: /sys/devices/platform/thinkpad_hwmon/hwmon
-    indices: [1]
-    correction: [0]
+  - hwmon: /sys/devices/platform/coretemp.0/hwmon
+    indices: [4]
 
   # hwmon: Base path with name-based search
   # =======================================
   # Thinkfan will search under the given path for a hwmon driver that has a
   # file called "name" which contains the given name. This method should work
   # with all hwmon drivers and is robust against driver load order.
-  #- hwmon: /sys/class/hwmon
-  #  name: temp
-  #  indices: [1]
+#  - hwmon: /sys/class/hwmon
+#    name: temp
+#    indices: [1]
 
   # Sensors can also be optional, e.g. in case of removable hardware
   #  - hwmon: /sys/class/block/sdc/device/hwmon

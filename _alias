@@ -217,6 +217,9 @@ if [[ 0 -eq $? ]]; then
                 if [ $? != 0 ]; then
                     echo "adding remote: ${remote_name}"
                     git remote add ${remote_name} ${remote_ssh}
+                else
+                    # remote is already registered, use local alias if defined (mostly for 'origin', which is usually my own)
+                    remote_name=$(git remote -v | tr '\t' ' ' | grep "${remote_ssh}" | awk '{print $1}'|uniq)
                 fi
             fi
 

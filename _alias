@@ -197,6 +197,15 @@ if [[ 0 -eq $? ]]; then
         gprv() {
             gh pr view --web
         }
+        # wip : should run in background + loop
+        gprwatch() {
+           set +e
+           grep pending <(gh pr checks ${pr}) > /dev/null
+           if [[ $? == 1 ]]; then
+               gh pr view --web ${pr}
+           fi
+           set -e
+       } 
     fi
 
     if [[ 1 -eq $HAS_FZF ]] && [[ 1 -eq $HAS_GH ]]; then

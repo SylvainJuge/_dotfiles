@@ -179,6 +179,17 @@ if [[ 0 -eq $? ]]; then
             [ "${folder}" != '' ] || return 1
             cd ${folder}
         }
+        # git worktree create
+        gwc(){
+            prefix=$(gwl | awk '{print $1}' | sort | head -1)
+            worktree_path="${prefix}_${1:-tmp}"
+            git worktree add --detach "${worktree_path}" master \
+                && cd "${worktree_path}"
+        }
+        # git worktree delete
+        gwd(){
+            git worktree remove $(gws)
+        }
     fi
 
     if [[ 1 -eq $HAS_GH ]]; then

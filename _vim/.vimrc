@@ -220,9 +220,9 @@ nnoremap <leader>y "+y
 vnoremap <leader>p :set paste<esc>"+p
 nnoremap <leader>p :set paste<esc>"+p
 
-"if has('clipboard')
-"    set clipboard+=system
-"endif
+if has('clipboard')
+    set clipboard=unnamedplus
+endif
 
 " disable auto indent on paste
 set paste

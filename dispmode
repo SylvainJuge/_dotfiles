@@ -1,0 +1,42 @@
+#!/bin/bash
+
+mode=${1:-0}
+
+display='DP-1'
+resolution='1920x1080@60.0'
+font_scaling=1.0
+
+case "${mode}" in
+  0)
+    resolution='3840x2160@59.996623992919922'
+    font_scaling=1.25
+    ;;
+  1)
+    resolution='1920x1080@60'
+    font_scaling=1.0
+    ;;
+  *)
+    echo "unknown mode '${mode}'"
+    exit 1
+    ;;
+esac
+
+# TODO : implement restore ?
+
+gsettings set org.gnome.desktop.interface text-scaling-factor ${font_scaling}
+
+serial=$(gdbus call \
+  --session \
+  --dest org.gnome.Mutter.DisplayConfig \
+  --object-path /org/gnome/Mutter/DisplayConfig \
+  --method org.gnome.Mutter.DisplayConfig.GetResources \
+  | awk '{print $2}' | tr -d ',')
+
+gdbus call \
+  --session \
+  --dest org.gnome.Mutter.DisplayConfig \
+  --object-path /org/gnome/Mutter/DisplayConfig \
+  --method org.gnome.Mutter.DisplayConfig.ApplyMonitorsConfig \
+  ${serial} 1 "[(0, 0, 1, 0, true, [('${display}', '${resolution}', [] )] )]" "[]"
+
+

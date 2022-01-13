@@ -478,6 +478,16 @@ if [[ 0 -eq $? ]]; then
 
 fi
 
+which qrencode > /dev/null
+if [[ 0 -eq $? ]]; then
+  qrcode() {
+    file="$(mktemp --suffix=.png)"
+    cat - | qrencode -t png -o "${file}"
+    display "${file}"
+    rm "${file}"
+  }
+fi
+
 # per projects aliases
 doc_build(){
     ${HOME}/dev/docs/build_docs \

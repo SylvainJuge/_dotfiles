@@ -40,9 +40,8 @@ precmd () {
 unsetopt correct_all
 
 
-if [ -e ${HOME}/bin ]; then
-    PATH="${PATH}:${HOME}/bin"
-fi
+[[ -e ${HOME}/bin ]] && PATH="${PATH}:${HOME}/bin"
+[[ -e ${HOME}/.dotfiles/bin ]] && PATH="${PATH}:${HOME}/.dotfiles/bin"
 
 # get local config, if any
 if [[ -f ${HOME}/.localzshrc ]]; then

@@ -40,8 +40,8 @@ precmd () {
 unsetopt correct_all
 
 
-if [ -e $HOME/bin ]; then
-    PATH="$PATH:$HOME/bin"
+if [ -e ${HOME}/bin ]; then
+    PATH="${PATH}:${HOME}/bin"
 fi
 
 # get local config, if any
@@ -50,14 +50,10 @@ if [[ -f ${HOME}/.localzshrc ]]; then
 fi
 
 export PATH="\
-$ANT_HOME/bin:\
-$MVN_HOME/bin:\
-$GRADLE_HOME/bin:\
-$JAVA_HOME/bin:\
-$GROOVY_HOME/bin:\
-$PACKER_HOME:\
-$HUB_HOME/bin:\
-$PATH"
+${MVN_HOME}/bin:\
+${GRADLE_HOME}/bin:\
+${JAVA_HOME}/bin:\
+${PATH}"
 
 export TERM='xterm-256color'
 

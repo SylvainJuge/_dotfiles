@@ -271,8 +271,7 @@ nnoremap <silent><leader>l :set list!<cr>:set list?<cr>
 nnoremap <silent><leader>W :set wrap!<cr>:set wrap?<cr>
 
 " remove trailing whitespace on save
-" autocmd BufWritePre * :%s/\s\+$//e
-"
+autocmd BufWritePre * :%s/\s\+$//e
 
 " Ack integration
 nnoremap <silent><leader>a :Ack

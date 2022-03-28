@@ -173,7 +173,6 @@ if [[ 0 -eq $? ]]; then
         gws() {
             echo "$(gwl | fzf | awk '{print $1}')"
         }
-
         # git worktree (move to)
         gw() {
             folder="$(gws)"
@@ -182,14 +181,32 @@ if [[ 0 -eq $? ]]; then
         }
         # git worktree create
         gwc(){
-            prefix=$(gwl | awk '{print $1}' | sort | head -1)
-            worktree_path="${prefix}_${1:-tmp}"
-            git worktree add --detach "${worktree_path}" master \
+            echo -e "Chosse workspace suffix :"
+            worktree_path=$(gwp)
+
+            ref=${2:-main}
+            git worktree add --detach "${worktree_path}" ${ref} \
                 && cd "${worktree_path}"
+        }
+        # git worktree rename
+        gwr(){
+            current_path=$(gws)
+            echo -e "Chosse workspace suffix :"
+            new_path=$(gwp)
+            git worktree move ${current_path} ${new_path} \
+                && cd ${new_path}
         }
         # git worktree delete
         gwd(){
             git worktree remove $(gws)
+        }
+        # git worktree path, prompt for a new path
+        gwp(){
+            prefix=$(gwl | awk '{print $1}' | sort | head -1)
+            read suffix
+            suffix="${suffix:-tmp}"
+            new_path="${prefix}_${suffix}"
+            echo ${new_path}
         }
     fi
 

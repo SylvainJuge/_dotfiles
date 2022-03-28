@@ -212,7 +212,7 @@ if [[ 0 -eq $? ]]; then
     if [[ 1 -eq $HAS_FZF ]] && [[ 1 -eq $HAS_GH ]]; then
         # interactive prompt to select pull-request
         gpr() {
-            gh pr list | fzf | awk '{print $1}'
+            gh pr list --limit 999 | fzf | awk '{print $1}'
         }
         # interactive prompt to checkout PR, will use current branch if available
         # add remote if required for a fork to allow convenient push

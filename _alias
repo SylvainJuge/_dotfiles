@@ -181,7 +181,7 @@ if [[ 0 -eq $? ]]; then
         }
         # git worktree create
         gwc(){
-            echo -e "Chosse workspace suffix :"
+            echo -e "Choose workspace suffix :"
             worktree_path=$(gwp)
 
             ref=${2:-main}
@@ -191,7 +191,7 @@ if [[ 0 -eq $? ]]; then
         # git worktree rename
         gwr(){
             current_path=$(gws)
-            echo -e "Chosse workspace suffix :"
+            echo -e "Choose workspace suffix :"
             new_path=$(gwp)
             git worktree move ${current_path} ${new_path} \
                 && cd ${new_path}
@@ -215,14 +215,8 @@ if [[ 0 -eq $? ]]; then
         gprv() {
             gh pr view --web
         }
-        # wip : should run in background + loop
-        gprwatch() {
-           set +e
-           grep pending <(gh pr checks ${pr}) > /dev/null
-           if [[ $? == 1 ]]; then
-               gh pr view --web ${pr}
-           fi
-           set -e
+        gprw() {
+            gh pr checks --watch
        }
     fi
 

@@ -115,7 +115,7 @@ set statusline=%t\ \{%{&fileencoding?&fileencoding:&encoding}\}\ %{fugitive#stat
 set undofile
 
 " write swap, backup and undo files to system temp folder and not next to
-" original file. double trailing / allow to open two files with same name 
+" original file. double trailing / allow to open two files with same name
 " without conflict.
 set directory=/tmp//,$TMP//
 set backupdir=/tmp//,$TMP//
@@ -134,7 +134,7 @@ set ignorecase
 set smartcase
 
 " do not wrap long lines by default
-set nowrap 
+set nowrap
 
 " toggle search highlight on ,<space>
 nnoremap <silent><leader><space> :set hlsearch!<cr>:set hlsearch?<cr>
@@ -271,7 +271,7 @@ nnoremap <silent><leader>l :set list!<cr>:set list?<cr>
 nnoremap <silent><leader>W :set wrap!<cr>:set wrap?<cr>
 
 " remove trailing whitespace on save
-autocmd BufWritePre * :%s/\s\+$//e
+" autocmd BufWritePre * :%s/\s\+$//e
 
 " Ack integration
 nnoremap <silent><leader>a :Ack

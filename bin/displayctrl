@@ -1,0 +1,42 @@
+#!/bin/bash
+
+sudo -k
+base_cmd="sudo -n ddcutil --sn 011NTPCEH704"
+
+# usage
+#
+# ${0} brightness + 5
+# ${0} brightness - 10
+
+brightness(){
+    ${base_cmd} setvcp 10 ${@}
+}
+
+case "${1:-}" in
+    brightness)
+        brightness ${2:-} ${3:-}
+        ;;
+    **)
+        echo "unknown command '${cmd}'"
+        ;;
+esac
+# sylvain ALL= NOPASSWD: /bin/ddcutil
+#
+# TODO:
+# sudo -k
+# sudo -n to ensure it does not prompt for pwd
+#
+# get/set brightness:
+#sudo -n ddcutil setvcp 10 10
+
+#${base_cmd} -t getvcp 10
+
+# increment +
+
+# lg serial number: 011NTPCEH704
+# --sn
+
+# toggle mute
+# control speaker sound level
+# toggle screen on/off
+# 'sudo ddcutil capabilities'

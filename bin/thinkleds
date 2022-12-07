@@ -1,0 +1,37 @@
+#!/bin/bash
+
+
+path=/sys/class/leds
+
+set_led() {
+  sudo -k
+  led=${1}
+  status=${2}
+
+  led_path=${path}/${led}
+
+  if [[ "$(dirname ${led_path})" != "${path}" ]]; then
+    echo "invalid led path '${led_path}'"
+  else
+    echo ${status} > ${led_path}/brightness
+  fi
+
+}
+
+case "${1}" in
+  list)
+    find ${path} -mindepth 1 -maxdepth 1 -type l \
+      | sed "s+${path}/++" \
+      | sort
+    ;;
+  on)
+    set_led ${2} 1
+    ;;
+  off)
+    set_led ${2} 0
+    ;;
+  *)
+  echo "unknown command '${cmd}'"
+  exit 1
+esac
+

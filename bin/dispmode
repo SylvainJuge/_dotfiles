@@ -2,41 +2,59 @@
 
 mode=${1:-0}
 
-display='DP-1'
-resolution='1920x1080@60.0'
-font_scaling=1.0
+set_font_scaling() {
+  scaling=${1}
+  gsettings set org.gnome.desktop.interface text-scaling-factor ${scaling}
+}
+
+get_serial() {
+  gdbus call \
+    --session \
+    --dest org.gnome.Mutter.DisplayConfig \
+    --object-path /org/gnome/Mutter/DisplayConfig \
+    --method org.gnome.Mutter.DisplayConfig.GetResources \
+    | awk '{print $2}' | tr -d ','
+}
+
+set_resolution() {
+  serial=${1}
+  display=${2}
+  resolution=${3}
+  gdbus call \
+    --session \
+    --dest org.gnome.Mutter.DisplayConfig \
+    --object-path /org/gnome/Mutter/DisplayConfig \
+    --method org.gnome.Mutter.DisplayConfig.ApplyMonitorsConfig \
+    ${serial} 1 "[(0, 0, 1, 0, true, [('${display}', '${resolution}', [] )] )]" "[]" \
+    2> /dev/null
+}
 
 case "${mode}" in
+  # native resolution, no font scaling
   0)
-    resolution='3840x2160@59.996623992919922'
-    font_scaling=1.25
+    set_font_scaling 1.0
+    serial=$(get_serial)
+    set_resolution ${serial} 'DP-1'  '3840x2160@59.996623992919922'
+    set_resolution ${serial} 'eDP-1' '1920x1080@60.0'
     ;;
+  # native resolution + font scaling for comfort
   1)
-    resolution='1920x1080@60'
-    font_scaling=1.0
+    set_font_scaling 1.25
+    serial=$(get_serial)
+    set_resolution ${serial} 'DP-1'  '3840x2160@59.996623992919922'
+    set_resolution ${serial} 'eDP-1' '1920x1080@60.0'
+    ;;
+  # reduced resolution, no font scaling
+  2)
+    set_font_scaling 1.0
+    serial=$(get_serial)
+    set_resolution ${serial} 'DP-1'  '3840x2160@59.996623992919922'
+    set_resolution ${serial} 'eDP-1' '1920x1080@60.0'
     ;;
   *)
     echo "unknown mode '${mode}'"
     exit 1
     ;;
 esac
-
-# TODO : implement restore ?
-
-gsettings set org.gnome.desktop.interface text-scaling-factor ${font_scaling}
-
-serial=$(gdbus call \
-  --session \
-  --dest org.gnome.Mutter.DisplayConfig \
-  --object-path /org/gnome/Mutter/DisplayConfig \
-  --method org.gnome.Mutter.DisplayConfig.GetResources \
-  | awk '{print $2}' | tr -d ',')
-
-gdbus call \
-  --session \
-  --dest org.gnome.Mutter.DisplayConfig \
-  --object-path /org/gnome/Mutter/DisplayConfig \
-  --method org.gnome.Mutter.DisplayConfig.ApplyMonitorsConfig \
-  ${serial} 1 "[(0, 0, 1, 0, true, [('${display}', '${resolution}', [] )] )]" "[]"
 
 

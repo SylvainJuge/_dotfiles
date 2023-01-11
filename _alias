@@ -344,7 +344,6 @@ export MARKPATH=$HOME/.marks
 jump() {
     cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
 }
-alias j='jump'
 mark() {
     mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
 }
@@ -354,6 +353,13 @@ unmark() {
 marks() {
     ls -l "$MARKPATH" | sed 's/\s\+/ /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' | column -t
 }
+j(){
+    # direct jump to arg or interactive prompt
+    [[ "${1:-}" = '' ]] \
+        && jump $(marks | fzf | awk '{print $1}') \
+        || jump "${1}"
+}
+
 if [[ 'zsh' = "${SHELL#/bin/}" ]];then
    # zsh style completion
    _completemarks() {

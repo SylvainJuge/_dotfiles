@@ -481,17 +481,24 @@ if [[ 0 -eq $? ]]; then
 
   # root shell
   drsh(){
-    docker exec -it --user 0 ${1} bash
+    id=${1:-$(ds)}
+    [[ '' != "${id}" ]] && docker exec -it --user 0 ${id} bash
   }
   # open shell
   dsh(){
-    docker exec -it ${1} bash
+    id=${1:-$(ds)}
+    [[ '' != "${id}" ]] && docker exec -it ${id} bash
   }
   # get container IP
   dip(){
-    docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${1}
+    id=${1:-$(ds)}
+    [[ '' != "${id}" ]] && docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ${id}
   }
 
+fi
+which docker-compose > /dev/null
+if [[ 0 -eq $? ]]; then
+    alias dcc='docker-compose'
 fi
 
 which qrencode > /dev/null

@@ -97,26 +97,10 @@ if [[ 0 -eq $? ]]; then
        fi
     }
 
-    # maven project version (with submodules)
-    which xmlstarlet > /dev/null
-    if [[ 0 -ne $? ]]; then
-        mpv () {
-            echo "missing dependency : xmlstarlet"
-            return 1;
-        }
-    else
-        mpv () {
-           mvn_effective_pom || return 1
-
-           # remove namespace declarations for easy selection (xmlstarlet is a pain here)
-           sed -i 's/<project .*>/<project>/' "${mvn_effective_pom_file}"
-
-           xmlstarlet sel -t -m '//project' \
-              -v 'groupId'  -o ' '  -v 'artifactId'  -o ' '  -v 'version' -n \
-              "${mvn_effective_pom_file}"
-           /bin/rm -f "${mvn_effective_pom_file}"
-        }
-    fi
+    # maven project version
+    mpv () {
+        mvn help:evaluate -Dexpression=project.version -q -DforceStdout|tail -1
+    }
 
 
     # maven effective pom (output to console for easy grep)

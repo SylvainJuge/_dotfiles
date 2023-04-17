@@ -198,7 +198,13 @@ if [[ 0 -eq $? ]]; then
         }
         # git worktree delete
         gwd(){
-            git worktree remove $(gws)
+            folder="$(gws)"
+            [[ "${folder}" != '' ]] || return 1
+            main_worktree="$(git worktree list | sort | head -1 | awk '{print $1}')"
+            cwd="$(pwd)"
+            git worktree remove ${folder} \
+                && [[ "${cwd}" == "${folder}" ]] && cd "${main_worktree}"
+                # jump to the 1st worktree available (usualy the default one without suffix)
         }
         # git worktree path, prompt for a new path
         gwp(){

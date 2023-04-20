@@ -138,6 +138,13 @@ if [[ 0 -eq $? ]]; then
     alias gd='git diff'
     alias gc='git commit'
 
+   gbm () {
+       # TODO wip attempt to have a "git branch merge base diff" to
+       current_branch=${1:-$(git_current_branch)}
+       main_branch=${2:-main}
+       git --no-pager diff --name-only ${current_branch} $(git merge-base ${current_branch} ${main_branch})
+   }
+
     alias gco='git checkout'
     alias gs='git switch'
     # allow to know which commits have been merged upstream/to specific branch
@@ -207,6 +214,16 @@ if [[ 0 -eq $? ]]; then
         }
         gprw() {
             gh pr checks --watch
+
+            # WIP
+            #tmp_file="/tmp/$(gh pr view --json 'title,url,id' --jq '.id').gprw"
+            #if [ ! -f "${tmp_file}" ]; then
+            #    touch "${tmp_file}"
+            #fi
+            #rm -f "${tmp_file}"
+            #   && notify-send k\
+            #   ||
+            # gh pr view --json title,url,id 
        }
     fi
 

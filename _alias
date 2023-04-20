@@ -508,3 +508,43 @@ doc_build(){
         --out /tmp/doc \
         --open
 }
+
+agent_dev(){
+    agent_folder=$(find ${HOME}/dev -maxdepth 1 -name 'apm-agent-java*'|sort|fzf)
+
+    export AGENT_FOLDER=${agent_folder}
+    export AGENT_JAR=$(find ${agent_folder} -name 'elastic-apm-agent-*.jar' | grep -v 'sources.jar' | grep -v 'javadoc' | grep -v 'java8' | grep -v 'premain')
+    export ATTACHER_JAR=$(find ${agent_folder} -name 'apm-agent-attach-cli-*.jar' | grep -v 'sources.jar' | grep -v 'javadoc' | grep -v 'slim' | grep -v 'bc-verifier')
+
+    # don't export otherwise it enables debug everywhere
+    DEBUG_OPTS='-agentlib:jdwp=transport=dt_socket,server=n,address=localhost:5005,suspend=y'
+
+    echo AGENT_FOLDER=${AGENT_FOLDER}
+    echo AGENT_JAR=\${AGENT_FOLDER}${AGENT_JAR##${AGENT_FOLDER}}
+    echo ATTACHER_JAR=\${AGENT_FOLDER}${ATTACHER_JAR##${AGENT_FOLDER}}
+    echo "#DEBUG_OPTS=${DEBUG_OPTS}"
+}
+
+agent_dl(){
+    version=$(curl -s https://api.github.com/repos/elastic/apm-agent-java/tags\?per_page\=100 | jq -Mr '.[].name' | grep -v RC | grep -v stable |sed 's/^v//' | fzf)
+
+    curl -s -O https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/${version}/elastic-apm-agent-${version}.jar 
+    curl -s -O https://repo1.maven.org/maven2/co/elastic/apm/apm-agent-attach-cli/${version}/apm-agent-attach-cli-${version}.jar
+
+    export AGENT_JAR=elastic-apm-agent-${version}.jar
+    export ATTACHER_JAR=apm-agent-attach-cli-${version}.jar
+    export DEBUG_OPTS='-agentlib:jdwp=transport=dt_socket,server=n,address=localhost:5005,suspend=y'
+
+    echo AGENT_JAR=${AGENT_JAR}
+    echo ATTACHER_JAR=${ATTACHER_JAR}
+    echo "#DEBUG_OPTS=${DEBUG_OPTS}"
+}
+
+cb(){
+    xclip -sel clip
+}
+
+# copy most recent downloads to current directory
+cpd() {
+    cp ~/Downloads/$(ls -1 -t ~/Downloads | fzf) ./
+}

@@ -501,6 +501,17 @@ if [[ 0 -eq $? ]]; then
   }
 fi
 
+which tmux > /dev/null
+if [[ 0 -eq $? ]]; then
+    tm(){
+        # TODO: wip
+        tmux list-sessions
+        # create fixed sessions if they don't exist
+        # list sessions
+        # select with fzf then attach to it
+    }
+fi
+
 # per projects aliases
 doc_build(){
     ${HOME}/dev/docs/build_docs \

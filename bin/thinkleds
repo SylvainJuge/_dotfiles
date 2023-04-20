@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# TODO : add to sudoers for easy execution
+# TODO : use complete keyboard backlight as a notificaiton
+# 'kbd_backlight' supports 0 1 2 values
+# 'keyboard backlight has an Osd overlay, thus could be re-programmable
+
 
 path=/sys/class/leds
 

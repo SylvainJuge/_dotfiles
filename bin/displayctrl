@@ -22,13 +22,6 @@ case "${1:-}" in
 esac
 # sylvain ALL= NOPASSWD: /bin/ddcutil
 #
-# TODO:
-# sudo -k
-# sudo -n to ensure it does not prompt for pwd
-#
-# get/set brightness:
-#sudo -n ddcutil setvcp 10 10
-
 #${base_cmd} -t getvcp 10
 
 # increment +

@@ -48,7 +48,7 @@ case "${mode}" in
   2)
     set_font_scaling 1.0
     serial=$(get_serial)
-    set_resolution ${serial} 'DP-1'  '3840x2160@59.996623992919922'
+    set_resolution ${serial} 'DP-1'  '1920x1080@60.0'
     set_resolution ${serial} 'eDP-1' '1920x1080@60.0'
     ;;
   *)

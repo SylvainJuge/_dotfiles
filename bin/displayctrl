@@ -12,6 +12,10 @@ brightness(){
     ${base_cmd} setvcp 10 ${@}
 }
 
+volume(){
+    ${base_cmd} setvcp 62 ${@}
+}
+
 case "${1:-}" in
     brightness)
         brightness ${2:-} ${3:-}

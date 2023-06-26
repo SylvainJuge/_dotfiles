@@ -172,12 +172,18 @@ if [[ 0 -eq $? ]]; then
         }
         # git worktree create
         gwc(){
-            echo -e "Choose workspace suffix :"
-            worktree_path=$(gwp)
+            suffix="${1:-}"
+            if [[ '' == "${suffix}" ]]; then
+                echo -e "Choose workspace suffix :"
+                read suffix
+                suffix="${suffix:-tmp}"
+            fi
+            worktree_path="$(gw_base_workspace)_${suffix}"
 
             ref=${2:-main}
             git worktree add --detach "${worktree_path}" ${ref} \
-                && cd "${worktree_path}"
+                && cd "${worktree_path}" \
+                && git checkout -b ${suffix}
         }
         # git worktree rename
         gwr(){
@@ -197,13 +203,8 @@ if [[ 0 -eq $? ]]; then
                 && [[ "${cwd}" == "${folder}" ]] && cd "${main_worktree}"
                 # jump to the 1st worktree available (usualy the default one without suffix)
         }
-        # git worktree path, prompt for a new path
-        gwp(){
-            prefix=$(gwl | awk '{print $1}' | sort | head -1)
-            read suffix
-            suffix="${suffix:-tmp}"
-            new_path="${prefix}_${suffix}"
-            echo ${new_path}
+        gw_base_workspace(){
+            echo "$(gwl | awk '{print $1}' | sort | head -1)"
         }
     fi
 

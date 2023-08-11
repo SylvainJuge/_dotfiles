@@ -50,7 +50,7 @@ noremap <F1> <esc>:h
 set cpoptions+=$
 
 " when scrolling, keep a margin for readeability
-set scrolloff=4
+set scrolloff=10
 
 " tab are replaced by 4 spaces
 set expandtab

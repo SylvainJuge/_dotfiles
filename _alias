@@ -74,7 +74,7 @@ if [[ 0 -eq $? ]]; then
     alias mp='mvn package'
     alias mpst='mvn package -DskipTests'
     alias mci='mvn clean install'
-    alias mcist='mvn clean install -DskipTests'
+    alias mcist='mvn clean install -DskipTests -Djavadoc.skip=true -Danimal.sniffer.skip'
 
     # default effective pom output
     mvn_effective_pom_file='target/effective-pom.xml'

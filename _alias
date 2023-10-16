@@ -170,6 +170,17 @@ if [[ 0 -eq $? ]]; then
             [ "${folder}" != '' ] || return 1
             cd ${folder}
         }
+        # git worktree prompt (for new or rename existing)
+        gwp(){
+            suffix="${1:-}"
+            if [[ '' == "${suffix}" ]]; then
+                echo -e "Choose workspace suffix :"
+                read suffix
+                suffix="${suffix:-tmp}"
+            fi
+            echo "$(gw_base_workspace)_${suffix}"
+        }
+
         # git worktree create
         gwc(){
             suffix="${1:-}"
@@ -178,7 +189,7 @@ if [[ 0 -eq $? ]]; then
                 read suffix
                 suffix="${suffix:-tmp}"
             fi
-            worktree_path="$(gw_base_workspace)_${suffix}"
+            worktree_path="$(gwp)"
 
             ref=${2:-main}
             git worktree add --detach "${worktree_path}" ${ref} \
@@ -188,7 +199,6 @@ if [[ 0 -eq $? ]]; then
         # git worktree rename
         gwr(){
             current_path=$(gws)
-            echo -e "Choose workspace suffix :"
             new_path=$(gwp)
             git worktree move ${current_path} ${new_path} \
                 && cd ${new_path}

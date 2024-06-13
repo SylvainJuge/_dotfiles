@@ -75,6 +75,13 @@ unset JAVA_TOOL_OPTIONS
 
 SSH_ENV="$HOME/.ssh/environment"
 
+
+# remove conflicting oh-my-zsh aliases with my aliases
+unalias gpr
+unalias gprv
+unalias gbm
+unalias gap
+
 source ~/.dotfiles/_alias
 
 which fd > /dev/null

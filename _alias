@@ -427,7 +427,7 @@ if [[ 0 -eq $? ]]; then
 	}
 
 	# Open files within a .jar
-	jjf(){
+	jjp(){
 		jarFile="$(find . -name '*.jar'|fzf)"
 		file="$(unzip -Z1 "${jarFile}"|fzf)"
 
@@ -577,7 +577,11 @@ cb(){
     xclip -sel clip
 }
 
-# copy most recent downloads to current directory
-cpd() {
-    cp ~/Downloads/$(ls -1 -t ~/Downloads | fzf) ./
+dls(){
+    ls -1 -t ~/Downloads | fzf | xargs -I {} readlink -f ~/Downloads/{}
+}
+
+ij(){
+    idea "${1:-.}" 2>/dev/null 1>/dev/null &
+    disown
 }

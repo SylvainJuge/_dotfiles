@@ -577,6 +577,7 @@ cb(){
     xclip -sel clip
 }
 
+# get absolute path of a downloaded file
 dls(){
     ls -1 -t ~/Downloads | fzf | xargs -I {} readlink -f ~/Downloads/{}
 }
@@ -585,3 +586,37 @@ ij(){
     idea "${1:-.}" 2>/dev/null 1>/dev/null &
     disown
 }
+
+# get absolute path of a local project artifact
+gwas(){
+    current_path=$(pwd)
+    base_project="$(marks|fzf|awk '{print $3}')"
+    cd ${base_project}
+
+    base_project=$(gws)
+    cd ${base_project}
+
+    artifact_path=''
+    edot_version=$(cat ./version.properties 2>/dev/null|sed 's/.*=//')
+    otel_version=$(cat ./version.gradle.kts 2>/dev/null|grep 'val stableVersion'|sed 's/.*=//'|tr -d ' "')
+    classic_version=$(grep 'artifactId.*parent' -C 2 pom.xml|grep version | sed 's/.*<version>//'| sed 's+</version>++')
+
+    if [ '' != "${edot_version}" ]; then
+        artifact_path="${base_project}/agent/build/libs/elastic-otel-javaagent-${edot_version}.jar"
+    elif [ '' != "${otel_version}" ]; then
+        artifact_path="${base_project}/javaagent/build/libs/opentelemetry-javaagent-${otel_version}.jar"
+    elif [ '' != "${classic_version}" ]; then
+        artifact_path="${base_project}/elastic-apm-agent/target/elastic-apm-agent-${classic_version}.jar"
+    fi
+    cd ${current_path} >/dev/null
+    if [ '' != "${artifact_path}" ]; then
+        echo ${artifact_path}
+        [ ! -f "${artifact_path}" ] && >&2 echo "WARNING: missing project artifact ${base_project}"
+    else
+        >&2 echo "unknown project artifact ${base_project}"
+    fi
+
+}
+
+# TODO: download project release artifact
+# dlas

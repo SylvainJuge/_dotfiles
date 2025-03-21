@@ -215,10 +215,10 @@ if [[ 0 -eq $? ]]; then
     if [[ 1 -eq $HAS_GH ]]; then
         # open current pr in browser
         gprv() {
-            gh pr view --web
+            gh pr view --web ${1:-}
         }
         gprw() {
-            gh pr checks --watch
+            gh pr checks --watch ${1:-}
 
             # WIP
             #tmp_file="/tmp/$(gh pr view --json 'title,url,id' --jq '.id').gprw"

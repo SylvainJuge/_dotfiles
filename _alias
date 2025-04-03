@@ -618,5 +618,10 @@ gwas(){
 
 }
 
+unalias gbs
+gbs(){
+    git branch -l -v --color | fzf | sed 's/^..//' | awk '{print $1}'
+}
+
 # TODO: download project release artifact
 # dlas

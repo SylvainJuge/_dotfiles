@@ -55,6 +55,13 @@ ${GRADLE_HOME}/bin:\
 ${JAVA_HOME}/bin:\
 ${PATH}"
 
+
+# python virtual env if it exists, must have higher priotity than /bin
+# created with 'python3 -m venv ~/.venv'
+if [[ -e ${HOME}/.venv ]]; then
+    export PATH=${HOME}/.venv/bin:${PATH}
+fi
+
 export TERM='xterm-256color'
 
 # aliases

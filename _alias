@@ -599,7 +599,7 @@ gwas(){
     artifact_path=''
     edot_version=$(cat ./version.properties 2>/dev/null|sed 's/.*=//')
     otel_version=$(cat ./version.gradle.kts 2>/dev/null|grep 'val stableVersion'|sed 's/.*=//'|tr -d ' "')
-    classic_version=$(grep 'artifactId.*parent' -C 2 pom.xml|grep version | sed 's/.*<version>//'| sed 's+</version>++')
+    classic_version=$(grep 'artifactId.*parent' -C 2 pom.xml 2>/dev/null|grep version | sed 's/.*<version>//'| sed 's+</version>++')
 
     if [ '' != "${edot_version}" ]; then
         artifact_path="${base_project}/agent/build/libs/elastic-otel-javaagent-${edot_version}.jar"
@@ -618,7 +618,7 @@ gwas(){
 
 }
 
-unalias gbs
+unalias gbs 2>/dev/null
 gbs(){
     git branch -l -v --color | fzf | sed 's/^..//' | awk '{print $1}'
 }

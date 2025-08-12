@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -euo pipefail
+
+path="${1:-.}"
+cd "${path}"
+find . -type f -print0 \
+  | xargs -0 -I{} sha1sum '{}' \
+  | tee ".$(hostname).sjindex"
+cd -

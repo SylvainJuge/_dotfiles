@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -euo pipefail
+
+src_index="${1?src index expected as 1st argument}"
+ref_index="${2?reference index expected as 2cnd argument}"
+
+if [ ! -f "${src_index}" ]; then
+    echo "missing source index file '${src_index}'"
+    exit 1
+fi
+if [ ! -f "${ref_index}" ]; then
+    echo "missing reference index file '${ref_index}'"
+    exit 1
+fi
+
+# generates sorted index only from index file
+index_only() {
+    index="${1}"
+    result="$(mktemp)"
+    awk '{print $1}' "${index}" > "${result}"
+    sort -o "${result}" "${result}"
+    echo "${result}"
+}
+
+src_index_tmp="$(index_only "${src_index}")"
+ref_index_tmp="$(index_only "${ref_index}")"
+
+summary="$(comm --total -123 "${src_index_tmp}" "${ref_index_tmp}"|tail -1)"
+
+src_only=$(echo "${summary}" | awk '{print $1}')
+ref_only=$(echo "${summary}" | awk '{print $2}')
+common=$(echo "${summary}" | awk '{print $3}')
+
+if [ 0 != ${src_only} ]; then
+    echo "${src_only} files only in ${src_index} missing in ${ref_index}"
+    echo "----"
+    for h in $(comm -23 "${src_index_tmp}" "${ref_index_tmp}"); do
+        grep "${h}" "${src_index}"
+    done
+    exit 1
+fi
+
+echo "${common} files in '${src_index}' contained in '${ref_index}'"
+echo "${ref_only} files in '${ref_index}' not present in '${src_index}'"
+echo "----"
+echo "All files '${src_index}' are also in '${ref_index}'"

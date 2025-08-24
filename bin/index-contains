@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-src_index="${1?src index expected as 1st argument}"
+src_index="${1?index to check expected as 1st argument}"
 ref_index="${2?reference index expected as 2cnd argument}"
 
 if [ ! -f "${src_index}" ]; then

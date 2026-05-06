@@ -172,27 +172,22 @@ if [[ 0 -eq $? ]]; then
         }
         # git worktree create
         gwc(){
-            suffix="${1:-}"
-            if [[ '' == "${suffix}" ]]; then
-                echo -e "Choose workspace suffix :"
-                read suffix
-                suffix="${suffix:-tmp}"
-            fi
+            suffix="$(gw_new_suffix ${1:-})"
             worktree_path="$(gw_base_workspace)_${suffix}"
             ref=${2:-main}
             git worktree add --detach "${worktree_path}" ${ref} \
                 && cd "${worktree_path}"
 
         }
+        gwcb(){
+            suffix="$(gw_new_suffix ${1:-})"
+            gwc "${suffix}"
+            git checkout -b "${suffix}"
+        }
         # git worktree rename
         gwr(){
+            suffix="$(gw_new_suffix ${1:-})"
             current_path=$(gws)
-            suffix="${1:-}"
-            if [[ '' == "${suffix}" ]]; then
-                echo -e "Choose workspace suffix :"
-                read suffix
-                suffix="${suffix:-tmp}"
-            fi
             new_path="$(gw_base_workspace)_${suffix}"
             git worktree move ${current_path} ${new_path} \
                 && cd ${new_path}

@@ -210,6 +210,15 @@ if [[ 0 -eq $? ]]; then
         gw_base_workspace(){
             echo "$(gwl | awk '{print $1}' | sort | head -1)"
         }
+        gw_new_suffix(){
+            suffix="${1:-}"
+            if [[ '' == "${suffix}" ]]; then
+                >&2 echo -e "Choose workspace suffix (empty for random):"
+                read suffix
+                suffix="${suffix:-$(uuidgen)}"
+            fi
+            echo "${suffix}"
+        }
     fi
 
     if [[ 1 -eq $HAS_GH ]]; then

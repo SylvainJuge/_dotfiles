@@ -376,7 +376,7 @@ j(){
         || jump "${1}"
 }
 
-if [[ 'zsh' = "${SHELL#/bin/}" ]];then
+if [[ 'zsh' = "${SHELL##*/}" ]];then
    # zsh style completion
    _completemarks() {
        reply=($(ls $MARKPATH))

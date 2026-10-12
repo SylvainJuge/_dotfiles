@@ -5,23 +5,71 @@ base_cmd="sudo -n ddcutil --sn 011NTPCEH704"
 
 # usage
 #
-# ${0} brightness + 5
-# ${0} brightness - 10
+# ${0} brightness +5
+# ${0} brightness -10
 
+# accepts '+20', '-10', '20' as well as the spaced forms '+ 20', '- 10'
 brightness(){
-    ${base_cmd} setvcp 10 ${@}
+    local joined="${*}"
+    local arg="${joined// /}"
+    if [[ "${arg}" =~ ^([+-]?)([0-9]+)$ ]]; then
+        ${base_cmd} setvcp 10 ${BASH_REMATCH[1]} ${BASH_REMATCH[2]}
+    else
+        echo "invalid brightness '${*}', expected [+|-]<n>" >&2
+        return 1
+    fi
 }
 
-volume(){
-    ${base_cmd} setvcp 62 ${@}
+# allow the current user to run ddcutil via sudo without password
+setup(){
+    local ddcutil_path user rule tmp target
+    ddcutil_path="$(command -v ddcutil)" || { echo "ddcutil not found in PATH" >&2; return 1; }
+    user="${SUDO_USER:-$(id -un)}"
+    target="/etc/sudoers.d/displayctrl"
+    rule="${user} ALL=(root) NOPASSWD: ${ddcutil_path}"
+
+    tmp="$(mktemp)"
+    trap 'rm -f "${tmp}"' RETURN
+    echo "${rule}" > "${tmp}"
+
+    # validate syntax before installing, a broken sudoers file can lock out sudo
+    if ! visudo -cf "${tmp}" >/dev/null; then
+        echo "generated sudoers rule is invalid, aborting" >&2
+        return 1
+    fi
+
+    echo "installing '${rule}' in ${target}"
+    sudo install -m 0440 -o root -g root "${tmp}" "${target}" || return 1
+    echo "done"
 }
 
-case "${1:-}" in
+help(){
+    cat <<EOF
+usage: $(basename "${0}") [command] [args]
+
+commands:
+  brightness <+|-><n>    change brightness by n (e.g. 'brightness +5')
+  brightness <n>         set brightness to n
+  setup                  allow running ddcutil with sudo without password
+  help                   show this help (default)
+EOF
+}
+
+cmd="${1:-help}"
+case "${cmd}" in
     brightness)
-        brightness ${2:-} ${3:-}
+        brightness "${@:2}"
         ;;
-    **)
-        echo "unknown command '${cmd}'"
+    setup)
+        setup
+        ;;
+    help)
+        help
+        ;;
+    *)
+        echo "unknown command '${cmd}'" >&2
+        help >&2
+        exit 1
         ;;
 esac
 # sylvain ALL= NOPASSWD: /bin/ddcutil

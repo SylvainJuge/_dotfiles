@@ -223,6 +223,14 @@ if [[ 0 -eq $? ]]; then
         }
         gprw() {
             gh pr checks --watch ${1:-}
+            result=$?
+            if [[ "${result}" == 0 ]]; then
+              echo "Checks Ok"
+            else
+              echo "Checks Error"
+            fi
+            return ${result}
+
 
             # WIP
             #tmp_file="/tmp/$(gh pr view --json 'title,url,id' --jq '.id').gprw"

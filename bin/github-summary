@@ -1,0 +1,181 @@
+#!/usr/bin/env python3
+"""Print a markdown summary of today's GitHub activity (Elastic Journal style).
+
+Requires an authenticated `gh` CLI.
+
+Usage:
+  github-summary                     # today
+  github-summary 1d                  # today (single day)
+  github-summary 7d                  # today + the 6 previous days
+  github-summary --since 2026-10-12  # since a given date (UTC)
+  github-summary --since 2026-10-13T09:00:00Z
+"""
+import argparse
+import json
+import subprocess
+import sys
+import re
+from datetime import date, timedelta
+
+
+def gh(*args):
+    r = subprocess.run(["gh", *args], capture_output=True, text=True)
+    if r.returncode != 0:
+        sys.exit(f"gh {' '.join(args)} failed:\n{r.stderr}")
+    return json.loads(r.stdout) if r.stdout.strip() else []
+
+
+def html_url(obj):
+    """html_url, or rebuilt from the API url when the payload is abbreviated."""
+    if obj.get("html_url"):
+        return obj["html_url"]
+    u = obj["url"].replace("https://api.github.com/repos/", "https://github.com/")
+    return u.replace("/pulls/", "/pull/")
+
+
+def repo_of_url(url):
+    parts = url.split("/")
+    return "/".join(parts[3:5])
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("days", nargs="?", metavar="Nd",
+                    help="number of days, e.g. 1d (today) or 7d (a week)")
+    ap.add_argument("--since", help="explicit start: YYYY-MM-DD or ISO timestamp (UTC)")
+    a = ap.parse_args()
+    if a.since:
+        since = a.since
+    elif a.days:
+        m = re.fullmatch(r"(\d+)d?", a.days)
+        if not m or int(m.group(1)) < 1:
+            ap.error("days must look like 1d, 7d, 30d")
+        since = (date.today() - timedelta(days=int(m.group(1)) - 1)).isoformat()
+    else:
+        since = date.today().isoformat()
+    since_ts = since if "T" in since else f"{since}T00:00:00Z"
+    since_day = since[:10]
+
+    me = gh("api", "user")["login"]
+
+    # url -> {title, repo}
+    reviewed, commented, authored_updated, authored_merged = {}, {}, {}, {}
+    created_prs, created_issues, closed_issues = {}, {}, {}
+
+    # 1. Event feed (precise record of what I did)
+    events = [e for page in gh("api", "--paginate", "--slurp",
+                               f"users/{me}/events?per_page=100") for e in page]
+    for e in events:
+        if e["created_at"] < since_ts:
+            continue
+        p, t = e["payload"], e["type"]
+        if t in ("PullRequestReviewEvent", "PullRequestReviewCommentEvent"):
+            pr = p["pull_request"]
+            # the events payload is sometimes abbreviated (no "user"/"title")
+            if pr.get("user", {}).get("login") != me:
+                reviewed[html_url(pr)] = pr.get("title", "")
+        elif t == "IssueCommentEvent":
+            i = p["issue"]
+            if i.get("user", {}).get("login") == me:
+                continue
+            if "pull_request" in i:
+                reviewed.setdefault(html_url(i), i.get("title", ""))
+            else:
+                commented[html_url(i)] = i.get("title", "")
+        elif t == "IssuesEvent" and p.get("action") == "opened":
+            created_issues[html_url(p["issue"])] = p["issue"].get("title", "")
+        elif t == "IssuesEvent" and p.get("action") == "closed":
+            closed_issues[html_url(p["issue"])] = p["issue"].get("title", "")
+        elif t == "PullRequestEvent" and p.get("action") == "opened":
+            created_prs[html_url(p["pull_request"])] = p["pull_request"].get("title", "")
+
+    # 2. Search fallback (events API can lag / miss things)
+    for r in gh("search", "prs", "--reviewed-by", "@me", "--updated", f">={since_day}",
+                "--limit", "50", "--json", "url,title,author"):
+        if r["author"]["login"] != me:
+            reviewed[r["url"]] = r["title"]
+    for r in gh("search", "issues", "--commenter", "@me", "--updated", f">={since_day}",
+                "--limit", "50", "--json", "url,title,isPullRequest,author"):
+        if r["author"]["login"] == me:
+            continue
+        (reviewed if r["isPullRequest"] else commented)[r["url"]] = r["title"]
+        (commented if r["isPullRequest"] else reviewed).pop(r["url"], None)
+    for r in gh("search", "prs", "--author", "@me", "--updated", f">={since_day}",
+                "--limit", "50", "--json", "url,title,state"):
+        authored_updated[r["url"]] = (r["title"], r["state"])
+    for r in gh("search", "prs", "--author", "@me", "--merged-at", f">={since_day}",
+                "--limit", "50", "--json", "url,title"):
+        authored_merged[r["url"]] = r["title"]
+
+    # Issues I authored aren't "commented on" (author may be missing in events)
+    my_issues = {}
+    for r in gh("search", "issues", "--author", "@me", "--updated", f">={since_day}",
+                "--limit", "100", "--json", "url,title,isPullRequest,state"):
+        commented.pop(r["url"], None)
+        if not r["isPullRequest"]:
+            my_issues[r["url"]] = (r["title"], r["state"])
+
+    # Don't list a PR under both "updated" and "merged"
+    for u in authored_merged:
+        authored_updated.pop(u, None)
+    for u in list(reviewed):
+        if u in authored_merged or u in authored_updated:
+            reviewed.pop(u)
+
+    # Anything else I'm involved in (assigned, mentioned, subscribed...) and updated
+    seen = set(reviewed) | set(commented) | set(created_issues) | set(created_prs) \
+        | set(authored_merged) | set(authored_updated) | set(my_issues)
+    other_prs, other_issues = {}, {}
+    for r in gh("search", "issues", "--involves", "@me", "--updated", f">={since_day}",
+                "--limit", "100", "--json", "url,title,isPullRequest,state"):
+        if r["url"] not in seen:
+            (other_prs if r["isPullRequest"] else other_issues)[r["url"]] = \
+                (r["title"], r["state"])
+
+    # Fill in titles missing from abbreviated event payloads
+    for d in (reviewed, commented, created_issues, closed_issues, created_prs):
+        for u, t in d.items():
+            if not t:
+                api = u.replace("https://github.com/", "repos/").replace("/pull/", "/pulls/")
+                d[u] = gh("api", api).get("title", "")
+
+    # url -> {"title": str, "actions": [str]}, rendered grouped by repository
+    entries = {}
+
+    def add(action, items):
+        for url, val in items.items():
+            title = val[0] if isinstance(val, tuple) else val
+            e = entries.setdefault(url, {"title": title, "actions": []})
+            if action not in e["actions"]:
+                e["actions"].append(action)
+
+    add("review", reviewed)
+    add("comment", commented)
+    add("open", created_issues)
+    add("open", created_prs)
+    add("close", closed_issues)
+    add("merged", authored_merged)
+    add("update", authored_updated)
+    add("update", my_issues)
+    add("involved", other_issues)
+    add("involved", other_prs)
+
+    by_org = {}
+    for url, e in entries.items():
+        by_org.setdefault(url.split("/")[3], []).append((url, e))
+
+    def sort_key(x):
+        parts = x[0].split("/")
+        return (parts[4], int(parts[6]))
+
+    print("- github-summary")
+    for org in sorted(by_org):
+        print(f"\t- {org}")
+        for url, e in sorted(by_org[org], key=sort_key):
+            repo, num = url.split("/")[4], url.rsplit("/", 1)[1]
+            print(f"\t\t- {', '.join(e['actions'])} [{repo}#{num}]({url}) - {e['title']}")
+    print("-----------")
+
+
+if __name__ == "__main__":
+    main()

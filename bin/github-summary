@@ -9,6 +9,7 @@ Usage:
   github-summary 7d                  # today + the 6 previous days
   github-summary --since 2026-10-12  # since a given date (UTC)
   github-summary --since 2026-10-13T09:00:00Z
+  github-summary --date 2026-10-10   # that specific day only (UTC)
 """
 import argparse
 import json
@@ -43,8 +44,16 @@ def main():
     ap.add_argument("days", nargs="?", metavar="Nd",
                     help="number of days, e.g. 1d (today) or 7d (a week)")
     ap.add_argument("--since", help="explicit start: YYYY-MM-DD or ISO timestamp (UTC)")
+    ap.add_argument("--date", type=date.fromisoformat, metavar="YYYY-MM-DD",
+                    help="only that specific day (UTC)")
     a = ap.parse_args()
-    if a.since:
+    until_ts = None
+    if a.date:
+        if a.since or a.days:
+            ap.error("--date cannot be combined with --since or Nd")
+        since = a.date.isoformat()
+        until_ts = f"{(a.date + timedelta(days=1)).isoformat()}T00:00:00Z"
+    elif a.since:
         since = a.since
     elif a.days:
         m = re.fullmatch(r"(\d+)d?", a.days)
@@ -55,6 +64,8 @@ def main():
         since = date.today().isoformat()
     since_ts = since if "T" in since else f"{since}T00:00:00Z"
     since_day = since[:10]
+    # search date qualifier: closed range for --date, open-ended otherwise
+    day_q = since_day if a.date else f">={since_day}"
 
     me = gh("api", "user")["login"]
 
@@ -66,7 +77,7 @@ def main():
     events = [e for page in gh("api", "--paginate", "--slurp",
                                f"users/{me}/events?per_page=100") for e in page]
     for e in events:
-        if e["created_at"] < since_ts:
+        if e["created_at"] < since_ts or (until_ts and e["created_at"] >= until_ts):
             continue
         p, t = e["payload"], e["type"]
         if t in ("PullRequestReviewEvent", "PullRequestReviewCommentEvent"):
@@ -90,26 +101,26 @@ def main():
             created_prs[html_url(p["pull_request"])] = p["pull_request"].get("title", "")
 
     # 2. Search fallback (events API can lag / miss things)
-    for r in gh("search", "prs", "--reviewed-by", "@me", "--updated", f">={since_day}",
+    for r in gh("search", "prs", "--reviewed-by", "@me", "--updated", day_q,
                 "--limit", "50", "--json", "url,title,author"):
         if r["author"]["login"] != me:
             reviewed[r["url"]] = r["title"]
-    for r in gh("search", "issues", "--commenter", "@me", "--updated", f">={since_day}",
+    for r in gh("search", "issues", "--commenter", "@me", "--updated", day_q,
                 "--limit", "50", "--json", "url,title,isPullRequest,author"):
         if r["author"]["login"] == me:
             continue
         (reviewed if r["isPullRequest"] else commented)[r["url"]] = r["title"]
         (commented if r["isPullRequest"] else reviewed).pop(r["url"], None)
-    for r in gh("search", "prs", "--author", "@me", "--updated", f">={since_day}",
+    for r in gh("search", "prs", "--author", "@me", "--updated", day_q,
                 "--limit", "50", "--json", "url,title,state"):
         authored_updated[r["url"]] = (r["title"], r["state"])
-    for r in gh("search", "prs", "--author", "@me", "--merged-at", f">={since_day}",
+    for r in gh("search", "prs", "--author", "@me", "--merged-at", day_q,
                 "--limit", "50", "--json", "url,title"):
         authored_merged[r["url"]] = r["title"]
 
     # Issues I authored aren't "commented on" (author may be missing in events)
     my_issues = {}
-    for r in gh("search", "issues", "--author", "@me", "--updated", f">={since_day}",
+    for r in gh("search", "issues", "--author", "@me", "--updated", day_q,
                 "--limit", "100", "--json", "url,title,isPullRequest,state"):
         commented.pop(r["url"], None)
         if not r["isPullRequest"]:
@@ -126,7 +137,7 @@ def main():
     seen = set(reviewed) | set(commented) | set(created_issues) | set(created_prs) \
         | set(authored_merged) | set(authored_updated) | set(my_issues)
     other_prs, other_issues = {}, {}
-    for r in gh("search", "issues", "--involves", "@me", "--updated", f">={since_day}",
+    for r in gh("search", "issues", "--involves", "@me", "--updated", day_q,
                 "--limit", "100", "--json", "url,title,isPullRequest,state"):
         if r["url"] not in seen:
             (other_prs if r["isPullRequest"] else other_issues)[r["url"]] = \
@@ -174,7 +185,6 @@ def main():
         for url, e in sorted(by_org[org], key=sort_key):
             repo, num = url.split("/")[4], url.rsplit("/", 1)[1]
             print(f"\t\t- {', '.join(e['actions'])} [{repo}#{num}]({url}) - {e['title']}")
-    print("-----------")
 
 
 if __name__ == "__main__":

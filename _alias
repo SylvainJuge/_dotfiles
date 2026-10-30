@@ -643,7 +643,9 @@ vpn(){
    case $1 in
        up)
            sudo tailscale up
-           sudo tailscale set --exit-node=${TAILSCALE_EXIT_NODE}.
+	   if [ '' != "${TAILSCALE_EXIT_NODE:-}" ]; then
+		sudo tailscale set --exit-node=${TAILSCALE_EXIT_NODE}
+	   fi
            ;;
        down)
            sudo tailscale set --exit-node=

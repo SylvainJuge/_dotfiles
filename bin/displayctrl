@@ -1,19 +1,91 @@
 #!/bin/bash
 
 sudo -k
-base_cmd="sudo -n ddcutil --sn 011NTPCEH704"
+cache_dir="${XDG_CACHE_HOME:-${HOME}/.cache}/displayctrl"
+bus_cache="${cache_dir}/bus"
+serial_cache="${cache_dir}/serial"
 
 # usage
 #
 # ${0} brightness +5
 # ${0} brightness -10
 
+# run ddcutil on the monitor. Looking the monitor up by serial number makes
+# ddcutil probe every i2c bus (slow), so the bus number is cached and the
+# lookup by serial is only used when the cached bus doesn't work anymore.
+ddc(){
+    local bus serial
+    if [ ! -r "${serial_cache}" ]; then
+        echo "no monitor selected, run '$(basename "${0}") setup' first" >&2
+        return 1
+    fi
+    serial="$(< "${serial_cache}")"
+
+    if [ -r "${bus_cache}" ]; then
+        bus="$(< "${bus_cache}")"
+        sudo -n ddcutil --bus "${bus}" --noverify "${@}" 2>/dev/null && return 0
+    fi
+
+    sudo -n ddcutil --sn "${serial}" --noverify "${@}" || return 1
+
+    # refresh the cache with the bus the monitor was found on
+    bus="$(list_monitors | awk -F'\t' -v sn="${serial}" '$1 == sn { print $3; exit }')"
+    if [ -n "${bus}" ]; then
+        mkdir -p "${cache_dir}"
+        echo "${bus}" > "${bus_cache}"
+    fi
+}
+
+# print one line per detected monitor with a serial number: serial<TAB>model<TAB>bus
+list_monitors(){
+    sudo -n ddcutil detect 2>/dev/null | awk '
+        function flush() { if (valid && serial != "") print serial "\t" model "\t" bus }
+        /^[A-Za-z]/ { flush(); valid = ($1 == "Display" && $2 ~ /^[0-9]+$/); model = ""; serial = ""; bus = "" }
+        valid && /I2C bus:/ { sub(/.*i2c-/, ""); bus = $0 }
+        valid && /Model:/ { sub(/^[ \t]*Model:[ \t]*/, ""); model = $0 }
+        valid && /Serial number:/ { sub(/^[ \t]*Serial number:[ \t]*/, ""); serial = $0 }
+        END { flush() }'
+}
+
+# let the user pick the monitor to control, and remember it in the cache
+select_monitor(){
+    local monitors serials=() models=() buses=() serial model bus choice i
+    monitors="$(list_monitors)"
+    while IFS=$'\t' read -r serial model bus; do
+        [ -n "${serial}" ] || continue
+        serials+=("${serial}"); models+=("${model}"); buses+=("${bus}")
+    done <<< "${monitors}"
+
+    if [ "${#serials[@]}" -eq 0 ]; then
+        echo "no monitor with a serial number detected" >&2
+        return 1
+    fi
+
+    echo "available monitors:"
+    for i in "${!serials[@]}"; do
+        echo "  $((i + 1))) ${models[i]:-unknown model} (serial ${serials[i]}, bus ${buses[i]})"
+    done
+
+    read -r -p "select a monitor [1]: " choice
+    choice="${choice:-1}"
+    if ! [[ "${choice}" =~ ^[0-9]+$ ]] || [ "${choice}" -lt 1 ] || [ "${choice}" -gt "${#serials[@]}" ]; then
+        echo "invalid selection '${choice}'" >&2
+        return 1
+    fi
+    i=$((choice - 1))
+
+    mkdir -p "${cache_dir}"
+    echo "${serials[i]}" > "${serial_cache}"
+    echo "${buses[i]}" > "${bus_cache}"
+    echo "selected ${models[i]:-monitor} (serial ${serials[i]})"
+}
+
 # accepts '+20', '-10', '20' as well as the spaced forms '+ 20', '- 10'
 brightness(){
     local joined="${*}"
     local arg="${joined// /}"
     if [[ "${arg}" =~ ^([+-]?)([0-9]+)$ ]]; then
-        ${base_cmd} setvcp 10 ${BASH_REMATCH[1]} ${BASH_REMATCH[2]}
+        ddc setvcp 10 ${BASH_REMATCH[1]} ${BASH_REMATCH[2]}
     else
         echo "invalid brightness '${*}', expected [+|-]<n>" >&2
         return 1
@@ -41,6 +113,8 @@ setup(){
     echo "installing '${rule}' in ${target}"
     sudo install -m 0440 -o root -g root "${tmp}" "${target}" || return 1
     echo "done"
+
+    select_monitor
 }
 
 help(){
@@ -50,7 +124,8 @@ usage: $(basename "${0}") [command] [args]
 commands:
   brightness <+|-><n>    change brightness by n (e.g. 'brightness +5')
   brightness <n>         set brightness to n
-  setup                  allow running ddcutil with sudo without password
+  setup                  allow running ddcutil with sudo without password,
+                         then select the monitor to control
   help                   show this help (default)
 EOF
 }

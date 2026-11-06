@@ -1,1 +1,4 @@
 *.swp
+/_config/openlogi/*.lock
+/_config/openlogi/config.toml.*
+/_config/openlogi/overlay.claim
